@@ -1,0 +1,26 @@
+HTTP/2 404 
+content-type: text/html; charset=UTF-8
+content-length: 131
+date: Wed, 15 Jul 2026 09:02:25 GMT
+x-ratelimit-limit: 10000, 10000;w=1
+x-ratelimit-remaining: 9999
+x-ratelimit-reset: 1
+server: envoy
+age: 1
+x-cache: cp5028 miss, cp5028 miss
+x-cache-status: miss
+server-timing: cache;desc="miss", host;desc="cp5028"
+strict-transport-security: max-age=106384710; includeSubDomains; preload
+report-to: { "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0" }] }
+nel: { "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}
+x-client-ip: 2600:1900:0:3e02::1d00
+x-content-type-options: nosniff
+access-control-allow-origin: *
+access-control-expose-headers: Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache
+timing-allow-origin: *
+content-security-policy-report-only: default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&
+x-content-security-policy-report-only: default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&
+set-cookie: WMF-Uniq=_Z_Nu_GayMbG9NqQYfUJ7gOeAAAAAFvdkEtGq9jKIe9Lel8N6DxHCMOo9zL-oxPq;Domain=upload.wikimedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 15 Jul 2027 00:00:00 GMT
+x-request-id: b4ee1dda-2d1b-4b81-af68-6dea32120475
+x-analytics: 
+

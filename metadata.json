@@ -1,0 +1,6 @@
+{
+  "name": "RIVA Strategies",
+  "description": "RIVA Strategies is a premium Creative Media & Political Branding Agency specializing in high-end graphic design, video editing, social media handling, and professional event photo/video shoots with drone coverage for major parties (BJP, TMC, AAP, INC, DMK, SP, Shiv Sena) and individual Ministers, MPs, and MLAs to showcase their developmental and social work.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

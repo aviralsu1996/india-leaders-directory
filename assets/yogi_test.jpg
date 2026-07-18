@@ -1,0 +1,30 @@
+HTTP/2 200 
+date: Wed, 15 Jul 2026 06:31:41 GMT
+etag: 7bb5b23db7b92719ad750cc6cb7a1a0f
+server: ATS/9.2.13
+content-type: image/jpeg
+x-object-meta-sha1base36: 2a2qig7y3thvgdx63t3gfckzov4jmdq
+last-modified: Sun, 11 Jun 2023 18:53:38 GMT
+content-length: 142720
+x-ratelimit-limit: 10000, 10000;w=1
+x-ratelimit-remaining: 9999
+x-ratelimit-reset: 1
+age: 9158
+accept-ranges: bytes
+x-cache: cp5028 miss, cp5028 hit/6
+x-cache-status: hit-front
+server-timing: cache;desc="hit-front", host;desc="cp5028"
+strict-transport-security: max-age=106384710; includeSubDomains; preload
+report-to: { "group": "wm_nel", "max_age": 604800, "endpoints": [{ "url": "https://intake-logging.wikimedia.org/v1/events?stream=w3c.reportingapi.network_error&schema_uri=/w3c/reportingapi/network_error/1.0.0" }] }
+nel: { "report_to": "wm_nel", "max_age": 604800, "failure_fraction": 0.05, "success_fraction": 0.0}
+x-client-ip: 2600:1900:0:3e02::1d00
+x-content-type-options: nosniff
+access-control-allow-origin: *
+access-control-expose-headers: Age, Date, Content-Length, Content-Range, X-Content-Duration, X-Cache
+timing-allow-origin: *
+content-security-policy-report-only: default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&
+x-content-security-policy-report-only: default-src 'none'; style-src 'unsafe-inline' data:; font-src data:; img-src data: https://upload.wikimedia.org/favicon.ico; connect-src https://upload.wikimedia.org/favicon.ico; media-src data: 'self'; report-uri https://commons.wikimedia.org/w/api.php?reportonly=1&source=image&action=cspreport&format=json&
+set-cookie: WMF-Uniq=eHvZBaReRbtSK8RHPLizYAOeAAAAAFvdhlMa_k8vgGHJ6L_RXX9Hd-Yje2OPAzWA;Domain=upload.wikimedia.org;Path=/;HttpOnly;secure;SameSite=None;Expires=Thu, 15 Jul 2027 00:00:00 GMT
+x-request-id: 67a3e2d3-f516-42c7-bf12-00cc994ca85d
+x-analytics: 
+
