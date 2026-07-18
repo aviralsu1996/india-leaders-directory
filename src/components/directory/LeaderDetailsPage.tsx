@@ -24,13 +24,14 @@ interface Review {
 
 // Helper to get dossier for a leader
 function getLeaderDossier(leader: SupabaseLeader): MinisterDossier {
-  const key = leader.slug.replace(/-/g, '_');
+  const slugKey = leader.slug || leader.id || leader.name.replace(/[^a-z0-9]+/gi, '-').toLowerCase();
+  const key = slugKey.replace(/-/g, '_');
   if (PRELOADED_MINISTERS && PRELOADED_MINISTERS[key]) {
     return PRELOADED_MINISTERS[key];
   }
   
-  // Calculate consistent pseudo-random values based on slug
-  const hash = leader.slug.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  // Calculate consistent pseudo-random values based on slug or fallback key
+  const hash = slugKey.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
   const incomeVal = (hash % 5) * 4 + 8; // e.g. 8, 12, 16, 20, 24 Lakhs
   const assetVal = (hash % 8) * 1.5 + 1.2; // e.g. 1.2, 2.7, 4.2... Crores
   const propertyVal = (hash % 3) + 1;
@@ -140,9 +141,16 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
 
   useEffect(() => {
     async function loadLeaderData() {
+      if (!slug) {
+        setLoading(false);
+        setLeader(null);
+        return;
+      }
+
       try {
         setLoading(true);
-        const data = await dbService.getLeaderBySlug(slug);
+        const normalizedSlug = slug.trim();
+        const data = await dbService.getLeaderBySlug(normalizedSlug);
         if (data) {
           setLeader(data);
           
@@ -1147,7 +1155,7 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
               <motion.div
                 key={lead.id}
                 whileHover={{ y: -3 }}
-                onClick={() => onSelectLeader(lead.slug)}
+                onClick={() => onSelectLeader(lead.slug || lead.id)}
                 className="bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-900 p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:border-emerald-500/30 transition-all"
               >
                 <div className="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-100 dark:border-slate-900">

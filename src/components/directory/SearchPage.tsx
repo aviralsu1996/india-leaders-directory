@@ -300,7 +300,7 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
                       <span className="truncate">{leader.constituency}</span>
                     </div>
                     <button
-                      onClick={() => onSelectLeader(leader.slug)}
+                      onClick={() => onSelectLeader(leader.slug || leader.id)}
                       className="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 hover:text-slate-900 dark:text-emerald-400 text-xs font-bold rounded-lg transition cursor-pointer"
                     >
                       View Dossier

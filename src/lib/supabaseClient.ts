@@ -147,17 +147,24 @@ export const dbService = {
 
   // Retrieve single leader
   async getLeaderBySlug(slug: string): Promise<SupabaseLeader | null> {
+    const normalized = String(slug || '').trim();
+    if (!normalized) return null;
+
     if (isSupabaseConfigured) {
       const sb = getSupabase();
-      const { data, error } = await sb.from('leaders').select('*').or(`slug.eq.${slug},id.eq.${slug}`).single();
-      if (!error && data) {
-        return data as SupabaseLeader;
+      try {
+        const { data, error } = await sb.from('leaders').select('*').or(`slug.eq.${normalized},id.eq.${normalized}`).single();
+        if (!error && data) {
+          return data as SupabaseLeader;
+        }
+      } catch (supabaseErr) {
+        console.warn('Supabase getLeaderBySlug query failed, falling back to REST/local lookup:', supabaseErr);
       }
     }
 
     try {
       // Fallback REST API
-      const res = await fetch(`/api/directory/leaders/${slug}`);
+      const res = await fetch(`/api/directory/leaders/${encodeURIComponent(normalized)}`);
       if (res.status === 404) return null;
       if (!res.ok) {
         throw new Error(`HTTP error ${res.status}`);
@@ -172,8 +179,15 @@ export const dbService = {
       console.warn('REST API fetch for single leader failed, using local fallback:', err);
     }
 
-    // Local fallback
-    const leader = initialDirectoryLeaders.find(l => l.slug === slug || l.id === slug);
+    // Local fallback with robust lookup
+    const lookupKey = normalized.toLowerCase();
+    const leader = initialDirectoryLeaders.find((l) => {
+      const slugMatch = l.slug?.toLowerCase() === lookupKey;
+      const idMatch = l.id?.toLowerCase() === lookupKey;
+      const nameSlugMatch = l.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '') === lookupKey;
+      const nameMatch = l.name.toLowerCase() === lookupKey;
+      return slugMatch || idMatch || nameSlugMatch || nameMatch;
+    });
     return leader || null;
   },
 

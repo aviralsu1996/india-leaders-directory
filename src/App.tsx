@@ -46,22 +46,100 @@ export default function App() {
     }
   }, [isDarkMode]);
 
-  // Handle nested sub-navigation in our directory
+  const parseSearchParams = (search: string) => {
+    const query = new URLSearchParams(search);
+    const parsed: any = {};
+    if (query.get('query')) parsed.query = query.get('query');
+    if (query.get('category')) parsed.category = query.get('category');
+    if (query.get('state')) parsed.state = query.get('state');
+    return parsed;
+  };
+
+  const parsePath = (pathname: string, search: string) => {
+    const normalized = pathname.replace(/\/+$/, '') || '/';
+    if (normalized === '/' || normalized === '') {
+      return { view: 'home', params: null, slug: '' };
+    }
+    if (normalized === '/search') {
+      return { view: 'search', params: parseSearchParams(search), slug: '' };
+    }
+    if (normalized.startsWith('/leader/')) {
+      const slug = decodeURIComponent(normalized.replace('/leader/', ''));
+      return { view: 'details', params: null, slug };
+    }
+    if (normalized === '/about') {
+      return { view: 'about', params: null, slug: '' };
+    }
+    if (normalized === '/contact') {
+      return { view: 'contact', params: null, slug: '' };
+    }
+    return { view: 'home', params: null, slug: '' };
+  };
+
   const handleNavigateTo = (page: string, params?: any) => {
     if (page === 'search') {
+      const qs = new URLSearchParams();
+      if (params?.query) qs.set('query', params.query);
+      if (params?.category) qs.set('category', params.category);
+      if (params?.state) qs.set('state', params.state);
+      const searchString = qs.toString();
+      const url = `/search${searchString ? `?${searchString}` : ''}`;
+      window.history.pushState(null, '', url);
       setSearchParams(params || null);
+      setSelectedLeaderSlug('');
       setDirectoryView('search');
+    } else if (page === 'home') {
+      window.history.pushState(null, '', '/');
+      setSearchParams(null);
+      setSelectedLeaderSlug('');
+      setDirectoryView('home');
+    } else if (page === 'about') {
+      window.history.pushState(null, '', '/about');
+      setSearchParams(null);
+      setSelectedLeaderSlug('');
+      setDirectoryView('about');
+    } else if (page === 'contact') {
+      window.history.pushState(null, '', '/contact');
+      setSearchParams(null);
+      setSelectedLeaderSlug('');
+      setDirectoryView('contact');
     } else {
       setDirectoryView(page as any);
     }
   };
 
   const handleSelectLeader = (slug: string) => {
-    setSelectedLeaderSlug(slug);
+    const normalizedSlug = slug.trim();
+    const url = `/leader/${encodeURIComponent(normalizedSlug)}`;
+    window.history.pushState(null, '', url);
+    setSelectedLeaderSlug(normalizedSlug);
+    setSearchParams(null);
     setDirectoryView('details');
   };
 
-  // If path starts with /admin, bypass the public layout completely to keep them 100% independent
+  const syncRouteFromPath = (pathname: string, search: string) => {
+    const parsed = parsePath(pathname, search);
+    setDirectoryView(parsed.view as any);
+    setSearchParams(parsed.params || null);
+    setSelectedLeaderSlug(parsed.slug || '');
+    if (parsed.view !== 'search') {
+      setSearchParams(null);
+    }
+  };
+
+  useEffect(() => {
+    syncRouteFromPath(window.location.pathname, window.location.search);
+  }, []);
+
+  useEffect(() => {
+    const handlePopState = () => {
+      setCurrentPath(window.location.pathname);
+      syncRouteFromPath(window.location.pathname, window.location.search);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   if (currentPath.startsWith('/admin')) {
     return <AdminDashboard />;
   }
