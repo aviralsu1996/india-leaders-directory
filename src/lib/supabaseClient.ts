@@ -165,7 +165,6 @@ export const dbService = {
     try {
       // Fallback REST API
       const res = await fetch(`/api/directory/leaders/${encodeURIComponent(normalized)}`);
-      if (res.status === 404) return null;
       if (!res.ok) {
         throw new Error(`HTTP error ${res.status}`);
       }
