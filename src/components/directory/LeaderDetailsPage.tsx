@@ -8,7 +8,7 @@ import {
 } from 'lucide-react';
 import { SupabaseLeader } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
-import { PRELOADED_MINISTERS, MinisterDossier, getProxiedImageUrl } from '../KnowYourMinister';
+import { PRELOADED_MINISTERS, MinisterDossier, getDirectImageUrl } from '../KnowYourMinister';
 import { getSeededReviewsList, getSeededStats } from '../../lib/reviewsSeeder';
 
 interface Review {
@@ -299,10 +299,13 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
         {/* Banner */}
         <div className="h-60 sm:h-72 bg-slate-100 relative overflow-hidden">
           <img
-            src={getProxiedImageUrl(leader.cover_image) || 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1200'}
+            src={getDirectImageUrl(leader.cover_image) || 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1200'}
             alt={leader.name}
             referrerPolicy="no-referrer"
             className="w-full h-full object-cover brightness-75"
+            onError={(e) => {
+              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1200';
+            }}
           />
           <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 to-transparent" />
         </div>
@@ -312,10 +315,13 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
           {/* Avatar */}
           <div className="w-36 h-36 sm:w-44 sm:h-44 rounded-3xl overflow-hidden bg-slate-200 border-4 border-white dark:border-slate-950 shadow-md shrink-0">
             <img
-              src={getProxiedImageUrl(leader.image)}
+              src={getDirectImageUrl(leader.image)}
               alt={leader.name}
               referrerPolicy="no-referrer"
               className="w-full h-full object-cover object-top"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400';
+              }}
             />
           </div>
 
@@ -727,10 +733,13 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
                               {item.image && (
                                 <div className="h-44 w-full overflow-hidden relative bg-slate-100 dark:bg-slate-900">
                                   <img 
-                                    src={getProxiedImageUrl(item.image)} 
+                                    src={getDirectImageUrl(item.image)} 
                                     alt={item.title} 
                                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                                     referrerPolicy="no-referrer"
+                                    onError={(e) => {
+                                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500';
+                                    }}
                                   />
                                   <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-mono font-bold text-white uppercase tracking-wider">
                                     {item.category}
@@ -806,7 +815,14 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
                               className="aspect-square bg-slate-100 dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-100 dark:border-slate-900 relative group cursor-zoom-in shadow-sm animate-fade-in"
                               onClick={() => setZoomedImage(url)}
                             >
-                              <img src={getProxiedImageUrl(url)} alt="Gallery item" className="w-full h-full object-cover" />
+                              <img 
+                                src={getDirectImageUrl(url)} 
+                                alt="Gallery item" 
+                                className="w-full h-full object-cover" 
+                                onError={(e) => {
+                                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500';
+                                }}
+                              />
                             </div>
                           ))}
                         </div>
@@ -1136,10 +1152,13 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
               >
                 <div className="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-100 dark:border-slate-900">
                   <img
-                    src={getProxiedImageUrl(lead.image)}
+                    src={getDirectImageUrl(lead.image)}
                     alt={lead.name}
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover object-top"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
+                    }}
                   />
                 </div>
                 <div className="min-w-0 flex-1 text-left">
@@ -1179,9 +1198,12 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
-              src={getProxiedImageUrl(zoomedImage)}
+              src={getDirectImageUrl(zoomedImage)}
               alt="Zoomed"
               className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
+              onError={(e) => {
+                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1200';
+              }}
             />
           </motion.div>
         )}

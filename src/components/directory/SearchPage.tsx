@@ -3,7 +3,7 @@ import { motion } from 'motion/react';
 import { Search, Filter, MapPin, Award, Users, Shield, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
-import { getProxiedImageUrl } from '../KnowYourMinister';
+import { getDirectImageUrl } from '../KnowYourMinister';
 
 interface SearchPageProps {
   initialFilters?: {
@@ -254,10 +254,13 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
               >
                 <div className="h-32 bg-slate-50 relative overflow-hidden">
                   <img
-                    src={getProxiedImageUrl(leader.cover_image) || 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500'}
+                    src={getDirectImageUrl(leader.cover_image) || 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500'}
                     alt={leader.name}
                     referrerPolicy="no-referrer"
                     className="w-full h-full object-cover filter brightness-75"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500';
+                    }}
                   />
                   <span className="absolute top-3 left-3 px-2 py-0.5 bg-emerald-600 text-white font-bold text-[8px] rounded uppercase font-mono tracking-wider">
                     {leader.party}
@@ -268,10 +271,13 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
                   <div className="space-y-3">
                     <div className="w-14 h-14 rounded-xl overflow-hidden bg-slate-200 border-2 border-white dark:border-slate-950 shadow-md">
                       <img
-                        src={getProxiedImageUrl(leader.image)}
+                        src={getDirectImageUrl(leader.image)}
                         alt={leader.name}
                         referrerPolicy="no-referrer"
                         className="w-full h-full object-cover object-top"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
+                        }}
                       />
                     </div>
 

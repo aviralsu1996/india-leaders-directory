@@ -38,14 +38,8 @@ import {
 import ContactUs from './ContactUs';
 import { getSeededReviewsList, getSeededStats } from '../lib/reviewsSeeder';
 
-export const getProxiedImageUrl = (url?: string) => {
+export const getDirectImageUrl = (url?: string) => {
   if (!url) return '';
-  if (url.startsWith('/') || url.startsWith('data:') || url.startsWith('blob:')) {
-    return url;
-  }
-  if (url.startsWith('http://') || url.startsWith('https://')) {
-    return `/api/image-proxy?url=${encodeURIComponent(url)}`;
-  }
   return url;
 };
 
@@ -1139,13 +1133,13 @@ export default function KnowYourMinister() {
                         console.log("Rendering minister thumbnail:", value.name, "->", value.profileImage);
                         return (
                           <img
-                            src={getProxiedImageUrl(value.profileImage)}
+                            src={getDirectImageUrl(value.profileImage)}
                             alt={value.name}
                             referrerPolicy="no-referrer"
                             className="w-full h-full object-cover object-top"
-                            onError={() => {
+                            onError={(e) => {
                               console.error("Failed to load thumbnail image for", value.name, "url:", value.profileImage);
-                              setThumbnailErrors(prev => ({ ...prev, [key]: true }));
+                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
                             }}
                           />
                         );
@@ -1240,13 +1234,13 @@ export default function KnowYourMinister() {
                         console.log("Rendering active representative photo:", activeLeader.name, "->", activeLeader.profileImage);
                         return (
                           <img
-                            src={getProxiedImageUrl(activeLeader.profileImage)}
+                            src={getDirectImageUrl(activeLeader.profileImage)}
                             alt={activeLeader.name}
                             referrerPolicy="no-referrer"
                             className="w-full h-full object-cover object-top"
-                            onError={() => {
+                            onError={(e) => {
                               console.error("Failed to load representative photo for", activeLeader.name, "url:", activeLeader.profileImage);
-                              setImageError(true);
+                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400';
                             }}
                           />
                         );
@@ -1641,7 +1635,7 @@ export default function KnowYourMinister() {
                                     {/* Image Wrapper */}
                                     <div className="aspect-video w-full overflow-hidden relative bg-slate-100 dark:bg-slate-900 flex items-center justify-center">
                                       <img
-                                        src={getProxiedImageUrl(img.imageUrl)}
+                                        src={getDirectImageUrl(img.imageUrl)}
                                         alt={img.caption}
                                         referrerPolicy="no-referrer"
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
@@ -1705,7 +1699,7 @@ export default function KnowYourMinister() {
 
                                   <div className="aspect-video bg-black flex items-center justify-center animate-pulse-once">
                                     <img
-                                      src={getProxiedImageUrl(img.imageUrl)}
+                                      src={getDirectImageUrl(img.imageUrl)}
                                       alt={img.caption}
                                       referrerPolicy="no-referrer"
                                       className="max-h-full max-w-full object-contain"
@@ -2160,12 +2154,12 @@ export default function KnowYourMinister() {
                           <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-800 shrink-0 border border-slate-200 dark:border-slate-700 flex items-center justify-center">
                             {leader1Dossier.profileImage ? (
                               <img
-                                src={getProxiedImageUrl(leader1Dossier.profileImage)}
+                                src={getDirectImageUrl(leader1Dossier.profileImage)}
                                 alt={leader1Dossier.name}
                                 referrerPolicy="no-referrer"
                                 className="w-full h-full object-cover object-top"
                                 onError={(e) => {
-                                  (e.target as HTMLImageElement).style.display = 'none';
+                                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
                                 }}
                               />
                             ) : (
@@ -2188,12 +2182,12 @@ export default function KnowYourMinister() {
                           <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-200 dark:bg-slate-800 shrink-0 border border-slate-200 dark:border-slate-700 flex items-center justify-center">
                             {leader2Dossier.profileImage ? (
                               <img
-                                src={getProxiedImageUrl(leader2Dossier.profileImage)}
+                                src={getDirectImageUrl(leader2Dossier.profileImage)}
                                 alt={leader2Dossier.name}
                                 referrerPolicy="no-referrer"
                                 className="w-full h-full object-cover object-top"
                                 onError={(e) => {
-                                  (e.target as HTMLImageElement).style.display = 'none';
+                                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
                                 }}
                               />
                             ) : (

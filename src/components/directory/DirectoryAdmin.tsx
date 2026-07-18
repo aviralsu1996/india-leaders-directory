@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
-import { getProxiedImageUrl } from '../KnowYourMinister';
+import { getDirectImageUrl } from '../KnowYourMinister';
 
 interface DirectoryAdminProps {
   onSelectLeader: (slug: string) => void;
@@ -649,10 +649,13 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
                         <td className="py-4 px-4 flex items-center gap-3">
                           <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-100 border border-slate-150 shrink-0">
                             <img
-                              src={getProxiedImageUrl(leader.image)}
+                              src={getDirectImageUrl(leader.image)}
                               alt={leader.name}
                               referrerPolicy="no-referrer"
                               className="w-full h-full object-cover object-top"
+                              onError={(e) => {
+                                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
+                              }}
                             />
                           </div>
                           <div>
@@ -733,9 +736,12 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
               {mediaList.map((url, idx) => (
                 <div key={idx} className="aspect-square bg-slate-100 rounded-2xl overflow-hidden border border-slate-150 shadow-sm relative group">
                   <img
-                    src={getProxiedImageUrl(url)}
+                    src={getDirectImageUrl(url)}
                     alt="Bucket item"
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400';
+                    }}
                   />
                   {/* Action overlays */}
                   <div className="absolute inset-0 bg-black/40 flex items-center justify-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -789,9 +795,12 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
                   {/* Crop stage */}
                   <div className="aspect-square bg-slate-100 rounded-2xl overflow-hidden relative border border-slate-200">
                     <img
-                      src={getProxiedImageUrl(croppingImage)}
+                      src={getDirectImageUrl(croppingImage)}
                       alt="Crop Stage"
                       className="w-full h-full object-cover blur-[1px]"
+                      onError={(e) => {
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400';
+                      }}
                     />
                     {/* Bounding Crop Box Overlay */}
                     <div 

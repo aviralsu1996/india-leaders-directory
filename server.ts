@@ -206,68 +206,7 @@ async function startServer() {
       .replace(/\-\-+/g, '-');
   };
 
-  // Image Proxy to fetch external images (like Wikimedia) with compliant headers
-  app.get('/api/image-proxy', (req, res) => {
-    const imageUrl = req.query.url as string;
-    if (!imageUrl) {
-      return res.status(400).send('Missing url parameter');
-    }
 
-    const fetchProxiedImage = (targetUrl: string, redirectCount = 0) => {
-      if (redirectCount > 3) {
-        return res.status(500).send('Too many redirects');
-      }
-
-      try {
-        const parsedUrl = new URL(targetUrl);
-        const isHttps = parsedUrl.protocol === 'https:';
-        const client = isHttps ? https : http;
-
-        const headers = {
-          'User-Agent': 'IndianConstitutionalDirectory/1.0 (contact: aviralsu1996@gmail.com) Node.js/http-stream',
-          'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
-          'Accept-Language': 'en-US,en;q=0.9',
-        };
-
-        const requestOptions = {
-          hostname: parsedUrl.hostname,
-          port: parsedUrl.port,
-          path: parsedUrl.pathname + parsedUrl.search,
-          method: 'GET',
-          headers,
-        };
-
-        client.get(requestOptions, (proxyRes) => {
-          // Handle Redirects
-          if ([301, 302, 303, 307, 308].includes(proxyRes.statusCode || 0)) {
-            const redirectLocation = proxyRes.headers.location;
-            if (redirectLocation) {
-              let nextUrl = redirectLocation;
-              // Resolve relative URLs
-              if (!redirectLocation.startsWith('http://') && !redirectLocation.startsWith('https://')) {
-                nextUrl = new URL(redirectLocation, targetUrl).toString();
-              }
-              return fetchProxiedImage(nextUrl, redirectCount + 1);
-            }
-          }
-
-          res.writeHead(proxyRes.statusCode || 200, {
-            'Content-Type': proxyRes.headers['content-type'] || 'image/jpeg',
-            'Cache-Control': 'public, max-age=86400',
-          });
-          proxyRes.pipe(res);
-        }).on('error', (err) => {
-          console.error('Image proxy request error:', err);
-          res.status(500).send('Error loading image');
-        });
-      } catch (e) {
-        console.error('Image proxy parse exception:', e);
-        res.status(500).send('Invalid image URL');
-      }
-    };
-
-    fetchProxiedImage(imageUrl);
-  });
 
   // Get directory leaders list (with filters, searching and pagination)
   app.get('/api/directory/leaders', (req, res) => {
