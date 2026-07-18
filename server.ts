@@ -1528,26 +1528,7 @@ Ensure NO markdown wrapper blocks like \`\`\`json outside the JSON, just pure st
     });
   }
 
-  // Endpoint: Proxy images to bypass hotlink block/referer issues
-  app.get('/api/directory/proxy-image', async (req, res) => {
-    const { url } = req.query;
-    if (!url || typeof url !== 'string') {
-      return res.status(400).send('URL query parameter is required');
-    }
-    try {
-      const buffer = await downloadImageBuffer(url);
-      let contentType = 'image/jpeg';
-      if (url.endsWith('.png')) contentType = 'image/png';
-      else if (url.endsWith('.webp')) contentType = 'image/webp';
-      else if (url.endsWith('.gif')) contentType = 'image/gif';
-
-      res.setHeader('Content-Type', contentType);
-      res.setHeader('Cache-Control', 'public, max-age=86400');
-      res.send(buffer);
-    } catch (err: any) {
-      res.status(500).send(`Failed to proxy image: ${err.message}`);
-    }
-  });
+  // NOTE: image proxy endpoint removed — images are served directly from their original URLs now.
 
   // Endpoint: Debug complete image pipeline for N. Chandrababu Naidu
   app.get('/api/directory/debug-chandrababu', async (req, res) => {

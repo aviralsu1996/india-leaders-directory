@@ -8,11 +8,8 @@ import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
 
 const getDirectImageUrl = (url?: string) => {
-  if (!url) return '';
-  if (url.startsWith('http') && (url.includes('wikimedia.org') || url.includes('wikipedia.org'))) {
-    return `/api/directory/proxy-image?url=${encodeURIComponent(url)}`;
-  }
-  return url;
+  // Return the original URL directly; do not proxy Wikimedia links.
+  return url || '';
 };
 
 interface DirectoryHomeProps {
