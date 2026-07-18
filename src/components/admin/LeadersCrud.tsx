@@ -193,10 +193,16 @@ export default function LeadersCrud({ categoryFilter = 'all', onRefreshStats }: 
         // Edit mode
         await dbService.updateLeader(formState.id, payload);
         setSuccessMsg(`Successfully updated leader profile for ${formState.name}.`);
+        dbService.triggerGitHubCommit(`Admin updated leader profile: ${formState.name}`).then(() => {
+          dbService.triggerVercelDeploy();
+        });
       } else {
         // Add Mode
         await dbService.createLeader(payload);
         setSuccessMsg(`Successfully created leader profile for ${formState.name}.`);
+        dbService.triggerGitHubCommit(`Admin created leader profile: ${formState.name}`).then(() => {
+          dbService.triggerVercelDeploy();
+        });
       }
 
       setShowFormModal(false);
@@ -215,6 +221,9 @@ export default function LeadersCrud({ categoryFilter = 'all', onRefreshStats }: 
     try {
       await dbService.deleteLeader(leader.id);
       setSuccessMsg(`Deleted "${leader.name}" successfully.`);
+      dbService.triggerGitHubCommit(`Admin deleted leader profile: ${leader.name}`).then(() => {
+        dbService.triggerVercelDeploy();
+      });
       onRefreshStats();
       loadData();
     } catch (err: any) {

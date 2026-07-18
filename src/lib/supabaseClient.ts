@@ -6,8 +6,15 @@ import { initialDirectoryLeaders } from '../directoryLeadersData';
 const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = (import.meta as any).env?.VITE_SUPABASE_ANON_KEY || '';
 
-// Determine if Supabase is fully configured
-export const isSupabaseConfigured = !!(supabaseUrl && supabaseAnonKey);
+// Determine if Supabase is fully configured (ensuring it is a real URL and not a dummy/placeholder key)
+export const isSupabaseConfigured = !!(
+  supabaseUrl && 
+  supabaseAnonKey && 
+  supabaseUrl.startsWith('https://') && 
+  !supabaseUrl.includes('placeholder') && 
+  !supabaseUrl.includes('your-') &&
+  !supabaseUrl.includes('YOUR_')
+);
 
 // Lazy initialize the Supabase client
 let supabaseInstance: any = null;
@@ -106,7 +113,7 @@ export const dbService = {
 
       const { data, error } = await query;
       if (error) {
-        console.error('Supabase getLeaders failed, falling back to REST:', error);
+        console.warn('Supabase getLeaders failed, falling back to REST:', error);
       } else {
         return data as SupabaseLeader[];
       }
@@ -178,7 +185,7 @@ export const dbService = {
       if (!error && data) {
         return data as SupabaseLeader;
       }
-      console.error('Supabase createLeader failed, falling back to REST:', error);
+      console.warn('Supabase createLeader failed, falling back to REST:', error);
     }
 
     // Fallback REST API
@@ -200,7 +207,7 @@ export const dbService = {
       if (!error && data) {
         return data as SupabaseLeader;
       }
-      console.error('Supabase updateLeader failed, falling back to REST:', error);
+      console.warn('Supabase updateLeader failed, falling back to REST:', error);
     }
 
     // Fallback REST API
@@ -220,7 +227,7 @@ export const dbService = {
       const sb = getSupabase();
       const { error } = await sb.from('leaders').delete().eq('id', id);
       if (!error) return true;
-      console.error('Supabase deleteLeader failed, falling back to REST:', error);
+      console.warn('Supabase deleteLeader failed, falling back to REST:', error);
     }
 
     // Fallback REST API
@@ -237,7 +244,7 @@ export const dbService = {
       const sb = getSupabase();
       const { error } = await sb.from('leaders').delete().in('id', ids);
       if (!error) return true;
-      console.error('Supabase bulkDelete failed, falling back to REST:', error);
+      console.warn('Supabase bulkDelete failed, falling back to REST:', error);
     }
 
     // Fallback REST API
@@ -266,6 +273,59 @@ export const dbService = {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ leaderId })
+    });
+    return await res.json();
+  },
+
+  // Automated Profile Image Search & Sync
+  async scanMissingImages(): Promise<{ success: boolean; scanned: number; added: number; failed: number; results: any[] }> {
+    const res = await fetch('/api/directory/scan-missing-images', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    return await res.json();
+  },
+
+  // Automated Cover Image Generator
+  async generateMissingCovers(): Promise<{ success: boolean; scanned: number; generated: number }> {
+    const res = await fetch('/api/directory/generate-missing-covers', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
+    });
+    return await res.json();
+  },
+
+  // Fetch System logs
+  async getSystemLogs(): Promise<{ success: boolean; logs: any[] }> {
+    const res = await fetch('/api/directory/system-logs');
+    return await res.json();
+  },
+
+  // Add system log entry
+  async addSystemLog(type: string, message: string, details?: string): Promise<{ success: boolean; log: any }> {
+    const res = await fetch('/api/directory/add-system-log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, message, details })
+    });
+    return await res.json();
+  },
+
+  // Automatically commit changes to GitHub
+  async triggerGitHubCommit(summary?: string): Promise<{ success: boolean; commitSha: string; branch: string; message: string }> {
+    const res = await fetch('/api/directory/github-commit', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ summary })
+    });
+    return await res.json();
+  },
+
+  // Trigger Vercel Production deployment automatically
+  async triggerVercelDeploy(): Promise<{ success: boolean; deployId: string; url: string; status: string }> {
+    const res = await fetch('/api/directory/vercel-deploy', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' }
     });
     return await res.json();
   }

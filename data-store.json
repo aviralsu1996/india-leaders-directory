@@ -22898,5 +22898,343 @@
       "featured": true,
       "status": "Published"
     }
+  ],
+  "systemLogs": [
+    {
+      "id": "log-1784390288073-cph84",
+      "timestamp": "2026-07-18T15:58:08.073Z",
+      "type": "debug_failed",
+      "message": "Pipeline execution failed: Supabase Storage upload failed: Invalid Compact JWS (details: {\"name\":\"StorageApiError\",\"message\":\"Invalid Compact JWS\",\"status\":400,\"statusCode\":\"403\"})",
+      "details": ""
+    },
+    {
+      "id": "log-1784390287777-oxna8",
+      "timestamp": "2026-07-18T15:58:07.777Z",
+      "type": "debug",
+      "message": "[STEP_4] Uploading binary buffer to \"leaders\" storage bucket under pathway \"profile/n-chandrababu-naidu.jpg\"...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390287764-zwr2s",
+      "timestamp": "2026-07-18T15:58:07.764Z",
+      "type": "debug",
+      "message": "[STEP_4] Key Diagnostics: length=46, parts=1, startsWith=sb_publish..., endsWith=...Q_uEQV2sWX",
+      "details": ""
+    },
+    {
+      "id": "log-1784390287757-wzwmb",
+      "timestamp": "2026-07-18T15:58:07.757Z",
+      "type": "debug",
+      "message": "[STEP_4] Supabase URL: https://wwuwzzeuzbgnbcvphdzp.supabase.co, Key: FOUND (masked)",
+      "details": ""
+    },
+    {
+      "id": "log-1784390287749-osrbf",
+      "timestamp": "2026-07-18T15:58:07.749Z",
+      "type": "debug",
+      "message": "[STEP_4] Initializing Supabase client connection to upload asset...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390287737-zj6ov",
+      "timestamp": "2026-07-18T15:58:07.737Z",
+      "type": "debug",
+      "message": "[STEP_3] Image downloaded successfully. Buffer size: 132100 bytes.",
+      "details": ""
+    },
+    {
+      "id": "log-1784390287706-153g0",
+      "timestamp": "2026-07-18T15:58:07.706Z",
+      "type": "debug",
+      "message": "[STEP_3] Downloading image into binary buffer...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390287697-t2mhq",
+      "timestamp": "2026-07-18T15:58:07.697Z",
+      "type": "debug",
+      "message": "[STEP_2] Image URL successfully returned from Wikimedia Commons: https://upload.wikimedia.org/wikipedia/commons/a/a8/The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg",
+      "details": ""
+    },
+    {
+      "id": "log-1784390287688-089l1",
+      "timestamp": "2026-07-18T15:58:07.688Z",
+      "type": "debug",
+      "message": "[STEP_1] Wikipedia Response body received (length 323): {\"batchcomplete\":\"\",\"query\":{\"pages\":{\"277706\":{\"pageid\":277706,\"ns\":0,\"title\":\"N. Chandrababu Naidu\",\"thumbnail\":{\"source\":\"https://upload.wikimedia.org/wikipedia/commons/a/a8/The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg\",\"width\":473,\"height\":634},\"pageimage\":\"The_portrait_of_CM_Shri_Nara_Cha",
+      "details": ""
+    },
+    {
+      "id": "log-1784390287678-izjtj",
+      "timestamp": "2026-07-18T15:58:07.678Z",
+      "type": "debug",
+      "message": "[STEP_1] Wikipedia Response status code: 200",
+      "details": ""
+    },
+    {
+      "id": "log-1784390286692-8nhpx",
+      "timestamp": "2026-07-18T15:58:06.692Z",
+      "type": "debug",
+      "message": "[STEP_1] Searching Wikimedia Commons for N. Chandrababu Naidu...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390286685-c569z",
+      "timestamp": "2026-07-18T15:58:06.685Z",
+      "type": "debug",
+      "message": "[INIT] Starting complete image fetching pipeline debug for N. Chandrababu Naidu",
+      "details": ""
+    },
+    {
+      "id": "log-1784390155010-0a6vq",
+      "timestamp": "2026-07-18T15:55:55.010Z",
+      "type": "debug_failed",
+      "message": "Pipeline execution failed: Supabase Storage upload failed: Invalid Compact JWS (details: {\"name\":\"StorageApiError\",\"message\":\"Invalid Compact JWS\",\"status\":400,\"statusCode\":\"403\"})",
+      "details": ""
+    },
+    {
+      "id": "log-1784390154905-6mrmm",
+      "timestamp": "2026-07-18T15:55:54.905Z",
+      "type": "debug",
+      "message": "[STEP_4] Uploading binary buffer to \"leaders\" storage bucket under pathway \"profile/n-chandrababu-naidu.jpg\"...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390154890-32tch",
+      "timestamp": "2026-07-18T15:55:54.890Z",
+      "type": "debug",
+      "message": "[STEP_4] Key Diagnostics: length=46, parts=1, startsWith=sb_publish..., endsWith=...Q_uEQV2sWX",
+      "details": ""
+    },
+    {
+      "id": "log-1784390154881-4uruj",
+      "timestamp": "2026-07-18T15:55:54.881Z",
+      "type": "debug",
+      "message": "[STEP_4] Supabase URL: https://wwuwzzeuzbgnbcvphdzp.supabase.co, Key: FOUND (masked)",
+      "details": ""
+    },
+    {
+      "id": "log-1784390154872-pm6q5",
+      "timestamp": "2026-07-18T15:55:54.872Z",
+      "type": "debug",
+      "message": "[STEP_4] Initializing Supabase client connection to upload asset...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390154859-rytcz",
+      "timestamp": "2026-07-18T15:55:54.859Z",
+      "type": "debug",
+      "message": "[STEP_3] Image downloaded successfully. Buffer size: 132100 bytes.",
+      "details": ""
+    },
+    {
+      "id": "log-1784390154823-kzmu0",
+      "timestamp": "2026-07-18T15:55:54.823Z",
+      "type": "debug",
+      "message": "[STEP_3] Downloading image into binary buffer...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390154815-to3rq",
+      "timestamp": "2026-07-18T15:55:54.815Z",
+      "type": "debug",
+      "message": "[STEP_2] Image URL successfully returned from Wikimedia Commons: https://upload.wikimedia.org/wikipedia/commons/a/a8/The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg",
+      "details": ""
+    },
+    {
+      "id": "log-1784390154805-47050",
+      "timestamp": "2026-07-18T15:55:54.805Z",
+      "type": "debug",
+      "message": "[STEP_1] Wikipedia Response body received (length 323): {\"batchcomplete\":\"\",\"query\":{\"pages\":{\"277706\":{\"pageid\":277706,\"ns\":0,\"title\":\"N. Chandrababu Naidu\",\"thumbnail\":{\"source\":\"https://upload.wikimedia.org/wikipedia/commons/a/a8/The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg\",\"width\":473,\"height\":634},\"pageimage\":\"The_portrait_of_CM_Shri_Nara_Cha",
+      "details": ""
+    },
+    {
+      "id": "log-1784390154796-yq76t",
+      "timestamp": "2026-07-18T15:55:54.796Z",
+      "type": "debug",
+      "message": "[STEP_1] Wikipedia Response status code: 200",
+      "details": ""
+    },
+    {
+      "id": "log-1784390154499-iow3e",
+      "timestamp": "2026-07-18T15:55:54.499Z",
+      "type": "debug",
+      "message": "[STEP_1] Searching Wikimedia Commons for N. Chandrababu Naidu...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390154490-kndit",
+      "timestamp": "2026-07-18T15:55:54.490Z",
+      "type": "debug",
+      "message": "[INIT] Starting complete image fetching pipeline debug for N. Chandrababu Naidu",
+      "details": ""
+    },
+    {
+      "id": "log-1784390122682-cqsin",
+      "timestamp": "2026-07-18T15:55:22.682Z",
+      "type": "debug_failed",
+      "message": "Pipeline execution failed: Supabase Storage upload failed: Invalid Compact JWS (details: {\"name\":\"StorageApiError\",\"message\":\"Invalid Compact JWS\",\"status\":400,\"statusCode\":\"403\"})",
+      "details": ""
+    },
+    {
+      "id": "log-1784390122381-1sjm1",
+      "timestamp": "2026-07-18T15:55:22.381Z",
+      "type": "debug",
+      "message": "[STEP_4] Uploading binary buffer to \"leaders\" storage bucket under pathway \"profile/n-chandrababu-naidu.jpg\"...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390122368-autfs",
+      "timestamp": "2026-07-18T15:55:22.368Z",
+      "type": "debug",
+      "message": "[STEP_4] Supabase URL: https://wwuwzzeuzbgnbcvphdzp.supabase.co, Key: FOUND (masked)",
+      "details": ""
+    },
+    {
+      "id": "log-1784390122360-5evcc",
+      "timestamp": "2026-07-18T15:55:22.360Z",
+      "type": "debug",
+      "message": "[STEP_4] Initializing Supabase client connection to upload asset...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390122347-t33mm",
+      "timestamp": "2026-07-18T15:55:22.347Z",
+      "type": "debug",
+      "message": "[STEP_3] Image downloaded successfully. Buffer size: 132100 bytes.",
+      "details": ""
+    },
+    {
+      "id": "log-1784390122311-itood",
+      "timestamp": "2026-07-18T15:55:22.311Z",
+      "type": "debug",
+      "message": "[STEP_3] Downloading image into binary buffer...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390122303-06yk8",
+      "timestamp": "2026-07-18T15:55:22.303Z",
+      "type": "debug",
+      "message": "[STEP_2] Image URL successfully returned from Wikimedia Commons: https://upload.wikimedia.org/wikipedia/commons/a/a8/The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg",
+      "details": ""
+    },
+    {
+      "id": "log-1784390122294-f0ebm",
+      "timestamp": "2026-07-18T15:55:22.294Z",
+      "type": "debug",
+      "message": "[STEP_1] Wikipedia Response body received (length 323): {\"batchcomplete\":\"\",\"query\":{\"pages\":{\"277706\":{\"pageid\":277706,\"ns\":0,\"title\":\"N. Chandrababu Naidu\",\"thumbnail\":{\"source\":\"https://upload.wikimedia.org/wikipedia/commons/a/a8/The_portrait_of_CM_Shri_Nara_Chandrababu_Naidu.jpg\",\"width\":473,\"height\":634},\"pageimage\":\"The_portrait_of_CM_Shri_Nara_Cha",
+      "details": ""
+    },
+    {
+      "id": "log-1784390122286-5ppub",
+      "timestamp": "2026-07-18T15:55:22.286Z",
+      "type": "debug",
+      "message": "[STEP_1] Wikipedia Response status code: 200",
+      "details": ""
+    },
+    {
+      "id": "log-1784390121993-8ji7g",
+      "timestamp": "2026-07-18T15:55:21.993Z",
+      "type": "debug",
+      "message": "[STEP_1] Searching Wikimedia Commons for N. Chandrababu Naidu...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390121983-3q6x0",
+      "timestamp": "2026-07-18T15:55:21.983Z",
+      "type": "debug",
+      "message": "[INIT] Starting complete image fetching pipeline debug for N. Chandrababu Naidu",
+      "details": ""
+    },
+    {
+      "id": "log-1784390060303-rpa2h",
+      "timestamp": "2026-07-18T15:54:20.303Z",
+      "type": "debug_failed",
+      "message": "Pipeline execution failed: No image was returned from Wikimedia Commons search query.",
+      "details": ""
+    },
+    {
+      "id": "log-1784390060294-499b1",
+      "timestamp": "2026-07-18T15:54:20.294Z",
+      "type": "debug",
+      "message": "[STEP_1] Wikipedia JSON Parse Error: Unexpected token '<', \"<!DOCTYPE \"... is not valid JSON",
+      "details": ""
+    },
+    {
+      "id": "log-1784390060286-grc4j",
+      "timestamp": "2026-07-18T15:54:20.286Z",
+      "type": "debug",
+      "message": "[STEP_1] Wikipedia Response body received (length 2057): <!DOCTYPE html>\n<html lang=\"en\">\n<meta charset=\"utf-8\">\n<title>Wikimedia Error</title>\n<style>\n* { margin: 0; padding: 0; }\nbody { background: #fff; font: 15px/1.6 sans-serif; color: #333; }\n.content { margin: 7% auto 0; padding: 2em 1em 1em; max-width: 640px; display: flex; flex-direction: row; fle",
+      "details": ""
+    },
+    {
+      "id": "log-1784390060276-dnpi0",
+      "timestamp": "2026-07-18T15:54:20.276Z",
+      "type": "debug",
+      "message": "[STEP_1] Wikipedia Response status code: 429",
+      "details": ""
+    },
+    {
+      "id": "log-1784390060245-8g58i",
+      "timestamp": "2026-07-18T15:54:20.245Z",
+      "type": "debug",
+      "message": "[STEP_1] Searching Wikimedia Commons for N. Chandrababu Naidu...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390060236-2rnud",
+      "timestamp": "2026-07-18T15:54:20.237Z",
+      "type": "debug",
+      "message": "[INIT] Starting complete image fetching pipeline debug for N. Chandrababu Naidu",
+      "details": ""
+    },
+    {
+      "id": "log-1784390027736-jyk3m",
+      "timestamp": "2026-07-18T15:53:47.736Z",
+      "type": "debug_failed",
+      "message": "Pipeline execution failed: No image was returned from Wikimedia Commons search query.",
+      "details": ""
+    },
+    {
+      "id": "log-1784390027700-tphg4",
+      "timestamp": "2026-07-18T15:53:47.700Z",
+      "type": "debug",
+      "message": "[STEP_1] Searching Wikimedia Commons for N. Chandrababu Naidu...",
+      "details": ""
+    },
+    {
+      "id": "log-1784390027692-7xjc2",
+      "timestamp": "2026-07-18T15:53:47.692Z",
+      "type": "debug",
+      "message": "[INIT] Starting complete image fetching pipeline debug for N. Chandrababu Naidu",
+      "details": ""
+    },
+    {
+      "id": "log-1784389971471-n2lq6",
+      "timestamp": "2026-07-18T15:52:51.471Z",
+      "type": "debug_failed",
+      "message": "Pipeline execution failed: No image was returned from Wikimedia Commons search query.",
+      "details": ""
+    },
+    {
+      "id": "log-1784389971432-9oc1r",
+      "timestamp": "2026-07-18T15:52:51.432Z",
+      "type": "debug",
+      "message": "[STEP_1] Searching Wikimedia Commons for N. Chandrababu Naidu...",
+      "details": ""
+    },
+    {
+      "id": "log-1784389971424-i5wsv",
+      "timestamp": "2026-07-18T15:52:51.424Z",
+      "type": "debug",
+      "message": "[INIT] Starting complete image fetching pipeline debug for N. Chandrababu Naidu",
+      "details": ""
+    },
+    {
+      "id": "log-initial-1",
+      "timestamp": "2026-07-18T14:43:01.298Z",
+      "type": "deployment",
+      "message": "System initialization successful. Production environment ready.",
+      "details": "Verified Supabase backend connectivity policies and Vercel edge deployment pathways."
+    }
   ]
 }

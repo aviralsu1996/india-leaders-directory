@@ -311,6 +311,12 @@ export default function BulkImport({ onImportComplete }: BulkImportProps) {
     setProgress(100);
     setRecords([]); // Clear preview
     onImportComplete(); // Refresh parent listings
+
+    if (successCount > 0) {
+      dbService.triggerGitHubCommit(`Admin bulk imported ${successCount} leader profiles`).then(() => {
+        dbService.triggerVercelDeploy();
+      });
+    }
   };
 
   // Download exportable Error / Diagnostic Report CSV
