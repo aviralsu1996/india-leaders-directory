@@ -26,26 +26,18 @@ export default function DirectoryHome({ onSelectLeader, onNavigateTo }: Director
 
   // Load all leaders on mount to support dynamic high-precision intelligence calculation
   useEffect(() => {
-<<<<<<< HEAD
-    async function loadFeatured() {
+    async function loadLeaders() {
       setError(null);
       try {
         setLoading(true);
-        const data = await dbService.getLeaders({ featured: true });
-        setLeaders(data || []);
-=======
-    async function loadLeaders() {
-      try {
-        setLoading(true);
         const data = await dbService.getLeaders();
-        setAllLeaders(data);
+        setAllLeaders(data || []);
         // Extract featured leaders for display
-        const featured = data.filter(l => l.featured && l.status === 'Published');
-        setLeaders(featured.length > 0 ? featured : data.filter(l => l.status === 'Published').slice(0, 3));
->>>>>>> origin/main
+        const featured = (data || []).filter(l => l.featured && l.status === 'Published');
+        setLeaders(featured.length > 0 ? featured : (data || []).filter(l => l.status === 'Published').slice(0, 3));
       } catch (err) {
-        console.error('Failed to load featured leaders:', err);
-        setError('Failed to load featured leaders.');
+        console.error('Failed to load leaders:', err);
+        setError('Failed to load leaders.');
       } finally {
         setLoading(false);
       }
