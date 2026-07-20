@@ -156,3 +156,78 @@ CREATE POLICY "Allow editors to delete leader media"
     bucket_id = 'leaders' AND 
     (auth.jwt() ->> 'role' IN ('Editor', 'Admin'))
   );
+
+
+-- ====================================================================
+-- NEWS MODULE TABLE & RLS POLICIES
+-- ====================================================================
+
+CREATE TABLE IF NOT EXISTS public.news (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  leader_slug VARCHAR(255) NOT NULL,
+  title TEXT NOT NULL,
+  summary TEXT,
+  content TEXT,
+  source VARCHAR(255),
+  source_url TEXT,
+  image_url TEXT,
+  category VARCHAR(100),
+  published_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()),
+  is_pinned BOOLEAN DEFAULT FALSE NOT NULL,
+  is_featured BOOLEAN DEFAULT FALSE NOT NULL,
+  status VARCHAR(50) DEFAULT 'Approved' NOT NULL CHECK (status IN ('Pending', 'Approved', 'Rejected')),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
+);
+
+-- Indexing for optimized news retrieval
+CREATE INDEX IF NOT EXISTS idx_news_leader_slug ON public.news (leader_slug);
+CREATE INDEX IF NOT EXISTS idx_news_published_at ON public.news (published_at);
+CREATE INDEX IF NOT EXISTS idx_news_status ON public.news (status);
+CREATE INDEX IF NOT EXISTS idx_news_is_pinned ON public.news (is_pinned);
+CREATE INDEX IF NOT EXISTS idx_news_is_featured ON public.news (is_featured);
+
+-- Enable RLS for news
+ALTER TABLE public.news ENABLE ROW LEVEL SECURITY;
+
+-- Select policy: Anyone can read Approved news
+CREATE POLICY "Allow public read access to Approved news"
+  ON public.news
+  FOR SELECT
+  USING (status = 'Approved');
+
+-- Allow authenticated editors/admins to read all news (including Pending/Rejected)
+CREATE POLICY "Allow staff to read all news"
+  ON public.news
+  FOR SELECT
+  TO authenticated
+  USING (TRUE);
+
+-- Write policies: Editors and Admins can insert, update, and delete news
+CREATE POLICY "Allow Editors to insert news"
+  ON public.news
+  FOR INSERT
+  TO authenticated
+  WITH CHECK (
+    auth.jwt() ->> 'role' IN ('Editor', 'Admin')
+  );
+
+CREATE POLICY "Allow Editors to update news"
+  ON public.news
+  FOR UPDATE
+  TO authenticated
+  USING (auth.jwt() ->> 'role' IN ('Editor', 'Admin'))
+  WITH CHECK (auth.jwt() ->> 'role' IN ('Editor', 'Admin'));
+
+CREATE POLICY "Allow Admins to delete news"
+  ON public.news
+  FOR DELETE
+  TO authenticated
+  USING (auth.jwt() ->> 'role' = 'Admin');
+
+-- Trigger to auto-update updated_at on public.news
+CREATE TRIGGER update_news_modtime
+  BEFORE UPDATE ON public.news
+  FOR EACH ROW
+  EXECUTE PROCEDURE update_modified_column();
+

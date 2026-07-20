@@ -4,6 +4,7 @@ import { Search, Filter, MapPin, Award, Users, Shield, RefreshCw, ChevronLeft, C
 import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
 import { getDirectImageUrl } from '../KnowYourMinister';
+import { LeaderAvatar, LeaderCover } from './GovtDesignSystem';
 
 interface SearchPageProps {
   initialFilters?: {
@@ -17,7 +18,11 @@ interface SearchPageProps {
 export default function SearchPage({ initialFilters, onSelectLeader }: SearchPageProps) {
   const [leaders, setLeaders] = useState<SupabaseLeader[]>([]);
   const [loading, setLoading] = useState(true);
+<<<<<<< HEAD
   const [error, setError] = useState<string | null>(null);
+=======
+  const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | null>(null);
+>>>>>>> origin/main
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState(initialFilters?.query || '');
@@ -30,22 +35,146 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 18;
 
+  // Natural Language Parser for AI Search
+  const parseNaturalLanguageQuery = (query: string) => {
+    const normalized = query.toLowerCase().trim();
+    if (!normalized) return null;
+
+    const parsed: {
+      category?: string;
+      state?: string;
+      party?: string;
+      gender?: string;
+      keyword?: string;
+    } = {};
+
+    // Detect States
+    const statesList = [
+      'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 
+      'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 
+      'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 
+      'Uttar Pradesh', 'Uttarakhand', 'West Bengal'
+    ];
+    for (const st of statesList) {
+      if (normalized.includes(st.toLowerCase())) {
+        parsed.state = st;
+        break;
+      }
+    }
+
+    // Detect Parties
+    const partiesList = [
+      { name: 'BJP', terms: ['bjp', 'bharatiya janata'] },
+      { name: 'INC', terms: ['congress', 'inc', 'indian national congress'] },
+      { name: 'TMC', terms: ['trinamool', 'tmc'] },
+      { name: 'AAP', terms: ['aap', 'aam aadmi'] },
+      { name: 'SP', terms: ['samajwadi', 'sp'] },
+      { name: 'DMK', terms: ['dmk', 'dravida munnetra'] }
+    ];
+    for (const p of partiesList) {
+      if (p.terms.some(t => normalized.includes(t))) {
+        parsed.party = p.name;
+        break;
+      }
+    }
+
+    // Detect Categories
+    if (normalized.includes('chief minister') || normalized.includes('cm')) {
+      parsed.category = 'Chief Minister';
+    } else if (normalized.includes('prime minister') || normalized.includes('pm')) {
+      parsed.category = 'Prime Minister';
+    } else if (normalized.includes('cabinet minister') || normalized.includes('cabinet ministers')) {
+      parsed.category = 'Cabinet Minister';
+    } else if (normalized.includes('deputy chief minister') || normalized.includes('deputy cm')) {
+      parsed.category = 'Deputy Chief Minister';
+    } else if (normalized.includes('governor') || normalized.includes('governors')) {
+      parsed.category = 'Governor';
+    } else if (normalized.includes('mp') || normalized.includes('mps') || normalized.includes('member of parliament')) {
+      if (normalized.includes('rajya sabha')) {
+        parsed.category = 'Rajya Sabha MP';
+      } else {
+        parsed.category = 'Lok Sabha MP';
+      }
+    }
+
+    // Detect Gender
+    if (normalized.includes('women') || normalized.includes('woman') || normalized.includes('female') || normalized.includes('lady') || normalized.includes('ladies')) {
+      parsed.gender = 'Female';
+    } else if (normalized.includes('men') || normalized.includes('man') || normalized.includes('male') || normalized.includes('gentleman')) {
+      parsed.gender = 'Male';
+    }
+
+    // Keyword parsing
+    let keywordCleaned = normalized;
+    if (parsed.state) keywordCleaned = keywordCleaned.replace(parsed.state.toLowerCase(), '');
+    if (parsed.category) keywordCleaned = keywordCleaned.replace(parsed.category.toLowerCase(), '');
+    if (parsed.party) keywordCleaned = keywordCleaned.replace(parsed.party.toLowerCase(), '');
+    if (parsed.gender) {
+      keywordCleaned = keywordCleaned.replace('women', '').replace('woman', '').replace('female', '').replace('lady', '').replace('ladies', '');
+    }
+    keywordCleaned = keywordCleaned
+      .replace(/\bfrom\b/g, '')
+      .replace(/\bof\b/g, '')
+      .replace(/\bin\b/g, '')
+      .replace(/\belected after\b/g, '')
+      .replace(/\belected\b/g, '')
+      .replace(/\bminister\b/g, '')
+      .replace(/\bministers\b/g, '')
+      .replace(/\bwho is\b/g, '')
+      .replace(/\bshow me\b/g, '')
+      .trim();
+
+    if (keywordCleaned.length > 2) {
+      parsed.keyword = keywordCleaned;
+    }
+
+    return parsed;
+  };
+
   // Load and apply filters
   const loadFilteredLeaders = async () => {
     setError(null);
     try {
       setLoading(true);
+      
+      // Parse query for natural language elements
+      const nlp = parseNaturalLanguageQuery(searchQuery);
+      
+      const queryCategory = nlp?.category || selectedCategory;
+      const queryState = nlp?.state || selectedState;
+      const queryParty = nlp?.party || selectedParty;
+      const querySearch = nlp?.keyword || (nlp ? '' : searchQuery);
+
+      // Display AI interpretation explanation
+      if (nlp && (nlp.category || nlp.state || nlp.party || nlp.gender || nlp.keyword)) {
+        const parts: string[] = [];
+        if (nlp.category) parts.push(`Category: "${nlp.category}"`);
+        if (nlp.state) parts.push(`State: "${nlp.state}"`);
+        if (nlp.party) parts.push(`Party: "${nlp.party}"`);
+        if (nlp.gender) parts.push(`Gender: "${nlp.gender}"`);
+        if (nlp.keyword) parts.push(`Topic Search: "${nlp.keyword}"`);
+        setAiSearchInterpretation(`🔍 AI Semantic Parser matched parameters: ${parts.join(', ')}`);
+      } else {
+        setAiSearchInterpretation(null);
+      }
+
       const filters: any = {
-        category: selectedCategory,
-        state: selectedState,
-        party: selectedParty,
-        search: searchQuery
+        category: queryCategory,
+        state: queryState,
+        party: queryParty,
+        search: querySearch
       };
       if (selectedFeatured === 'yes') {
         filters.featured = true;
       }
       
-      const data = await dbService.getLeaders(filters);
+      let data = await dbService.getLeaders(filters);
+      
+      // Secondary client-side filters for finer search like Gender
+      if (nlp?.gender) {
+        data = data.filter(l => (l.gender || 'Male').toLowerCase() === nlp.gender?.toLowerCase());
+      }
+
       // Public directory page should only view Published leaders
       const published = (data || []).filter(l => l.status === 'Published');
       setLeaders(published);
@@ -228,6 +357,13 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
             </button>
           </div>
         </div>
+
+        {aiSearchInterpretation && (
+          <div className="p-3 bg-emerald-50/40 dark:bg-emerald-950/20 border border-emerald-150 dark:border-emerald-850/60 rounded-xl text-[11px] font-semibold text-emerald-800 dark:text-emerald-400 flex items-center gap-2 animate-fade-in">
+            <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full shrink-0 animate-pulse" />
+            <span className="font-sans">{aiSearchInterpretation}</span>
+          </div>
+        )}
       </section>
 
       {/* 3. SEARCH RESULTS LISTING */}
@@ -261,14 +397,10 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
                 className="bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-900 rounded-2xl overflow-hidden shadow-sm flex flex-col"
               >
                 <div className="h-32 bg-slate-50 relative overflow-hidden">
-                  <img
-                    src={getDirectImageUrl(leader.cover_image) || 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500'}
-                    alt={leader.name}
-                    referrerPolicy="no-referrer"
+                  <LeaderCover
+                    coverImage={leader.cover_image}
+                    name={leader.name}
                     className="w-full h-full object-cover filter brightness-75"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500';
-                    }}
                   />
                   <span className="absolute top-3 left-3 px-2 py-0.5 bg-emerald-600 text-white font-bold text-[8px] rounded uppercase font-mono tracking-wider">
                     {leader.party}
@@ -278,14 +410,10 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
                 <div className="px-5 pb-5 relative -mt-8 flex-1 flex flex-col justify-between">
                   <div className="space-y-3">
                     <div className="w-14 h-14 rounded-xl overflow-hidden bg-slate-200 border-2 border-white dark:border-slate-950 shadow-md">
-                      <img
-                        src={getDirectImageUrl(leader.image)}
-                        alt={leader.name}
-                        referrerPolicy="no-referrer"
+                      <LeaderAvatar
+                        image={leader.image}
+                        name={leader.name}
                         className="w-full h-full object-cover object-top"
-                        onError={(e) => {
-                          (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
-                        }}
                       />
                     </div>
 
@@ -308,7 +436,7 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
                       <span className="truncate">{leader.constituency}</span>
                     </div>
                     <button
-                      onClick={() => onSelectLeader(leader.slug || leader.id)}
+                      onClick={() => onSelectLeader(leader.slug)}
                       className="px-3 py-1.5 bg-slate-50 hover:bg-slate-100 dark:bg-slate-900 hover:text-slate-900 dark:text-emerald-400 text-xs font-bold rounded-lg transition cursor-pointer"
                     >
                       View Dossier

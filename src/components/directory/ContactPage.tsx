@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, MapPin, Send, CheckCircle, Sparkles, AlertCircle } from 'lucide-react';
+import { dbService } from '../../lib/supabaseClient';
 
 export default function ContactPage() {
   const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
@@ -18,25 +19,19 @@ export default function ContactPage() {
     setErrorMsg(null);
 
     try {
-      const response = await fetch('/api/contacts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          message: formData.message,
-          category: 'General Inquiry & Platform Support'
-        })
+      const res = await dbService.submitContact({
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        category: 'General Inquiry & Platform Support'
       });
 
-      const data = await response.json();
-
-      if (data.success) {
+      if (res.success) {
         setSubmitted(true);
         setFormData({ name: '', email: '', subject: '', message: '' });
       } else {
-        setErrorMsg(data.message || 'The server encountered an error processing your query.');
+        setErrorMsg(res.message || 'The server encountered an error processing your query.');
       }
     } catch (err) {
       setErrorMsg('Connection failed. Please ensure the server is fully compiled and active.');
