@@ -17,6 +17,7 @@ interface SearchPageProps {
 export default function SearchPage({ initialFilters, onSelectLeader }: SearchPageProps) {
   const [leaders, setLeaders] = useState<SupabaseLeader[]>([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState(initialFilters?.query || '');
@@ -31,6 +32,7 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
 
   // Load and apply filters
   const loadFilteredLeaders = async () => {
+    setError(null);
     try {
       setLoading(true);
       const filters: any = {
@@ -45,11 +47,13 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
       
       const data = await dbService.getLeaders(filters);
       // Public directory page should only view Published leaders
-      const published = data.filter(l => l.status === 'Published');
+      const published = (data || []).filter(l => l.status === 'Published');
       setLeaders(published);
       setCurrentPage(1); // Reset page to 1 when filters change
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to load search list:', err);
+      setError('Failed to load leader data.');
+      setLeaders([]);
     } finally {
       setLoading(false);
     }
@@ -231,9 +235,13 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
         <div className="py-24 text-center text-slate-400 font-mono text-xs">
           Loading filtered results...
         </div>
+      ) : error ? (
+        <div className="bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-900 p-16 rounded-2xl shadow-sm text-center space-y-3">
+          <p className="text-slate-400 text-sm font-medium">{error}</p>
+        </div>
       ) : leaders.length === 0 ? (
         <div className="bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-900 p-16 rounded-2xl shadow-sm text-center space-y-3">
-          <p className="text-slate-400 text-sm font-medium">No legislative profiles match your selected search criteria.</p>
+          <p className="text-slate-400 text-sm font-medium">No leaders found.</p>
           <button
             onClick={handleClearFilters}
             className="px-4 py-2 bg-emerald-600 text-white font-bold text-xs rounded-lg shadow cursor-pointer hover:bg-emerald-500"

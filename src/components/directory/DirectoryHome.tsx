@@ -21,16 +21,19 @@ export default function DirectoryHome({ onSelectLeader, onNavigateTo }: Director
   const [leaders, setLeaders] = useState<SupabaseLeader[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Load featured leaders on mount
   useEffect(() => {
     async function loadFeatured() {
+      setError(null);
       try {
         setLoading(true);
         const data = await dbService.getLeaders({ featured: true });
-        setLeaders(data);
+        setLeaders(data || []);
       } catch (err) {
         console.error('Failed to load featured leaders:', err);
+        setError('Failed to load featured leaders.');
       } finally {
         setLoading(false);
       }
@@ -179,6 +182,14 @@ export default function DirectoryHome({ onSelectLeader, onNavigateTo }: Director
         {loading ? (
           <div className="py-12 text-center text-slate-400 text-xs font-mono">
             Loading directory profiles...
+          </div>
+        ) : error ? (
+          <div className="py-12 text-center text-slate-400 text-xs font-mono">
+            {error}
+          </div>
+        ) : leaders.length === 0 ? (
+          <div className="py-12 text-center text-slate-400 text-xs font-mono">
+            No leaders found.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

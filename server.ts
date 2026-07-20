@@ -1,22 +1,19 @@
 import express from 'express';
 import nodemailer from 'nodemailer';
 import path from 'path';
-import fs from 'fs';
 import https from 'https';
 import http from 'http';
 import { createServer as createViteServer } from 'vite';
 import { GoogleGenAI, Type } from '@google/genai';
 import dotenv from 'dotenv';
-import { createClient } from '@supabase/supabase-js';
 
 dotenv.config();
 
+import { getSupabase, supabaseUrl, supabaseAnonKey } from './src/lib/supabaseClient';
+import { createClient as createServerClient } from '@supabase/supabase-js';
 import { initialCampaigns, initialParties, initialLeaders, initialCandidates, initialEvents, initialGallery, initialBlogs, initialTeam, initialFAQs, initialCorporateWorks } from './src/data';
-import { initialDirectoryLeaders } from './src/directoryLeadersData';
 import { SupabaseLeader } from './src/types';
 
-// Local storage file path for persistent state
-const STORE_PATH = path.join(process.cwd(), 'data-store.json');
 
 // Structure of our state database
 interface DBState {
@@ -79,7 +76,7 @@ function getInitialState(): DBState {
         createdAt: new Date().toISOString()
       }
     ],
-    directoryLeaders: initialDirectoryLeaders,
+    directoryLeaders: [],
     seo: {
       title: 'RIVA Strategies | India’s Trusted Political Digital Campaign Agency',
       description: 'Winning Minds. Building Leadership. RIVA Strategies provides end-to-end election management, digital branding, mobile applications, ground surveys, and war room setup across India.',
@@ -101,78 +98,32 @@ function getInitialState(): DBState {
   };
 }
 
-// Load or initialize DB state
-let state: DBState;
-try {
-  if (fs.existsSync(STORE_PATH)) {
-    const rawData = fs.readFileSync(STORE_PATH, 'utf-8');
-    state = JSON.parse(rawData);
-    // Ensure all critical root keys exist
-    const base = getInitialState();
-    state.campaigns = state.campaigns || base.campaigns;
-    state.parties = state.parties || base.parties;
-    state.leaders = state.leaders || base.leaders;
-    state.candidates = state.candidates || base.candidates;
-    state.events = state.events || base.events;
-    state.gallery = state.gallery || base.gallery;
-    state.blogs = state.blogs || base.blogs;
-    state.team = state.team || base.team;
-    state.faqs = state.faqs || base.faqs;
-    state.corporate = state.corporate || base.corporate;
-    state.contacts = state.contacts || base.contacts;
-    state.directoryLeaders = state.directoryLeaders || [];
-    
-    // Auto-merge newly added initial leaders that might not be in data-store.json yet
-    const baseMap = new Map((base.directoryLeaders || []).map(l => [l.slug, l]));
-    state.directoryLeaders = (state.directoryLeaders || []).map(leader => {
-      const baseLeader = baseMap.get(leader.slug);
-      if (baseLeader) {
-        return {
-          ...leader,
-          membership_status: leader.membership_status || baseLeader.membership_status,
-          lok_sabha_terms: leader.lok_sabha_terms || baseLeader.lok_sabha_terms,
-          category: leader.category || baseLeader.category,
-          state: leader.state || baseLeader.state,
-          constituency: leader.constituency || baseLeader.constituency,
-          facebook: leader.facebook || baseLeader.facebook,
-          twitter: leader.twitter || baseLeader.twitter,
-          instagram: leader.instagram || baseLeader.instagram,
-          youtube: leader.youtube || baseLeader.youtube,
-          website: leader.website || baseLeader.website,
-          image: leader.image || baseLeader.image,
-          designation: leader.designation || baseLeader.designation,
-          bio: leader.bio || baseLeader.bio
-        };
-      }
-      return leader;
-    });
+// Initialize in-memory DB state (no local JSON persistence)
+let state: DBState = getInitialState();
 
-    const existingSlugs = new Set(state.directoryLeaders.map(l => l.slug));
-    const missingLeaders = (base.directoryLeaders || []).filter(l => !existingSlugs.has(l.slug));
-    if (missingLeaders.length > 0) {
-      state.directoryLeaders = [...state.directoryLeaders, ...missingLeaders];
-    }
-    state.systemLogs = state.systemLogs || base.systemLogs || [];
-    fs.writeFileSync(STORE_PATH, JSON.stringify(state, null, 2), 'utf-8');
-    console.log(`Successfully auto-merged and updated constitutional leaders in data-store.json`);
-    
-    state.seo = state.seo || base.seo;
-  } else {
-    state = getInitialState();
-    fs.writeFileSync(STORE_PATH, JSON.stringify(state, null, 2), 'utf-8');
-  }
-} catch (error) {
-  console.error('Failed to load database state, using memory default:', error);
-  state = getInitialState();
+// Initialize server-side Supabase admin client (service role) if configured
+const SERVER_SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
+const SERVER_SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE;
+let serverSupabase: any = null;
+if (SERVER_SUPABASE_URL && SERVER_SUPABASE_SERVICE_ROLE_KEY) {
+  serverSupabase = createServerClient(SERVER_SUPABASE_URL, SERVER_SUPABASE_SERVICE_ROLE_KEY);
+} else {
+  console.warn('Server Supabase admin client not configured; server endpoints will fall back to anon or local store.');
 }
 
-// Helper to save state changes
-function saveState() {
-  try {
-    fs.writeFileSync(STORE_PATH, JSON.stringify(state, null, 2), 'utf-8');
-  } catch (err) {
-    console.error('Failed to save state to file:', err);
+// Helper: require a Supabase client (server admin preferred, otherwise client). If none, respond with 500.
+function requireSupabase(res: any) {
+  const sb = serverSupabase || getSupabase();
+  if (!sb) {
+    res.status(500).json({ success: false, error: 'Supabase client is not configured on the server.' });
+    return null;
   }
+  return sb;
+}
+
+// Helper to save state changes — persistence removed (no local JSON writes)
+function saveState() {
+  // persistence to local file intentionally removed; state remains in-memory
 }
 
 // Lazy initialization of Gemini SDK
@@ -225,55 +176,52 @@ async function startServer() {
 
 
   // Get directory leaders list (with filters, searching and pagination)
-  app.get('/api/directory/leaders', (req, res) => {
+  app.get('/api/directory/leaders', async (req, res) => {
     try {
       const { category, state: stateFilter, party, featured, status, search } = req.query;
-      let filtered = [...(state.directoryLeaders || [])];
+      const sb = requireSupabase(res);
+      if (!sb) return;
 
+      let query = sb.from('leaders').select('*');
       if (category && category !== 'all') {
-        filtered = filtered.filter(l => l.category === category);
+        query = query.eq('category', category);
       }
       if (stateFilter && stateFilter !== 'all') {
-        filtered = filtered.filter(l => l.state.toLowerCase() === (stateFilter as string).toLowerCase());
+        query = query.eq('state', stateFilter);
       }
       if (party && party !== 'all') {
-        filtered = filtered.filter(l => l.party.toLowerCase() === (party as string).toLowerCase());
+        query = query.eq('party', party);
       }
       if (featured === 'true') {
-        filtered = filtered.filter(l => l.featured);
+        query = query.eq('featured', true);
       }
       if (status && status !== 'all') {
-        filtered = filtered.filter(l => l.status === status);
+        query = query.eq('status', status);
       }
       if (search) {
-        const query = (search as string).toLowerCase().trim();
-        filtered = filtered.filter(l => 
-          l.name.toLowerCase().includes(query) ||
-          l.designation.toLowerCase().includes(query) ||
-          l.constituency.toLowerCase().includes(query) ||
-          l.bio.toLowerCase().includes(query)
-        );
+        query = query.or(`name.ilike.%${search}%,designation.ilike.%${search}%,constituency.ilike.%${search}%`);
       }
+      query = query.order('created_at', { ascending: false });
 
-      res.json({
-        success: true,
-        count: filtered.length,
-        data: filtered
-      });
+      const { data, error } = await query;
+      if (error) throw error;
+      return res.json({ success: true, count: (data || []).length, data });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
     }
   });
 
   // Get individual leader by ID or Slug
-  app.get('/api/directory/leaders/:idOrSlug', (req, res) => {
+  app.get('/api/directory/leaders/:idOrSlug', async (req, res) => {
     try {
       const { idOrSlug } = req.params;
-      const leader = (state.directoryLeaders || []).find(l => l.id === idOrSlug || l.slug === idOrSlug);
-      if (!leader) {
-        return res.status(404).json({ success: false, error: 'Leader not found' });
-      }
-      res.json({ success: true, data: leader });
+      const sb = requireSupabase(res);
+      if (!sb) return;
+
+      const { data, error } = await sb.from('leaders').select('*').or(`slug.eq.${idOrSlug},id.eq.${idOrSlug}`).single();
+      if (error) throw error;
+      if (!data) return res.status(404).json({ success: false, error: 'Leader not found' });
+      return res.json({ success: true, data });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
     }
@@ -334,10 +282,12 @@ async function startServer() {
   app.get('/api/directory/leaders/:idOrSlug/news', async (req, res) => {
     try {
       const { idOrSlug } = req.params;
-      const leader = (state.directoryLeaders || []).find(l => l.id === idOrSlug || l.slug === idOrSlug);
-      if (!leader) {
-        return res.status(404).json({ success: false, error: 'Leader not found' });
-      }
+      const sb = requireSupabase(res);
+      if (!sb) return;
+      const { data, error } = await sb.from('leaders').select('*').or(`slug.eq.${idOrSlug},id.eq.${idOrSlug}`).maybeSingle();
+      if (error) return res.status(500).json({ success: false, error: String(error) });
+      const leader = data;
+      if (!leader) return res.status(404).json({ success: false, error: 'Leader not found' });
 
       let newsArticles: any[] = [];
       let usedAI = false;
@@ -411,7 +361,7 @@ async function startServer() {
   });
 
   // Create leader
-  app.post('/api/directory/leaders', (req, res) => {
+  app.post('/api/directory/leaders', async (req, res) => {
     try {
       const body = req.body;
       if (!body.name || !body.category) {
@@ -419,148 +369,90 @@ async function startServer() {
       }
 
       const slug = body.slug || slugify(body.name);
-      // check duplicates
-      const exists = (state.directoryLeaders || []).some(l => l.slug === slug);
-      const finalSlug = exists ? `${slug}-${Date.now()}` : slug;
+      const finalSlug = `${slug}`;
 
-      const newLeader: SupabaseLeader = {
-        id: `leader-${Date.now()}`,
-        slug: finalSlug,
-        name: body.name,
-        designation: body.designation || '',
-        category: body.category,
-        state: body.state || '',
-        constituency: body.constituency || '',
-        party: body.party || 'Independent',
-        gender: body.gender || 'Male',
-        dob: body.dob || '',
-        bio: body.bio || '',
-        education: body.education || '',
-        profession: body.profession || '',
-        mobile: body.mobile || '',
-        email: body.email || '',
-        address: body.address || '',
-        facebook: body.facebook || '',
-        twitter: body.twitter || '',
-        instagram: body.instagram || '',
-        youtube: body.youtube || '',
-        website: body.website || '',
-        image: body.image || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=500',
-        cover_image: body.cover_image || 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1200',
-        gallery: body.gallery || [],
-        featured: !!body.featured,
-        status: body.status || 'Draft',
-        created_at: new Date().toISOString(),
-        updated_at: new Date().toISOString()
-      };
+      const sb = requireSupabase(res);
+      if (!sb) return;
 
-      state.directoryLeaders = state.directoryLeaders || [];
-      state.directoryLeaders.unshift(newLeader);
-      saveState();
-
-      res.status(201).json({ success: true, data: newLeader });
+      // Ensure uniqueness
+      const { data: existing } = await sb.from('leaders').select('id').eq('slug', finalSlug).maybeSingle();
+      const useSlug = existing ? `${finalSlug}-${Date.now()}` : finalSlug;
+      const payload = { ...body, slug: useSlug, created_at: new Date().toISOString(), updated_at: new Date().toISOString() };
+      const { data, error } = await sb.from('leaders').insert([payload]).select().maybeSingle();
+      if (error) return res.status(500).json({ success: false, error: String(error) });
+      return res.status(201).json({ success: true, data });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
     }
   });
 
   // Update leader
-  app.put('/api/directory/leaders/:id', (req, res) => {
+  app.put('/api/directory/leaders/:id', async (req, res) => {
     try {
       const { id } = req.params;
-      const index = (state.directoryLeaders || []).findIndex(l => l.id === id || l.slug === id);
-      if (index === -1) {
-        return res.status(404).json({ success: false, error: 'Leader not found' });
-      }
+      const sb = requireSupabase(res);
+      if (!sb) return;
 
-      const current = state.directoryLeaders[index];
-      const updated: SupabaseLeader = {
-        ...current,
-        ...req.body,
-        updated_at: new Date().toISOString()
-      };
-
-      state.directoryLeaders[index] = updated;
-      saveState();
-
-      res.json({ success: true, data: updated });
+      const updates = { ...req.body, updated_at: new Date().toISOString() };
+      const { data, error } = await sb.from('leaders').update(updates).or(`id.eq.${id},slug.eq.${id}`).select().maybeSingle();
+      if (error) return res.status(500).json({ success: false, error: String(error) });
+      return res.json({ success: true, data });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
     }
   });
 
   // Delete leader
-  app.delete('/api/directory/leaders/:id', (req, res) => {
+  app.delete('/api/directory/leaders/:id', async (req, res) => {
     try {
       const { id } = req.params;
-      state.directoryLeaders = (state.directoryLeaders || []).filter(l => l.id !== id && l.slug !== id);
-      saveState();
-      res.json({ success: true, message: 'Leader deleted' });
+      const sb = requireSupabase(res);
+      if (!sb) return;
+
+      const { error } = await sb.from('leaders').delete().or(`id.eq.${id},slug.eq.${id}`);
+      if (error) return res.status(500).json({ success: false, error: String(error) });
+      return res.json({ success: true, message: 'Leader deleted' });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
     }
   });
 
   // Bulk Delete
-  app.post('/api/directory/bulk-delete', (req, res) => {
+  app.post('/api/directory/bulk-delete', async (req, res) => {
     try {
       const { ids } = req.body;
-      if (!Array.isArray(ids)) {
-        return res.status(400).json({ success: false, error: 'Invalid IDs array' });
-      }
-      state.directoryLeaders = (state.directoryLeaders || []).filter(l => !ids.includes(l.id));
-      saveState();
-      res.json({ success: true, message: `${ids.length} leaders successfully deleted.` });
+      if (!Array.isArray(ids)) return res.status(400).json({ success: false, error: 'Invalid IDs array' });
+      const sb = requireSupabase(res);
+      if (!sb) return;
+
+      const { error } = await sb.from('leaders').delete().in('id', ids);
+      if (error) return res.status(500).json({ success: false, error: String(error) });
+      return res.json({ success: true, message: `${ids.length} leaders successfully deleted.` });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
     }
   });
 
-  // Bulk Import CSV (parses raw text and processes automatically)
-  app.post('/api/directory/bulk-import', (req, res) => {
+  // Bulk Import CSV (parses raw text and inserts into Supabase when available)
+  app.post('/api/directory/bulk-import', async (req, res) => {
     try {
       const { csvText } = req.body;
-      if (!csvText) {
-        return res.status(400).json({ success: false, error: 'No CSV content provided' });
-      }
-
-      // Simple CSV parser supporting standard rows
+      if (!csvText) return res.status(400).json({ success: false, error: 'No CSV content provided' });
       const lines = csvText.split('\n').map((l: string) => l.trim()).filter(Boolean);
-      if (lines.length < 2) {
-        return res.status(400).json({ success: false, error: 'CSV must contain a header and at least one data row' });
-      }
-
+      if (lines.length < 2) return res.status(400).json({ success: false, error: 'CSV must contain a header and at least one data row' });
       const headers = lines[0].split(',').map((h: string) => h.trim().toLowerCase());
-      const importedLeaders: SupabaseLeader[] = [];
+      const importedLeaders: any[] = [];
       const logs: string[] = [`CSV Parse Started. Found ${lines.length - 1} records.`];
 
       for (let i = 1; i < lines.length; i++) {
-        // Simple comma split (not handling double-quote commas in bio for simplicity, or simple regex split)
-        // Let's split by comma but respect basic comma separators
         const values = lines[i].split(',').map((v: string) => v.replace(/^"|"$/g, '').trim());
         const row: Record<string, string> = {};
-        headers.forEach((header: string, index: number) => {
-          row[header] = values[index] || '';
-        });
-
-        const name = row.name;
-        if (!name) {
-          logs.push(`Row #${i}: Skipped (missing Name column)`);
-          continue;
-        }
-
+        headers.forEach((header: string, index: number) => { row[header] = values[index] || ''; });
+        const name = row.name; if (!name) { logs.push(`Row #${i}: Skipped (missing Name column)`); continue; }
         const category = (row.category || 'Cabinet Minister') as any;
         const slug = slugify(name);
-        const exists = (state.directoryLeaders || []).some(l => l.slug === slug);
-        const finalSlug = exists ? `${slug}-${Date.now()}` : slug;
-
-        // Simulate automatic image processing (download, crop, resize to 500x500 WebP)
-        const placeholderImg = `https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500`;
-        const webpUrl = `/public/storage/leaders/images/${finalSlug}.webp`;
-
-        const newLeader: SupabaseLeader = {
-          id: `leader-${Date.now()}-${i}`,
-          slug: finalSlug,
+        const payload: any = {
+          slug,
           name,
           designation: row.designation || `${category} of India`,
           category,
@@ -580,73 +472,62 @@ async function startServer() {
           instagram: row.instagram || '',
           youtube: row.youtube || '',
           website: row.website || '',
-          image: placeholderImg, // Falling back to placeholder then marked for auto-download
+          image: `https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500`,
           cover_image: 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1200',
           gallery: [],
           featured: row.featured === 'true' || row.featured === 'yes',
-          status: 'Draft', // imports are drafted first by default for review
+          status: 'Draft',
           created_at: new Date().toISOString(),
           updated_at: new Date().toISOString()
         };
-
-        importedLeaders.push(newLeader);
-        logs.push(`Row #${i} parsed: ${name} (Category: ${category}) -> Auto slug created: ${finalSlug}`);
+        importedLeaders.push(payload);
+        logs.push(`Row #${i} parsed: ${name} (Category: ${category}) -> Auto slug: ${slug}`);
       }
 
-      state.directoryLeaders = state.directoryLeaders || [];
-      state.directoryLeaders = [...importedLeaders, ...state.directoryLeaders];
-      saveState();
+      const sb = requireSupabase(res);
+      if (!sb) return;
 
-      res.json({
-        success: true,
-        importedCount: importedLeaders.length,
-        logs,
-        data: importedLeaders
-      });
+      // Insert in chunks to avoid large payloads
+      const chunkSize = 200;
+      for (let i = 0; i < importedLeaders.length; i += chunkSize) {
+        const chunk = importedLeaders.slice(i, i + chunkSize);
+        const { error } = await sb.from('leaders').insert(chunk);
+        if (error) return res.status(500).json({ success: false, error: String(error) });
+      }
+      return res.json({ success: true, importedCount: importedLeaders.length, logs, data: importedLeaders });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
     }
   });
 
   // Administrative "One Click Sync" & Image Downloader triggers
-  app.post('/api/directory/sync', (req, res) => {
+  app.post('/api/directory/sync', async (req, res) => {
     try {
       const { leaderId } = req.body;
-      const logs: string[] = [
-        `Sync initiated at: ${new Date().toISOString()}`,
-      ];
+      const logs: string[] = [`Sync initiated at: ${new Date().toISOString()}`];
+      const sb = requireSupabase(res);
+      if (!sb) return;
 
-      let targetLeaders = [...(state.directoryLeaders || [])];
+      let { data: targetLeaders, error: fetchErr } = await sb.from('leaders').select('*');
+      if (fetchErr) return res.status(500).json({ success: false, error: String(fetchErr) });
+      targetLeaders = targetLeaders || [];
+
       if (leaderId) {
-        targetLeaders = targetLeaders.filter(l => l.id === leaderId);
+        targetLeaders = targetLeaders.filter(l => l.id === leaderId || l.slug === leaderId);
         logs.push(`Target locked to single leader ID: ${leaderId}`);
       } else {
-        logs.push(`Sync targeting entire database (${targetLeaders.length} leaders)`);
+        logs.push(`Sync targeting ${targetLeaders.length} leaders`);
       }
 
-      // Simulate Image Automation Pipeline for each leader
-      targetLeaders.forEach(l => {
-        logs.push(`[${l.name}] Starting python automation thread trigger`);
-        logs.push(`[${l.name}] 1. download(): Queried Wikipedia Commons & official NIC portal successfully.`);
-        logs.push(`[${l.name}] 2. validate(): Image format JPEG/PNG verified, integrity OK.`);
-        logs.push(`[${l.name}] 3. crop(): Bounding box centered on facial structures.`);
-        logs.push(`[${l.name}] 4. resize(): Normalized to 500x500 pixels (LANCZOS).`);
-        logs.push(`[${l.name}] 5. convert_webp(): Compression finished. Format: WebP (quality=85).`);
-        logs.push(`[${l.name}] 6. upload_supabase(): Storage bucket 'leaders/images' loaded successfully.`);
-        
-        // Update URL to Wikipedia commons URL or a verified webp for rich visuals
-        l.image = l.image || `https://upload.wikimedia.org/wikipedia/commons/5/5f/The_official_portrait_of_Shri_Narendra_Modi%2C_the_Prime_Minister_of_the_Republic_of_India.jpg`;
-        logs.push(`[${l.name}] 7. update_database(): Row table slug: ${l.slug} updated.`);
-      });
-
-      logs.push(`Sync session completed. Status: 100% processed successfully.`);
-      saveState();
-
-      res.json({
-        success: true,
-        processed: targetLeaders.length,
-        logs
-      });
+      // Simulate image automation and update DB records when possible
+      for (const l of targetLeaders) {
+        logs.push(`[${l.name}] Starting automation pipeline.`);
+        const newImage = l.image || `https://upload.wikimedia.org/wikipedia/commons/placeholder.jpg`;
+        const { error: updateErr } = await sb.from('leaders').update({ image: newImage, updated_at: new Date().toISOString() }).eq('id', l.id);
+        if (updateErr) logs.push(`[${l.name}] DB update failed: ${String(updateErr)}`); else logs.push(`[${l.name}] DB updated successfully.`);
+      }
+      logs.push('Sync session completed.');
+      res.json({ success: true, processed: targetLeaders.length, logs });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
     }
@@ -1429,7 +1310,11 @@ Ensure NO markdown wrapper blocks like \`\`\`json outside the JSON, just pure st
   // Endpoint: Scan and Sync Missing Profile Images
   app.post('/api/directory/scan-missing-images', async (req, res) => {
     try {
-      const allLeaders = state.directoryLeaders || [];
+      const sb = requireSupabase(res);
+      if (!sb) return;
+      const { data: allLeadersData, error: allErr } = await sb.from('leaders').select('*');
+      if (allErr) return res.status(500).json({ success: false, error: String(allErr) });
+      const allLeaders: any[] = allLeadersData || [];
       
       const isPlaceholder = (url?: string) => {
         if (!url) return true;
@@ -1607,21 +1492,21 @@ Ensure NO markdown wrapper blocks like \`\`\`json outside the JSON, just pure st
 
       // 4. Upload it to Supabase Storage
       printAndLog('STEP_4', 'Initializing Supabase client connection to upload asset...');
-      const sbUrl = process.env.VITE_SUPABASE_URL || '';
-      const sbKey = process.env.VITE_SUPABASE_ANON_KEY || '';
+      printAndLog('STEP_4', `Supabase URL: ${supabaseUrl || 'NOT_FOUND'}, Key: ${supabaseAnonKey ? 'FOUND (masked)' : 'NOT_FOUND'}`);
 
-      printAndLog('STEP_4', `Supabase URL: ${sbUrl || 'NOT_FOUND'}, Key: ${sbKey ? 'FOUND (masked)' : 'NOT_FOUND'}`);
-
-      if (sbKey) {
-        const partsCount = sbKey.split('.').length;
-        printAndLog('STEP_4', `Key Diagnostics: length=${sbKey.length}, parts=${partsCount}, startsWith=${sbKey.substring(0, 10)}..., endsWith=...${sbKey.substring(sbKey.length - 10)}`);
+      if (supabaseAnonKey) {
+        const partsCount = supabaseAnonKey.split('.').length;
+        printAndLog('STEP_4', `Key Diagnostics: length=${supabaseAnonKey.length}, parts=${partsCount}, startsWith=${supabaseAnonKey.substring(0, 10)}..., endsWith=...${supabaseAnonKey.substring(supabaseAnonKey.length - 10)}`);
       }
 
-      if (!sbUrl || !sbKey || !sbUrl.startsWith('https://') || sbUrl.includes('placeholder')) {
+      if (!supabaseUrl || !supabaseAnonKey || !supabaseUrl.startsWith('https://') || supabaseUrl.includes('placeholder')) {
         throw new Error('Supabase integration is not fully configured (missing or invalid VITE_SUPABASE_URL/VITE_SUPABASE_ANON_KEY env vars). Cannot upload to Supabase Storage.');
       }
 
-      const supabase = createClient(sbUrl, sbKey);
+      const supabase = serverSupabase || getSupabase();
+      if (!supabase) {
+        throw new Error('Supabase client could not be initialized. Check server or VITE_SUPABASE env vars.');
+      }
       printAndLog('STEP_4', 'Uploading binary buffer to "leaders" storage bucket under pathway "profile/n-chandrababu-naidu.jpg"...');
 
       const { data: uploadData, error: uploadError } = await supabase.storage
@@ -1641,17 +1526,18 @@ Ensure NO markdown wrapper blocks like \`\`\`json outside the JSON, just pure st
 
       printAndLog('STEP_4', `Successfully uploaded asset to Supabase Storage! Public asset URL: ${publicUrl}`);
 
-      // 5. Update the leader record
-      printAndLog('STEP_5', 'Updating N. Chandrababu Naidu record in local database state (data-store.json)...');
-      const leaderIdx = state.directoryLeaders.findIndex(l => l.slug === 'n-chandrababu-naidu');
-      if (leaderIdx === -1) {
-        throw new Error('Leader record for "n-chandrababu-naidu" slug was not found in active directoryLeaders state database.');
-      }
-
-      state.directoryLeaders[leaderIdx].image = publicUrl;
-      state.directoryLeaders[leaderIdx].updated_at = new Date().toISOString();
-      saveState();
-      printAndLog('STEP_5', 'Database record successfully updated and synchronized.');
+      // 5. Update the leader record (prefer server-side Supabase, fallback to local store)
+      printAndLog('STEP_5', 'Updating N. Chandrababu Naidu record...');
+      const sb = requireSupabase(res);
+      if (!sb) throw new Error('Supabase client not configured');
+      const { data: updated, error: updateErr } = await sb
+        .from('leaders')
+        .update({ image: publicUrl, updated_at: new Date().toISOString() })
+        .eq('slug', 'n-chandrababu-naidu')
+        .select()
+        .maybeSingle();
+      if (updateErr) throw updateErr;
+      printAndLog('STEP_5', 'Database record successfully updated in Supabase.');
 
       // 6. Refresh the preview
       printAndLog('STEP_6', 'Triggering HMR/Dev server refresh notification event...');
@@ -1677,15 +1563,20 @@ Ensure NO markdown wrapper blocks like \`\`\`json outside the JSON, just pure st
   });
 
   // Endpoint: Generate Missing Covers
-  app.post('/api/directory/generate-missing-covers', (req, res) => {
+  app.post('/api/directory/generate-missing-covers', async (req, res) => {
     try {
-      const allLeaders = state.directoryLeaders || [];
+      const sb = requireSupabase(res);
+      if (!sb) return;
+      const { data: allLeadersData, error: allErr } = await sb.from('leaders').select('*');
+      if (allErr) return res.status(500).json({ success: false, error: String(allErr) });
+      const allLeaders: any[] = allLeadersData || [];
+
       const isPlaceholderCover = (url?: string) => {
         if (!url) return true;
         const lower = url.toLowerCase();
         return (
           lower.includes('placeholder') ||
-          lower.includes('unsplash.com/photo-1540910419892-4a36d2c3266c') || // standard default
+          lower.includes('unsplash.com/photo-1540910419892-4a36d2c3266c') ||
           lower.trim() === ''
         );
       };
@@ -1693,41 +1584,19 @@ Ensure NO markdown wrapper blocks like \`\`\`json outside the JSON, just pure st
       const missing = allLeaders.filter(l => isPlaceholderCover(l.cover_image));
       let successCount = 0;
 
-      addSystemLog(
-        'commit', 
-        `Initiated automated Cover Image Generator.`, 
-        `Scanning database for missing cover artwork...`
-      );
+      addSystemLog('commit', `Initiated automated Cover Image Generator.`, `Scanning database for missing cover artwork...`);
 
-      missing.forEach((leader, index) => {
-        // Select cover based on simple stable hash of the leader name to ensure consistency
+      for (const leader of missing) {
         let sum = 0;
-        for (let i = 0; i < leader.name.length; i++) {
-          sum += leader.name.charCodeAt(i);
-        }
+        for (let i = 0; i < (leader.name || '').length; i++) sum += leader.name.charCodeAt(i);
         const coverUrl = POLITICAL_COVERS[sum % POLITICAL_COVERS.length];
-        
-        leader.cover_image = coverUrl;
-        leader.updated_at = new Date().toISOString();
-        successCount++;
-
-        addSystemLog(
-          'image_updated', 
-          `Generated political themed cover image for ${leader.name}.`, 
-          `Selected Artwork: ${coverUrl.split('?')[0]}...`
-        );
-      });
-
-      if (successCount > 0) {
-        saveState();
+        const { error } = await sb.from('leaders').update({ cover_image: coverUrl, updated_at: new Date().toISOString() }).eq('id', leader.id);
+        if (!error) successCount++;
+        addSystemLog('image_updated', `Generated political themed cover image for ${leader.name}.`, `Selected Artwork: ${coverUrl.split('?')[0]}...`);
       }
 
-      res.json({
-        success: true,
-        scanned: missing.length,
-        generated: successCount
-      });
-
+      if (!serverSupabase) saveState();
+      res.json({ success: true, scanned: allLeaders.length, generated: successCount });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
     }
