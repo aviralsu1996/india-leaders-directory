@@ -39,7 +39,6 @@ import ContactUs from './ContactUs';
 import { getSeededReviewsList, getSeededStats } from '../lib/reviewsSeeder';
 
 export const getDirectImageUrl = (url?: string) => {
-  // Return the original URL directly. No proxying of Wikimedia/Wikipedia images.
   return url || '';
 };
 

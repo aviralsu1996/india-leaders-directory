@@ -46,100 +46,134 @@ export default function App() {
     }
   }, [isDarkMode]);
 
-  const parseSearchParams = (search: string) => {
-    const query = new URLSearchParams(search);
-    const parsed: any = {};
-    if (query.get('query')) parsed.query = query.get('query');
-    if (query.get('category')) parsed.category = query.get('category');
-    if (query.get('state')) parsed.state = query.get('state');
-    return parsed;
-  };
+  // Dynamic SEO, Sitemap, & Schema.org Graph Automation Engine
+  useEffect(() => {
+    const buildSitemapJsonLd = () => {
+      return {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "India Leaders Directory",
+        "url": window.location.origin,
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": `${window.location.origin}/search?query={search_term_string}`,
+          "query-input": "required name=search_term_string"
+        }
+      };
+    };
 
-  const parsePath = (pathname: string, search: string) => {
-    const normalized = pathname.replace(/\/+$/, '') || '/';
-    if (normalized === '/' || normalized === '') {
-      return { view: 'home', params: null, slug: '' };
-    }
-    if (normalized === '/search') {
-      return { view: 'search', params: parseSearchParams(search), slug: '' };
-    }
-    if (normalized.startsWith('/leader/')) {
-      const slug = decodeURIComponent(normalized.replace('/leader/', ''));
-      return { view: 'details', params: null, slug };
-    }
-    if (normalized === '/about') {
-      return { view: 'about', params: null, slug: '' };
-    }
-    if (normalized === '/contact') {
-      return { view: 'contact', params: null, slug: '' };
-    }
-    return { view: 'home', params: null, slug: '' };
-  };
+    let title = "India Political Leaders Directory - AI Intelligence Platform";
+    let desc = "Track cabinet portfolios, parliamentary questions, assets affidavits, and official statement logs of India's political leaders.";
+    let schemaData: any = buildSitemapJsonLd();
 
+    if (mainTab === 'directory') {
+      if (directoryView === 'details' && selectedLeaderSlug) {
+        const localList = localStorage.getItem('know_your_minister_leaders');
+        if (localList) {
+          try {
+            const list = JSON.parse(localList);
+            const leader = list.find((l: any) => l.slug === selectedLeaderSlug);
+            if (leader) {
+              title = `${leader.name} - ${leader.designation} (${leader.party}, ${leader.constituency}) | Verified Public Profile`;
+              desc = `Official public dossier for ${leader.name}, serving as ${leader.designation} representing ${leader.constituency}, ${leader.state}. View assets, debates record, speech logs, and live news coverage.`;
+              schemaData = [
+                schemaData,
+                {
+                  "@context": "https://schema.org",
+                  "@type": "Person",
+                  "name": leader.name,
+                  "jobTitle": leader.designation,
+                  "image": leader.image,
+                  "affiliation": {
+                    "@type": "Organization",
+                    "name": leader.party
+                  },
+                  "address": {
+                    "@type": "PostalAddress",
+                    "addressLocality": leader.constituency,
+                    "addressRegion": leader.state
+                  },
+                  "description": leader.bio
+                },
+                {
+                  "@context": "https://schema.org",
+                  "@type": "FAQPage",
+                  "mainEntity": [
+                    {
+                      "@type": "Question",
+                      "name": `What is the political party of ${leader.name}?`,
+                      "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": `${leader.name} belongs to the ${leader.party} political party.`
+                      }
+                    },
+                    {
+                      "@type": "Question",
+                      "name": `What designation does ${leader.name} hold?`,
+                      "acceptedAnswer": {
+                        "@type": "Answer",
+                        "text": `${leader.name} currently holds the portfolio designation of ${leader.designation}.`
+                      }
+                    }
+                  ]
+                }
+              ];
+            }
+          } catch (e) {
+            console.error(e);
+          }
+        }
+      } else if (directoryView === 'search') {
+        title = "Search Indian Legislators, MPs, and Chief Ministers | Live Directory";
+        desc = "Advanced search and filtering catalog across Lok Sabha, Rajya Sabha, Cabinet Ministers, and state governors.";
+      } else if (directoryView === 'about') {
+        title = "About Riva Analytica Political Intelligence Platform";
+        desc = "The public utility framework compiling verified cabinet portfolios, biographies, constituency statistics, and social accountability trackers.";
+      }
+    } else if (mainTab === 'ai-grounding') {
+      title = "AI Intelligence Grounding Center - India Leaders Directory";
+      desc = "Continuous AI-grounded news verification feeds compiled across regional press releases, gazettes, and official government announcements.";
+    }
+
+    // Apply titles & descriptions to document headers
+    document.title = title;
+    
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', desc);
+
+    // Inject dynamic Schema.org Graphs
+    let scriptTag = document.getElementById('schema-jsonld') as HTMLScriptElement;
+    if (!scriptTag) {
+      scriptTag = document.createElement('script');
+      scriptTag.id = 'schema-jsonld';
+      scriptTag.type = 'application/ld+json';
+      document.head.appendChild(scriptTag);
+    }
+    scriptTag.textContent = JSON.stringify(schemaData, null, 2);
+
+  }, [mainTab, directoryView, selectedLeaderSlug]);
+
+  // Handle nested sub-navigation in our directory
   const handleNavigateTo = (page: string, params?: any) => {
     if (page === 'search') {
-      const qs = new URLSearchParams();
-      if (params?.query) qs.set('query', params.query);
-      if (params?.category) qs.set('category', params.category);
-      if (params?.state) qs.set('state', params.state);
-      const searchString = qs.toString();
-      const url = `/search${searchString ? `?${searchString}` : ''}`;
-      window.history.pushState(null, '', url);
       setSearchParams(params || null);
-      setSelectedLeaderSlug('');
       setDirectoryView('search');
-    } else if (page === 'home') {
-      window.history.pushState(null, '', '/');
-      setSearchParams(null);
-      setSelectedLeaderSlug('');
-      setDirectoryView('home');
-    } else if (page === 'about') {
-      window.history.pushState(null, '', '/about');
-      setSearchParams(null);
-      setSelectedLeaderSlug('');
-      setDirectoryView('about');
-    } else if (page === 'contact') {
-      window.history.pushState(null, '', '/contact');
-      setSearchParams(null);
-      setSelectedLeaderSlug('');
-      setDirectoryView('contact');
     } else {
       setDirectoryView(page as any);
     }
   };
 
   const handleSelectLeader = (slug: string) => {
-    const normalizedSlug = slug.trim();
-    const url = `/leader/${encodeURIComponent(normalizedSlug)}`;
-    window.history.pushState(null, '', url);
-    setSelectedLeaderSlug(normalizedSlug);
-    setSearchParams(null);
+    setSelectedLeaderSlug(slug);
     setDirectoryView('details');
   };
 
-  const syncRouteFromPath = (pathname: string, search: string) => {
-    const parsed = parsePath(pathname, search);
-    setDirectoryView(parsed.view as any);
-    setSearchParams(parsed.params || null);
-    setSelectedLeaderSlug(parsed.slug || '');
-    if (parsed.view !== 'search') {
-      setSearchParams(null);
-    }
-  };
-
-  useEffect(() => {
-    syncRouteFromPath(window.location.pathname, window.location.search);
-  }, []);
-
-  useEffect(() => {
-    const handlePopState = () => {
-      setCurrentPath(window.location.pathname);
-      syncRouteFromPath(window.location.pathname, window.location.search);
-    };
-    window.addEventListener('popstate', handlePopState);
-    return () => window.removeEventListener('popstate', handlePopState);
-  }, []);
-
+  // If path starts with /admin, bypass the public layout completely to keep them 100% independent
   if (currentPath.startsWith('/admin')) {
     return <AdminDashboard />;
   }
