@@ -18,11 +18,8 @@ interface SearchPageProps {
 export default function SearchPage({ initialFilters, onSelectLeader }: SearchPageProps) {
   const [leaders, setLeaders] = useState<SupabaseLeader[]>([]);
   const [loading, setLoading] = useState(true);
-<<<<<<< HEAD
   const [error, setError] = useState<string | null>(null);
-=======
   const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | null>(null);
->>>>>>> origin/main
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState(initialFilters?.query || '');
