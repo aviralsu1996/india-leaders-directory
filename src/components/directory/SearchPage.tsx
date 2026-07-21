@@ -173,8 +173,7 @@ const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | nu
       }
 
       // Public directory page should only view Published leaders
-      const published = (data || []).filter(l => l.status === 'Published');
-      setLeaders(published);
+      setLeaders(data || []);
       setCurrentPage(1); // Reset page to 1 when filters change
     } catch (err: any) {
       console.error('Failed to load search list:', err);

@@ -205,6 +205,44 @@ export default function App() {
 
           {/* Center-Right tab bar navigation */}
           <div className="flex flex-wrap items-center gap-2 md:gap-4">
+            <nav className="flex items-center gap-1 p-1 bg-slate-100/80 dark:bg-white/5 backdrop-blur-md rounded-xl border border-slate-200/60 dark:border-white/10">
+              <button
+                onClick={() => { setMainTab('directory'); setDirectoryView('home'); }}
+                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+                  mainTab === 'directory'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/20'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-white/5'
+                }`}
+              >
+                <BookOpen className="w-3.5 h-3.5" />
+                <span>Directory</span>
+              </button>
+
+              <button
+                onClick={() => setMainTab('ai-grounding')}
+                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+                  mainTab === 'ai-grounding'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/20'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-white/5'
+                }`}
+              >
+                <Sparkles className="w-3.5 h-3.5 text-amber-300" />
+                <span>AI Grounding</span>
+              </button>
+
+              <button
+                onClick={() => setMainTab('admin')}
+                className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
+                  mainTab === 'admin'
+                    ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md shadow-emerald-600/20'
+                    : 'text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white hover:bg-slate-200/50 dark:hover:bg-white/5'
+                }`}
+              >
+                <Terminal className="w-3.5 h-3.5" />
+                <span>Admin</span>
+              </button>
+            </nav>
+
             {/* Dark Mode toggle */}
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}

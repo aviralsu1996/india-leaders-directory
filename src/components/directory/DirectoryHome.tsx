@@ -33,8 +33,8 @@ export default function DirectoryHome({ onSelectLeader, onNavigateTo }: Director
         const data = await dbService.getLeaders();
         setAllLeaders(data || []);
         // Extract featured leaders for display
-        const featured = (data || []).filter(l => l.featured && l.status === 'Published');
-        setLeaders(featured.length > 0 ? featured : (data || []).filter(l => l.status === 'Published').slice(0, 3));
+        const featured = (data || []).filter(l => l.featured);
+setLeaders(featured.length > 0 ? featured : (data || []).slice(0, 3));
       } catch (err) {
         console.error('Failed to load leaders:', err);
         setError('Failed to load leaders.');

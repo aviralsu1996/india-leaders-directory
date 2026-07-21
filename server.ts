@@ -15,6 +15,8 @@ import { initialCampaigns, initialParties, initialLeaders, initialCandidates, in
 import { SupabaseLeader } from './src/types';
 
 
+import dataStore from './data-store.json';
+
 // Structure of our state database
 interface DBState {
   campaigns: typeof initialCampaigns;
@@ -76,7 +78,7 @@ function getInitialState(): DBState {
         createdAt: new Date().toISOString()
       }
     ],
-    directoryLeaders: [],
+    directoryLeaders: (dataStore as any).directoryLeaders || [],
     seo: {
       title: 'RIVA Strategies | India’s Trusted Political Digital Campaign Agency',
       description: 'Winning Minds. Building Leadership. RIVA Strategies provides end-to-end election management, digital branding, mobile applications, ground surveys, and war room setup across India.',
@@ -102,13 +104,14 @@ function getInitialState(): DBState {
 let state: DBState = getInitialState();
 
 // Initialize server-side Supabase admin client (service role) if configured
-const SERVER_SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || process.env.VITE_SUPABASE_URL;
-const SERVER_SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE;
+const SERVER_SUPABASE_URL = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '';
+const SERVER_SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_SERVICE_ROLE || '';
 let serverSupabase: any = null;
 if (SERVER_SUPABASE_URL && SERVER_SUPABASE_SERVICE_ROLE_KEY) {
   serverSupabase = createServerClient(SERVER_SUPABASE_URL, SERVER_SUPABASE_SERVICE_ROLE_KEY);
+  console.log('[Server] Supabase admin client initialized with service role key.');
 } else {
-  console.warn('Server Supabase admin client not configured; server endpoints will fall back to anon or local store.');
+  console.error('[Server] FATAL: SUPABASE_SERVICE_ROLE_KEY not set. Write API endpoints will fail.');
 }
 
 // Helper: require a Supabase client (server admin preferred, otherwise client). If none, respond with 500.
@@ -179,49 +182,74 @@ async function startServer() {
   app.get('/api/directory/leaders', async (req, res) => {
     try {
       const { category, state: stateFilter, party, featured, status, search } = req.query;
-      const sb = requireSupabase(res);
-      if (!sb) return;
+      const sb = serverSupabase || getSupabase();
+      if (sb) {
+        let query = sb.from('leaders').select('*');
+        if (category && category !== 'all') query = query.eq('category', category);
+        if (stateFilter && stateFilter !== 'all') query = query.eq('state', stateFilter);
+        if (party && party !== 'all') query = query.eq('party', party);
+        if (featured === 'true') query = query.eq('featured', true);
+        if (status && status !== 'all') query = query.eq('status', status);
+        if (search) query = query.or(`name.ilike.%${search}%,designation.ilike.%${search}%,constituency.ilike.%${search}%`);
+        query = query.order('created_at', { ascending: false });
 
-      let query = sb.from('leaders').select('*');
-      if (category && category !== 'all') {
-        query = query.eq('category', category);
+        const { data, error } = await query;
+        if (!error && data) return res.json({ success: true, count: data.length, data });
       }
-      if (stateFilter && stateFilter !== 'all') {
-        query = query.eq('state', stateFilter);
-      }
-      if (party && party !== 'all') {
-        query = query.eq('party', party);
-      }
-      if (featured === 'true') {
-        query = query.eq('featured', true);
-      }
-      if (status && status !== 'all') {
-        query = query.eq('status', status);
-      }
+
+      // Fallback to in-memory state.directoryLeaders
+      let list = state.directoryLeaders || [];
+      if (category && category !== 'all') list = list.filter((l: any) => l.category === category);
+      if (stateFilter && stateFilter !== 'all') list = list.filter((l: any) => l.state === stateFilter);
+      if (party && party !== 'all') list = list.filter((l: any) => l.party === party);
+      if (featured === 'true') list = list.filter((l: any) => l.featured === true);
+      if (status && status !== 'all') list = list.filter((l: any) => l.status === status);
       if (search) {
-        query = query.or(`name.ilike.%${search}%,designation.ilike.%${search}%,constituency.ilike.%${search}%`);
+        const q = String(search).toLowerCase();
+        list = list.filter((l: any) =>
+          (l.name || '').toLowerCase().includes(q) ||
+          (l.designation || '').toLowerCase().includes(q) ||
+          (l.constituency || '').toLowerCase().includes(q)
+        );
       }
-      query = query.order('created_at', { ascending: false });
-
-      const { data, error } = await query;
-      if (error) throw error;
-      return res.json({ success: true, count: (data || []).length, data });
+      return res.json({ success: true, count: list.length, data: list });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
     }
   });
 
   // Get individual leader by ID or Slug
+  // FIX: Use separate .eq('slug') to avoid UUID cast error when slug contains hyphens.
   app.get('/api/directory/leaders/:idOrSlug', async (req, res) => {
     try {
       const { idOrSlug } = req.params;
-      const sb = requireSupabase(res);
-      if (!sb) return;
+      const sb = serverSupabase || getSupabase();
+      if (!sb) return res.status(500).json({ success: false, error: 'Supabase not configured on server.' });
 
-      const { data, error } = await sb.from('leaders').select('*').or(`slug.eq.${idOrSlug},id.eq.${idOrSlug}`).single();
-      if (error) throw error;
-      if (!data) return res.status(404).json({ success: false, error: 'Leader not found' });
-      return res.json({ success: true, data });
+      const normalized = String(idOrSlug).trim().toLowerCase();
+
+      // First try slug lookup (most common case)
+      const { data: bySlug, error: slugErr } = await sb
+        .from('leaders')
+        .select('*')
+        .eq('slug', normalized)
+        .maybeSingle();
+      if (slugErr) return res.status(500).json({ success: false, error: slugErr.message });
+      if (bySlug) return res.json({ success: true, data: bySlug });
+
+      // Fallback: try UUID lookup only if idOrSlug looks like a UUID
+      const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrSlug);
+      if (isUUID) {
+        const { data: byId, error: idErr } = await sb
+          .from('leaders')
+          .select('*')
+          .eq('id', idOrSlug)
+          .maybeSingle();
+        if (idErr) return res.status(500).json({ success: false, error: idErr.message });
+        if (byId) return res.json({ success: true, data: byId });
+      }
+
+      return res.status(404).json({ success: false, error: `Leader not found: ${idOrSlug}` });
     } catch (err: any) {
       res.status(500).json({ success: false, error: err.message });
     }
@@ -282,12 +310,23 @@ async function startServer() {
   app.get('/api/directory/leaders/:idOrSlug/news', async (req, res) => {
     try {
       const { idOrSlug } = req.params;
-      const sb = requireSupabase(res);
-      if (!sb) return;
-      const { data, error } = await sb.from('leaders').select('*').or(`slug.eq.${idOrSlug},id.eq.${idOrSlug}`).maybeSingle();
-      if (error) return res.status(500).json({ success: false, error: String(error) });
-      const leader = data;
-      if (!leader) return res.status(404).json({ success: false, error: 'Leader not found' });
+      let leader: any = null;
+      const sb = serverSupabase || getSupabase();
+      if (!sb) return res.status(500).json({ success: false, error: 'Supabase not configured on server.' });
+
+      const normalized = String(idOrSlug).trim().toLowerCase();
+      const { data: bySlug } = await sb.from('leaders').select('*').eq('slug', normalized).maybeSingle();
+      if (bySlug) { leader = bySlug; }
+
+      if (!leader) {
+        const isUUID = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(idOrSlug);
+        if (isUUID) {
+          const { data: byId } = await sb.from('leaders').select('*').eq('id', idOrSlug).maybeSingle();
+          if (byId) leader = byId;
+        }
+      }
+
+      if (!leader) return res.status(404).json({ success: false, error: `Leader not found: ${idOrSlug}` });
 
       let newsArticles: any[] = [];
       let usedAI = false;

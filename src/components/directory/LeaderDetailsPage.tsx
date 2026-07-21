@@ -154,15 +154,18 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
       try {
         setLoading(true);
         const data = await dbService.getLeaderBySlug(slug);
+        console.log("DETAIL PAGE SLUG:", slug);
+        console.log("LOOKUP RESULT:", data);
         if (data) {
           setLeader(data);
-          
           // Query related leaders (matching party or category)
           const allLeaders = await dbService.getLeaders();
           const filtered = allLeaders
             .filter(l => l.id !== data.id && (l.party === data.party || l.category === data.category))
             .slice(0, 3);
           setRelated(filtered);
+        } else {
+          setLeader(null);
         }
       } catch (err) {
         console.error('Failed to load leader details:', err);
