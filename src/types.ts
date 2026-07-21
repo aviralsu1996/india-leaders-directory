@@ -211,6 +211,8 @@ export type LeaderCategory =
   | 'Rajya Sabha MP'
   | 'Governor';
 
+export type SyncStatus = 'pending' | 'synced' | 'failed' | 'skipped';
+
 export interface SupabaseLeader {
   id: string;
   slug: string;
@@ -233,6 +235,14 @@ export interface SupabaseLeader {
   instagram: string;
   youtube: string;
   website: string;
+  linkedin?: string;
+  wikipedia_url?: string;
+  official_profile_url?: string;
+  verified?: boolean;
+  last_verified?: string;
+  image_source?: string;
+  image_hash?: string;
+  sync_status?: SyncStatus;
   image: string;
   cover_image: string;
   gallery: string[];
@@ -242,5 +252,53 @@ export interface SupabaseLeader {
   updated_at?: string;
   membership_status?: string;
   lok_sabha_terms?: string;
+}
+
+/** Result returned by every scraping provider */
+export interface ProviderScrapeResult {
+  officialImage: string | null;
+  officialProfileUrl: string | null;
+  wikipediaUrl: string | null;
+  officialWebsite: string | null;
+  verificationStatus: 'verified' | 'partial' | 'unverified' | 'failed';
+  source: string;
+  metadata?: Record<string, unknown>;
+}
+
+/** Image validation result */
+export interface ImageValidationResult {
+  url: string;
+  status: 'valid' | 'missing' | 'placeholder' | 'unsplash' | 'broken';
+  isAccessible: boolean;
+  contentType?: string;
+  hash?: string;
+}
+
+/** Admin dashboard metrics */
+export interface LeaderAuditMetrics {
+  totalLeaders: number;
+  missingImages: number;
+  placeholderImages: number;
+  brokenImages: number;
+  verifiedLeaders: number;
+  missingSocialLinks: number;
+  unsplashImages: number;
+  pendingSync: number;
+  failedSync: number;
+}
+
+/** Report types */
+export type ReportType =
+  | 'image'
+  | 'database'
+  | 'missing_fields'
+  | 'broken_links'
+  | 'duplicates';
+
+export interface AuditReport {
+  type: ReportType;
+  generatedAt: string;
+  summary: Record<string, number>;
+  items: Record<string, unknown>[];
 }
 
