@@ -252,9 +252,19 @@ export interface SupabaseLeader {
   updated_at?: string;
   membership_status?: string;
   lok_sabha_terms?: string;
+  ministry?: string;
+  /** Per-field provenance, e.g. { "bio": "Wikipedia Commons", "image": "Ministry Website" } */
+  field_sources?: Record<string, string>;
 }
 
-/** Result returned by every scraping provider */
+/**
+ * Result returned by every scraping provider. `officialImage`/`officialProfileUrl`/
+ * `wikipediaUrl`/`officialWebsite` are the original image-lookup fields (Phase 5);
+ * everything below `metadata` is optional full-record data a provider may also
+ * find (Phase 2 — leader data import). A provider only ever sets the fields it
+ * actually found; LeaderDataImportService merges these into a leader record,
+ * filling only currently-empty fields.
+ */
 export interface ProviderScrapeResult {
   officialImage: string | null;
   officialProfileUrl: string | null;
@@ -263,6 +273,20 @@ export interface ProviderScrapeResult {
   verificationStatus: 'verified' | 'partial' | 'unverified' | 'failed';
   source: string;
   metadata?: Record<string, unknown>;
+  // Optional full-record fields (leader data import):
+  name?: string;
+  designation?: string;
+  ministry?: string;
+  constituency?: string;
+  state?: string;
+  party?: string;
+  bio?: string;
+  coverImage?: string;
+  email?: string;
+  twitter?: string;
+  facebook?: string;
+  instagram?: string;
+  youtube?: string;
 }
 
 /** Image validation result */
