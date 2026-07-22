@@ -123,6 +123,46 @@ export const dbService = {
     return (data || []) as SupabaseLeader[];
   },
 
+  /**
+   * Same filters as getLeaders, but with server-side limit/offset and an exact
+   * total count — used by SearchPage so a filtered category (e.g. Lok Sabha
+   * MP, 555+ rows) doesn't fetch every matching row just to display one page
+   * of 18. getLeaders() itself is untouched (still fetches everything) since
+   * several admin/scanning callers genuinely need the full list at once.
+   */
+  async getLeadersPaginated(
+    filters: {
+      category?: string;
+      state?: string;
+      party?: string;
+      featured?: boolean;
+      status?: string;
+      search?: string;
+    } = {},
+    limit = 18,
+    offset = 0
+  ): Promise<{ data: SupabaseLeader[]; count: number }> {
+    const sb = getSupabase();
+    if (!sb) throw new Error('Supabase is not configured. Check VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY.');
+
+    let query: any = sb.from('leaders').select('*', { count: 'exact' });
+    if (filters.category && filters.category !== 'all') query = query.eq('category', filters.category);
+    if (filters.state && filters.state !== 'all') query = query.eq('state', filters.state);
+    if (filters.party && filters.party !== 'all') query = query.eq('party', filters.party);
+    if (filters.featured !== undefined) query = query.eq('featured', filters.featured);
+    if (filters.status && filters.status !== 'all') query = query.eq('status', filters.status);
+    if (filters.search) {
+      query = query.or(
+        `name.ilike.%${filters.search}%,designation.ilike.%${filters.search}%,constituency.ilike.%${filters.search}%`
+      );
+    }
+    query = query.order('created_at', { ascending: false }).range(offset, offset + limit - 1);
+
+    const { data, error, count } = await query;
+    if (error) throw error;
+    return { data: (data || []) as SupabaseLeader[], count: (count as number) || 0 };
+  },
+
   // FIX: Use .eq('slug', slug) — do NOT include id.eq.slug which causes UUID cast failure
   async getLeaderBySlug(slug: string): Promise<SupabaseLeader | null> {
     const normalized = String(slug || '').trim().toLowerCase();

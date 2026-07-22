@@ -240,6 +240,8 @@ export const LeaderAvatar: React.FC<LeaderAvatarProps> = ({ image, name = 'Leade
       src={getDirectImageUrl(image)}
       alt={name}
       referrerPolicy="no-referrer"
+      loading="lazy"
+      decoding="async"
       className={`object-cover object-top ${className}`}
       onError={() => {
         setError(true);
@@ -270,6 +272,8 @@ export const LeaderCover: React.FC<LeaderCoverProps> = ({ coverImage, name = 'Le
       src={getDirectImageUrl(coverImage)}
       alt={name}
       referrerPolicy="no-referrer"
+      loading="lazy"
+      decoding="async"
       className={`object-cover ${className}`}
       onError={() => {
         setError(true);

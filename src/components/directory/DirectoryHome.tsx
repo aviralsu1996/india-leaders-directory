@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { motion } from 'motion/react';
-import { 
-  Search, MapPin, Users, Award, Shield, ArrowRight, 
+import {
+  Search, MapPin, Users, Award, Shield, ArrowRight,
   Sparkles, Building, ChevronRight, Activity, TrendingUp, Flame
 } from 'lucide-react';
-import { SupabaseLeader, LeaderCategory } from '../../types';
+import { LeaderCategory } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
 import { LeaderAvatar, LeaderCover } from './GovtDesignSystem';
 
@@ -14,32 +15,23 @@ interface DirectoryHomeProps {
 }
 
 export default function DirectoryHome({ onSelectLeader, onNavigateTo }: DirectoryHomeProps) {
-  const [leaders, setLeaders] = useState<SupabaseLeader[]>([]);
-  const [allLeaders, setAllLeaders] = useState<SupabaseLeader[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
 
-  // Load all leaders on mount to support dynamic high-precision intelligence calculation
-  useEffect(() => {
-    async function loadLeaders() {
-      setError(null);
-      try {
-        setLoading(true);
-        const data = await dbService.getLeaders();
-        setAllLeaders(data || []);
-        // Extract featured leaders for display
-        const featured = (data || []).filter(l => l.featured);
-setLeaders(featured.length > 0 ? featured : (data || []).slice(0, 3));
-      } catch (err) {
-        console.error('Failed to load leaders:', err);
-        setError('Failed to load leaders.');
-      } finally {
-        setLoading(false);
-      }
-    }
-    loadLeaders();
-  }, []);
+  // React Query gives this a shared cache + automatic request dedup: navigating
+  // home -> search -> home no longer re-fetches the whole table every time.
+  const {
+    data: allLeadersData,
+    isLoading: loading,
+    error: queryError,
+  } = useQuery({
+    queryKey: ['leaders', 'all'],
+    queryFn: () => dbService.getLeaders(),
+    staleTime: 5 * 60 * 1000,
+  });
+
+  const error = queryError ? 'Failed to load leaders.' : null;
+  const featured = (allLeadersData || []).filter((l) => l.featured);
+  const leaders = featured.length > 0 ? featured : (allLeadersData || []).slice(0, 3);
 
   // Handler for quick search submit
   const handleSearchSubmit = (e: React.FormEvent) => {
