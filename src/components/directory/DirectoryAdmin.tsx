@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService, compressToWebP } from '../../lib/supabaseClient';
-import { getDirectImageUrl } from '../../lib/imageUtils';
+import { getDirectImageUrl } from './DossierData';
 import AdminNewsManager from './AdminNewsManager';
 
 interface DirectoryAdminProps {
@@ -778,7 +778,7 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
                               referrerPolicy="no-referrer"
                               className="w-full h-full object-cover object-top"
                               onError={(e) => {
-                                (e.target as HTMLImageElement).style.display = 'none';
+                                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
                               }}
                             />
                           </div>
@@ -874,7 +874,7 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
                     alt="Bucket item"
                     className="w-full h-full object-cover"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).style.display = 'none';
+                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400';
                     }}
                   />
                   {/* Action overlays */}
@@ -933,7 +933,7 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
                       alt="Crop Stage"
                       className="w-full h-full object-cover blur-[1px]"
                       onError={(e) => {
-                        (e.target as HTMLImageElement).style.display = 'none';
+                        (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400';
                       }}
                     />
                     {/* Bounding Crop Box Overlay */}

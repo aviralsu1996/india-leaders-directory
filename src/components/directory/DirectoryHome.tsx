@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import {
-  Search, MapPin, Users, Award, Shield, ArrowRight,
+import { 
+  Search, MapPin, Users, Award, Shield, ArrowRight, 
   Sparkles, Building, ChevronRight, Activity, TrendingUp, Flame
 } from 'lucide-react';
-import { LeaderCategory } from '../../types';
+import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
 import { LeaderAvatar, LeaderCover } from './GovtDesignSystem';
+
+const getDirectImageUrl = (url?: string) => {
+  return url || '';
+};
 
 interface DirectoryHomeProps {
   onSelectLeader: (slug: string) => void;
@@ -15,23 +18,29 @@ interface DirectoryHomeProps {
 }
 
 export default function DirectoryHome({ onSelectLeader, onNavigateTo }: DirectoryHomeProps) {
+  const [leaders, setLeaders] = useState<SupabaseLeader[]>([]);
+  const [allLeaders, setAllLeaders] = useState<SupabaseLeader[]>([]);
   const [searchQuery, setSearchQuery] = useState('');
+  const [loading, setLoading] = useState(true);
 
-  // React Query gives this a shared cache + automatic request dedup: navigating
-  // home -> search -> home no longer re-fetches the whole table every time.
-  const {
-    data: allLeadersData,
-    isLoading: loading,
-    error: queryError,
-  } = useQuery({
-    queryKey: ['leaders', 'all'],
-    queryFn: () => dbService.getLeaders(),
-    staleTime: 5 * 60 * 1000,
-  });
-
-  const error = queryError ? 'Failed to load leaders.' : null;
-  const featured = (allLeadersData || []).filter((l) => l.featured);
-  const leaders = featured.length > 0 ? featured : (allLeadersData || []).slice(0, 3);
+  // Load all leaders on mount to support dynamic high-precision intelligence calculation
+  useEffect(() => {
+    async function loadLeaders() {
+      try {
+        setLoading(true);
+        const data = await dbService.getLeaders();
+        setAllLeaders(data);
+        // Extract featured leaders for display
+        const featured = data.filter(l => l.featured && l.status === 'Published');
+        setLeaders(featured.length > 0 ? featured : data.filter(l => l.status === 'Published').slice(0, 3));
+      } catch (err) {
+        console.error('Failed to load featured leaders:', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadLeaders();
+  }, []);
 
   // Handler for quick search submit
   const handleSearchSubmit = (e: React.FormEvent) => {
@@ -379,14 +388,6 @@ export default function DirectoryHome({ onSelectLeader, onNavigateTo }: Director
         {loading ? (
           <div className="py-12 text-center text-slate-400 text-xs font-mono">
             Loading directory profiles...
-          </div>
-        ) : error ? (
-          <div className="py-12 text-center text-slate-400 text-xs font-mono">
-            {error}
-          </div>
-        ) : leaders.length === 0 ? (
-          <div className="py-12 text-center text-slate-400 text-xs font-mono">
-            No leaders found.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

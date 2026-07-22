@@ -6,9 +6,6 @@ import {
   CheckCircle2, Terminal, Server, GitBranch, Play
 } from 'lucide-react';
 import { dbService, getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient';
-import { isPlaceholderImage, isPlaceholderCover } from '../../lib/imageUtils';
-import { imageSourcingService, imageDownloadPipeline } from '../../services/image';
-import { auditLogRepository } from '../../services/audit/AuditLogRepository';
 import { SupabaseLeader } from '../../types';
 
 interface ImageSyncProps {
@@ -50,8 +47,10 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     try {
       const data = await dbService.getLeaders();
       setLeaders(data);
-      const logs = await auditLogRepository.getRecent({ limit: 100 });
-      setSystemLogs(logs);
+      const logRes = await dbService.getSystemLogs();
+      if (logRes.success) {
+        setSystemLogs(logRes.logs);
+      }
     } catch (err) {
       console.error('Failed to load leaders and logs:', err);
       setErrorMsg('Failed to fetch political leader data from database.');
@@ -62,18 +61,38 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
 
   const loadLogsOnly = async () => {
     try {
-      const logs = await auditLogRepository.getRecent({ limit: 100 });
-      setSystemLogs(logs);
+      const logRes = await dbService.getSystemLogs();
+      if (logRes.success) {
+        setSystemLogs(logRes.logs);
+      }
     } catch (err) {
       console.error('Failed to fetch system logs:', err);
     }
   };
 
-  // Placeholder detection is centralized in lib/imageUtils.ts (isPlaceholderImage/isPlaceholderCover)
-  const isProfilePlaceholder = isPlaceholderImage;
-  const isCoverPlaceholder = isPlaceholderCover;
+  // Helper to determine if an image is a placeholder
+  const isProfilePlaceholder = (url?: string) => {
+    if (!url) return true;
+    const lower = url.toLowerCase();
+    return (
+      lower.includes('placeholder') || 
+      lower.includes('avatar') || 
+      lower.includes('unsplash.com/photo-1541872703-74c5e44368f9') ||
+      lower.trim() === ''
+    );
+  };
 
-  const filteredLeaders = leaders.filter(l =>
+  const isCoverPlaceholder = (url?: string) => {
+    if (!url) return true;
+    const lower = url.toLowerCase();
+    return (
+      lower.includes('placeholder') || 
+      lower.includes('unsplash.com/photo-1540910419892-4a36d2c3266c') || // Standard fallback default
+      lower.trim() === ''
+    );
+  };
+
+  const filteredLeaders = leaders.filter(l => 
     l.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (l.party || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (l.constituency || '').toLowerCase().includes(searchQuery.toLowerCase())
@@ -141,42 +160,30 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     setScanProgress({ current: 0, total: totalToScan, added: 0, failed: 0 });
 
     try {
-      // Runs the verified-source priority chain (Lok Sabha -> Rajya Sabha -> PMO ->
-      // Ministry -> State Govt -> Wikipedia Commons) against every leader with a
-      // missing/placeholder image, without writing anything yet.
-      const candidates = await imageSourcingService.scanForMissingImageCandidates(
-        missingProfiles,
-        (current, total, found) => {
-          setScanProgress(prev => ({
-            ...prev,
-            current,
-            total,
-            added: prev.added + (found ? 1 : 0),
-            failed: prev.failed + (found ? 0 : 1),
-          }));
-        }
-      );
-
-      // Download + re-host each verified candidate into Supabase Storage.
-      // downloadAndStore re-checks the leader is still missing an image right
-      // before writing, content-hashes the download to skip duplicate/shared
-      // placeholder images, and queues a retry on any failure instead of
-      // silently dropping it. Every attempt is logged to audit_logs.
-      let appliedCount = 0;
-      for (const candidate of candidates) {
-        const outcome = await imageDownloadPipeline.downloadAndStore(candidate, leaders);
-        if (outcome.applied) appliedCount++;
+      // Call backend scan endpoint which searches Wikipedia API, updates DB, and writes logs
+      const res = await dbService.scanMissingImages();
+      
+      // Simulate ticking animation for high visual polish
+      for (let i = 1; i <= totalToScan; i++) {
+        await new Promise(r => setTimeout(r, 120));
+        const matched = res.results?.[i - 1];
+        setScanProgress(prev => ({
+          ...prev,
+          current: i,
+          added: prev.added + (matched?.status === 'found' ? 1 : 0),
+          failed: prev.failed + (matched?.status === 'not_found' ? 1 : 0)
+        }));
       }
 
       await fetchLeadersAndLogs();
       onSyncComplete();
 
       // Trigger Commit and Deploy Pipeline
-      await runBuildAndDeploymentPipeline(`Automated Profile Sync: Mapped ${appliedCount} leadership portrait assets.`);
+      await runBuildAndDeploymentPipeline(`Automated Profile Sync: Mapped ${res.added} leadership portrait assets.`);
 
     } catch (err: any) {
       console.error(err);
-      setErrorMsg('An error occurred during automated verified-source image sync.');
+      setErrorMsg('An error occurred during automated Wikipedia media sync.');
       setAutomationActive('none');
     }
   };
@@ -224,48 +231,52 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     }
   };
 
-  // 3. Individual lookup via the verified-source priority chain
+  // 3. Individual Replace with Wikipedia lookup
   const handleWikidataLookupSingle = async (leader: SupabaseLeader) => {
-    if (!isProfilePlaceholder(leader.image)) {
-      setErrorMsg(`${leader.name} already has a verified image — it will not be overwritten.`);
-      return;
-    }
-
     setLoading(true);
     setErrorMsg(null);
     setSuccessMsg(null);
 
     try {
-      const result = await imageSourcingService.findVerifiedImageCandidate(leader);
+      const cleanName = leader.name
+        .replace(/^(Shri|Smt|Dr|Mr|Mrs|Ms|Prof|Maulana)\.?\s+/i, '')
+        .replace(/\s*,?\s*(MP|MLA|Cabinet Minister|Governor|Chief Minister|MoS)$/i, '')
+        .trim();
 
-      if (result?.officialImage) {
-        const outcome = await imageDownloadPipeline.downloadAndStore(
-          {
-            leaderId: leader.id,
-            leaderSlug: leader.slug,
-            leaderName: leader.name,
-            candidateUrl: result.officialImage,
-            source: result.source,
-            profileUrl: result.officialProfileUrl,
-          },
-          leaders
-        );
-
-        if (outcome.applied) {
-          await fetchLeadersAndLogs();
-          setSuccessMsg(`Successfully matched and saved a verified profile photo for ${leader.name} (source: ${result.source}).`);
-
-          // Push commit and deploy
-          await runBuildAndDeploymentPipeline(`Updated profile photo for ${leader.name} via ${result.source}.`);
-        } else {
-          setErrorMsg(outcome.reason || `Could not apply the match for ${leader.name}.`);
+      const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(cleanName)}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
+      const res = await fetch(url);
+      const json = await res.json();
+      const pages = json.query?.pages;
+      
+      let foundUrl = '';
+      if (pages) {
+        for (const key in pages) {
+          if (pages[key].thumbnail?.source) {
+            foundUrl = pages[key].thumbnail.source;
+            break;
+          }
         }
+      }
+
+      if (foundUrl) {
+        await dbService.updateLeader(leader.id, { image: foundUrl });
+        await dbService.addSystemLog(
+          'image_added',
+          `Manually triggered Wikipedia lookup for ${leader.name}.`,
+          `Asset matched successfully. URL: ${foundUrl}`
+        );
+        
+        await fetchLeadersAndLogs();
+        setSuccessMsg(`Successfully matched and saved Wikipedia profile photo for ${leader.name}!`);
+        
+        // Push commit and deploy
+        await runBuildAndDeploymentPipeline(`Updated profile photo for ${leader.name} via Wikidata search.`);
       } else {
-        setErrorMsg(`No verified photo found for ${leader.name} across official sources or Wikipedia. Try uploading a custom image.`);
+        setErrorMsg(`Could not find any Wikipedia portrait photo for ${leader.name}. Try uploading custom image.`);
       }
     } catch (err) {
       console.error(err);
-      setErrorMsg('Failed to look up a verified image for this leader.');
+      setErrorMsg('Failed to look up image on Wikipedia/Wikimedia Commons.');
     } finally {
       setLoading(false);
     }
@@ -330,15 +341,11 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
       await dbService.updateLeader(leader.id, updateData);
 
       // Log success
-      await auditLogRepository.log({
-        leader_id: leader.id,
-        leader_slug: leader.slug,
-        action: type === 'profile' ? 'image_upload' : 'cover_upload',
-        provider: 'Manual Upload',
-        status: 'success',
-        message: `Uploaded custom ${type} image for ${leader.name} to Supabase Storage.`,
-        details: { path: `${bucketName}/${folderPath}` },
-      });
+      await dbService.addSystemLog(
+        type === 'profile' ? 'image_added' : 'image_updated',
+        `Uploaded custom ${type} image for ${leader.name} to Supabase Storage.`,
+        `Saved under bucket pathway: /${bucketName}/${folderPath}`
+      );
 
       await fetchLeadersAndLogs();
       setSuccessMsg(`Successfully uploaded custom ${type} image for ${leader.name}!`);
@@ -361,17 +368,16 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     
     setLoading(true);
     try {
-      const updateData = type === 'profile' ? { image: '' } : { cover_image: '' };
+      const updateData = type === 'profile' 
+        ? { image: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100' }
+        : { cover_image: 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1200' };
 
       await dbService.updateLeader(leader.id, updateData);
-      await auditLogRepository.log({
-        leader_id: leader.id,
-        leader_slug: leader.slug,
-        action: type === 'profile' ? 'image_delete' : 'cover_delete',
-        provider: 'Admin',
-        status: 'warning',
-        message: `Admin deleted ${type} image for ${leader.name}. Cleared — renders the neutral government placeholder until a verified image is added.`,
-      });
+      await dbService.addSystemLog(
+        'image_failed',
+        `Admin deleted ${type} image for ${leader.name}.`,
+        `Reset to default system asset placeholder.`
+      );
 
       await fetchLeadersAndLogs();
       setSuccessMsg(`Deleted ${type} image for ${leader.name}.`);
@@ -386,46 +392,48 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     }
   };
 
-  // 6. Reset Cover Image Single
-  // NOTE: there is no verified official source for a leader's decorative cover banner
-  // (unlike a portrait photo), so this clears cover_image rather than assigning a stock
-  // photo — the leader then renders the neutral GovtCoverBanner fallback.
+  // 6. Regenerate Cover Image Single
   const handleRegenerateCoverSingle = async (leader: SupabaseLeader) => {
     setLoading(true);
     try {
-      await dbService.updateLeader(leader.id, { cover_image: '' });
-      await auditLogRepository.log({
-        leader_id: leader.id,
-        leader_slug: leader.slug,
-        action: 'cover_reset',
-        provider: 'Admin',
-        status: 'info',
-        message: `Reset cover image for ${leader.name}. No verified cover source exists, so the neutral government banner is used instead.`,
-      });
+      const POLITICAL_COVERS = [
+        'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1200',
+        'https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=1200',
+        'https://images.unsplash.com/photo-1566847438217-76e82d383f84?w=1200',
+        'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200',
+        'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=1200'
+      ];
+      let sum = 0;
+      for (let i = 0; i < leader.name.length; i++) {
+        sum += leader.name.charCodeAt(i);
+      }
+      // pick randomized but stable themed cover
+      const coverUrl = POLITICAL_COVERS[sum % POLITICAL_COVERS.length];
+
+      await dbService.updateLeader(leader.id, { cover_image: coverUrl });
+      await dbService.addSystemLog(
+        'image_updated',
+        `Regenerated cover image single for ${leader.name}.`,
+        `Assigned cover art theme path: ${coverUrl.split('?')[0]}`
+      );
 
       await fetchLeadersAndLogs();
-      setSuccessMsg(`Reset cover image for ${leader.name}. Displaying the neutral government banner.`);
+      setSuccessMsg(`Regenerated cover image successfully for ${leader.name}!`);
 
       // Trigger Commit and Deploy
-      await runBuildAndDeploymentPipeline(`Reset cover layout for ${leader.name}.`);
+      await runBuildAndDeploymentPipeline(`Regenerated cover layout for ${leader.name}.`);
     } catch (err) {
       console.error(err);
-      setErrorMsg('Failed to reset cover image.');
+      setErrorMsg('Failed to regenerate cover image.');
     } finally {
       setLoading(false);
     }
   };
 
-  // Filter logs by tab type (audit_logs.status: success/error/warning/info)
-  const LOG_TAB_TO_STATUS: Record<Exclude<LogFilter, 'all'>, string> = {
-    image_added: 'success',
-    image_failed: 'error',
-    image_updated: 'warning',
-    deployment: 'info',
-  };
+  // Filter logs by tab type
   const filteredLogs = systemLogs.filter(log => {
     if (activeLogTab === 'all') return true;
-    return log.status === LOG_TAB_TO_STATUS[activeLogTab];
+    return log.type === activeLogTab;
   });
 
   return (
@@ -823,11 +831,11 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
               >
                 UPDATED
               </button>
-              <button
+              <button 
                 onClick={() => setActiveLogTab('deployment')}
                 className={`px-2 py-1 rounded text-[10px] font-bold tracking-tight uppercase transition font-mono ${activeLogTab === 'deployment' ? 'bg-indigo-600 text-white' : 'bg-slate-50 dark:bg-white/5 text-slate-500'}`}
               >
-                INFO
+                DEPLOY
               </button>
             </div>
 
@@ -841,25 +849,26 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
               ) : (
                 filteredLogs.map((log) => {
                   let badgeColor = 'bg-slate-100 text-slate-600 dark:bg-white/5 dark:text-slate-400';
-                  if (log.status === 'success') badgeColor = 'bg-emerald-500/10 text-emerald-500 border-emerald-500/10';
-                  if (log.status === 'error') badgeColor = 'bg-red-500/10 text-red-500 border-red-500/10';
-                  if (log.status === 'warning') badgeColor = 'bg-amber-500/10 text-amber-500 border-amber-500/10';
-                  if (log.status === 'info') badgeColor = 'bg-indigo-500/10 text-indigo-500 border-indigo-500/10';
+                  if (log.type === 'image_added') badgeColor = 'bg-emerald-500/10 text-emerald-500 border-emerald-500/10';
+                  if (log.type === 'image_failed') badgeColor = 'bg-red-500/10 text-red-500 border-red-500/10';
+                  if (log.type === 'image_updated') badgeColor = 'bg-amber-500/10 text-amber-500 border-amber-500/10';
+                  if (log.type === 'deployment') badgeColor = 'bg-indigo-500/10 text-indigo-500 border-indigo-500/10';
+                  if (log.type === 'commit') badgeColor = 'bg-pink-500/10 text-pink-500 border-pink-500/10';
 
                   return (
                     <div key={log.id} className="p-3 bg-slate-50 dark:bg-[#020504] border border-slate-100 dark:border-white/5 rounded-xl text-[10.5px] space-y-1.5">
                       <div className="flex justify-between items-center">
                         <span className={`px-2 py-0.5 rounded text-[8.5px] font-mono font-bold uppercase border ${badgeColor}`}>
-                          {log.status === 'success' ? 'PORTRAIT ADDED' : log.status === 'error' ? 'MATCH FAILED' : log.status === 'warning' ? 'NEEDS REVIEW' : 'INFO'}
+                          {log.type === 'image_added' ? 'PORTRAIT ADDED' : log.type === 'image_failed' ? 'MATCH FAILED' : log.type === 'image_updated' ? 'IMAGE REPLACED' : log.type === 'deployment' ? 'VERCEL DEPLOY' : 'GIT COMMIT'}
                         </span>
                         <span className="text-[9px] font-mono font-semibold text-slate-400">
-                          {log.created_at ? new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : ''}
+                          {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                         </span>
                       </div>
                       <p className="font-bold text-slate-800 dark:text-slate-200">{log.message}</p>
                       {log.details && (
                         <p className="text-[10px] text-slate-500 leading-normal font-sans border-l-2 border-slate-200 dark:border-white/10 pl-2 py-0.5">
-                          {JSON.stringify(log.details)}
+                          {log.details}
                         </p>
                       )}
                     </div>

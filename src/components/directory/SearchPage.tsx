@@ -3,6 +3,7 @@ import { motion } from 'motion/react';
 import { Search, Filter, MapPin, Award, Users, Shield, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
+import { getDirectImageUrl } from './DossierData';
 import { LeaderAvatar, LeaderCover } from './GovtDesignSystem';
 
 interface SearchPageProps {
@@ -16,10 +17,8 @@ interface SearchPageProps {
 
 export default function SearchPage({ initialFilters, onSelectLeader }: SearchPageProps) {
   const [leaders, setLeaders] = useState<SupabaseLeader[]>([]);
-  const [totalCount, setTotalCount] = useState(0);
   const [loading, setLoading] = useState(true);
-const [error, setError] = useState<string | null>(null);
-const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | null>(null);
+  const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | null>(null);
 
   // Filter States
   const [searchQuery, setSearchQuery] = useState(initialFilters?.query || '');
@@ -130,7 +129,6 @@ const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | nu
 
   // Load and apply filters
   const loadFilteredLeaders = async () => {
-    setError(null);
     try {
       setLoading(true);
       
@@ -165,45 +163,27 @@ const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | nu
         filters.featured = true;
       }
       
-      // Server-side pagination: only fetches the current page from Supabase
-      // instead of every matching row (a filtered category alone can be
-      // 500+ rows) just to display one page of 18.
-      const { data: pageData, count } = await dbService.getLeadersPaginated(
-        filters,
-        itemsPerPage,
-        (currentPage - 1) * itemsPerPage
-      );
-      let data = pageData;
-
-      // Secondary client-side filters for finer search like Gender (applied
-      // within the fetched page only — a rare enough refinement that it's
-      // not worth a dedicated server-side column filter).
+      let data = await dbService.getLeaders(filters);
+      
+      // Secondary client-side filters for finer search like Gender
       if (nlp?.gender) {
         data = data.filter(l => (l.gender || 'Male').toLowerCase() === nlp.gender?.toLowerCase());
       }
 
-      setLeaders(data || []);
-      setTotalCount(count);
-    } catch (err: any) {
+      // Public directory page should only view Published leaders
+      const published = data.filter(l => l.status === 'Published');
+      setLeaders(published);
+      setCurrentPage(1); // Reset page to 1 when filters change
+    } catch (err) {
       console.error('Failed to load search list:', err);
-      setError('Failed to load leader data.');
-      setLeaders([]);
-      setTotalCount(0);
     } finally {
       setLoading(false);
     }
   };
 
-  // Reset to page 1 whenever a filter changes (not when only the page itself changes)
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [selectedCategory, selectedState, selectedParty, selectedFeatured, searchQuery]);
-
-  // Fetch the current page whenever a filter or the page number changes
   useEffect(() => {
     loadFilteredLeaders();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedCategory, selectedState, selectedParty, selectedFeatured, searchQuery, currentPage]);
+  }, [selectedCategory, selectedState, selectedParty, selectedFeatured, searchQuery]);
 
   // List of states & parties in our seed data for selection
   const filterStates = [
@@ -384,13 +364,9 @@ const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | nu
         <div className="py-24 text-center text-slate-400 font-mono text-xs">
           Loading filtered results...
         </div>
-      ) : error ? (
-        <div className="bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-900 p-16 rounded-2xl shadow-sm text-center space-y-3">
-          <p className="text-slate-400 text-sm font-medium">{error}</p>
-        </div>
       ) : leaders.length === 0 ? (
         <div className="bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-900 p-16 rounded-2xl shadow-sm text-center space-y-3">
-          <p className="text-slate-400 text-sm font-medium">No leaders found.</p>
+          <p className="text-slate-400 text-sm font-medium">No legislative profiles match your selected search criteria.</p>
           <button
             onClick={handleClearFilters}
             className="px-4 py-2 bg-emerald-600 text-white font-bold text-xs rounded-lg shadow cursor-pointer hover:bg-emerald-500"
@@ -401,7 +377,8 @@ const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | nu
       ) : (
         <div className="space-y-8">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {leaders.map((leader) => {
+            {leaders.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage).map((leader) => {
+              console.log("Rendering leader photo (Search):", leader.name, "->", leader.image);
               return (
                 <motion.div
                 key={leader.id}
@@ -461,10 +438,10 @@ const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | nu
           </div>
 
           {/* Pagination Controls */}
-          {totalCount > itemsPerPage && (
+          {leaders.length > itemsPerPage && (
             <div className="flex items-center justify-between pt-6 border-t border-slate-100 dark:border-slate-900">
               <div className="text-xs text-slate-500 font-medium">
-                Showing <span className="font-bold text-slate-800 dark:text-slate-200">{Math.min(totalCount, (currentPage - 1) * itemsPerPage + 1)}-{Math.min(totalCount, currentPage * itemsPerPage)}</span> of <span className="font-bold text-slate-800 dark:text-slate-200">{totalCount}</span> profiles
+                Showing <span className="font-bold text-slate-800 dark:text-slate-200">{Math.min(leaders.length, (currentPage - 1) * itemsPerPage + 1)}-{Math.min(leaders.length, currentPage * itemsPerPage)}</span> of <span className="font-bold text-slate-800 dark:text-slate-200">{leaders.length}</span> profiles
               </div>
               <div className="flex items-center gap-2">
                 <button
@@ -479,12 +456,12 @@ const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | nu
                   <ChevronLeft className="w-4 h-4" />
                 </button>
                 <div className="text-xs font-bold text-slate-700 dark:text-slate-300 font-mono">
-                  Page {currentPage} of {Math.max(1, Math.ceil(totalCount / itemsPerPage))}
+                  Page {currentPage} of {Math.ceil(leaders.length / itemsPerPage)}
                 </div>
                 <button
-                  disabled={currentPage === Math.max(1, Math.ceil(totalCount / itemsPerPage))}
+                  disabled={currentPage === Math.ceil(leaders.length / itemsPerPage)}
                   onClick={() => {
-                    setCurrentPage(prev => Math.min(Math.max(1, Math.ceil(totalCount / itemsPerPage)), prev + 1));
+                    setCurrentPage(prev => Math.min(Math.ceil(leaders.length / itemsPerPage), prev + 1));
                     window.scrollTo({ top: 0, behavior: 'smooth' });
                   }}
                   className={`p-2 rounded-xl border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-900 transition disabled:opacity-40 disabled:hover:bg-transparent cursor-pointer`}

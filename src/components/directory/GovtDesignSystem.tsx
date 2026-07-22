@@ -1,5 +1,9 @@
 import React from 'react';
-import { getDirectImageUrl, isPlaceholderImage, isPlaceholderCover } from '../../lib/imageUtils';
+import { isPlaceholderImage, isPlaceholderCover } from '../../lib/supabaseClient';
+
+const getDirectImageUrl = (url?: string) => {
+  return url || '';
+};
 
 /**
  * High-fidelity vector SVG for the Lion Capital of Ashoka (subtle watermark)
@@ -240,8 +244,6 @@ export const LeaderAvatar: React.FC<LeaderAvatarProps> = ({ image, name = 'Leade
       src={getDirectImageUrl(image)}
       alt={name}
       referrerPolicy="no-referrer"
-      loading="lazy"
-      decoding="async"
       className={`object-cover object-top ${className}`}
       onError={() => {
         setError(true);
@@ -272,8 +274,6 @@ export const LeaderCover: React.FC<LeaderCoverProps> = ({ coverImage, name = 'Le
       src={getDirectImageUrl(coverImage)}
       alt={name}
       referrerPolicy="no-referrer"
-      loading="lazy"
-      decoding="async"
       className={`object-cover ${className}`}
       onError={() => {
         setError(true);

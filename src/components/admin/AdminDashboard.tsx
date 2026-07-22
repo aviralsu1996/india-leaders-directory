@@ -1,25 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import {
-  Users, Image as ImageIcon, Shield, LogOut, LayoutDashboard,
-  MapPin, UserCheck, Settings as SettingsIcon, Database,
-  Menu, X, Sparkles, AlertCircle, CheckCircle2, ChevronRight,
-  Loader2, Moon, Sun, ArrowRight, UserPlus, Info, Copy, FileSpreadsheet, RefreshCw,
-  Newspaper, Share2, Clock, ListChecks, FileText, AlertTriangle
+import { 
+  Users, Image as ImageIcon, Shield, LogOut, LayoutDashboard, 
+  MapPin, UserCheck, Settings as SettingsIcon, Database, 
+  Menu, X, Sparkles, AlertCircle, CheckCircle2, ChevronRight, 
+  Loader2, Moon, Sun, ArrowRight, UserPlus, Info, Copy, FileSpreadsheet, RefreshCw
 } from 'lucide-react';
 import { getSupabase, isSupabaseConfigured, dbService } from '../../lib/supabaseClient';
-import { isPlaceholderImage } from '../../lib/imageUtils';
 import { SupabaseLeader, LeaderCategory } from '../../types';
 import LeadersCrud from './LeadersCrud';
 import ImageLibrary from './ImageLibrary';
 import ImageSync from './ImageSync';
 import BulkImport from './BulkImport';
-import LeaderSyncPanel from './LeaderSyncPanel';
-import SocialSyncPanel from './SocialSyncPanel';
-import CronStatusPanel from './CronStatusPanel';
-import SyncQueuePanel from './SyncQueuePanel';
-import LogsPanel from './LogsPanel';
-import AdminNewsManager from '../directory/AdminNewsManager';
-import { LeaderAvatar } from '../directory/GovtDesignSystem';
 
 type SidebarMenu = 
   | 'dashboard'
@@ -32,13 +23,6 @@ type SidebarMenu =
   | 'parties'
   | 'media'
   | 'sync'
-  | 'leadersync'
-  | 'newssync'
-  | 'socialsync'
-  | 'cronstatus'
-  | 'syncqueue'
-  | 'logs'
-  | 'failedjobs'
   | 'settings';
 
 export default function AdminDashboard() {
@@ -147,7 +131,11 @@ export default function AdminDashboard() {
       const totalParties = parties.size;
 
       // Missing Images
-      const missingImages = allLeaders.filter(l => isPlaceholderImage(l.image)).length;
+      const missingImages = allLeaders.filter(l => 
+        !l.image || 
+        l.image.includes('placeholder') || 
+        l.image.includes('unsplash.com/photo-1541872703-74c5e44368f9')
+      ).length;
 
       setStats({
         totalLeaders,
@@ -242,7 +230,7 @@ CREATE TABLE IF NOT EXISTS public.leaders (
     instagram VARCHAR(255),
     youtube VARCHAR(255),
     website VARCHAR(255),
-    image TEXT,
+    image TEXT DEFAULT 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400',
     cover_image TEXT,
     gallery TEXT[] DEFAULT '{}',
     featured BOOLEAN DEFAULT FALSE,
@@ -280,13 +268,6 @@ CREATE POLICY "Allow authenticated admin write access" ON public.leaders
     { id: 'parties', label: 'Political Parties', icon: Shield },
     { id: 'media', label: 'Image Library', icon: ImageIcon },
     { id: 'sync', label: 'Image Sync', icon: RefreshCw },
-    { id: 'leadersync', label: 'Leader Sync', icon: Users },
-    { id: 'newssync', label: 'News Sync', icon: Newspaper },
-    { id: 'socialsync', label: 'Social Sync', icon: Share2 },
-    { id: 'cronstatus', label: 'Cron Status', icon: Clock },
-    { id: 'syncqueue', label: 'Sync Queue', icon: ListChecks },
-    { id: 'logs', label: 'Logs', icon: FileText },
-    { id: 'failedjobs', label: 'Failed Jobs', icon: AlertTriangle },
     { id: 'settings', label: 'SQL & Settings', icon: SettingsIcon }
   ];
 
@@ -615,7 +596,12 @@ CREATE POLICY "Allow authenticated admin write access" ON public.leaders
                           >
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                                <LeaderAvatar image={leader.image} name={leader.name} className="w-full h-full object-cover" />
+                                <img 
+                                  src={leader.image || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100'} 
+                                  alt={leader.name} 
+                                  className="w-full h-full object-cover"
+                                  referrerPolicy="no-referrer"
+                                />
                               </div>
                               <div>
                                 <h4 className="font-bold text-slate-800 dark:text-slate-200">{leader.name}</h4>
@@ -749,15 +735,6 @@ CREATE POLICY "Allow authenticated admin write access" ON public.leaders
 
           {/* E. AUTOMATED PORTRAIT SCANNER SYNC */}
           {activeMenu === 'sync' && <ImageSync onSyncComplete={fetchMetrics} />}
-
-          {/* G. GOVERNMENT DATA AUTOMATION PLATFORM */}
-          {activeMenu === 'leadersync' && <LeaderSyncPanel onSyncComplete={fetchMetrics} />}
-          {activeMenu === 'newssync' && <AdminNewsManager />}
-          {activeMenu === 'socialsync' && <SocialSyncPanel />}
-          {activeMenu === 'cronstatus' && <CronStatusPanel />}
-          {activeMenu === 'syncqueue' && <SyncQueuePanel />}
-          {activeMenu === 'logs' && <LogsPanel mode="all" />}
-          {activeMenu === 'failedjobs' && <LogsPanel mode="failed" />}
 
           {/* F. SYSTEM SQL SCHEMAS AND SETTINGS */}
           {activeMenu === 'settings' && (

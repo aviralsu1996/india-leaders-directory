@@ -31,7 +31,7 @@ export class GovPressProvider implements NewsProvider {
             content: `The Official Government Gazette published an executive notification authorizing structural upgrades for public infrastructure networks, heavily impacting ${options?.constituency || 'regional assemblies'}.`,
             source: 'Gov.in Gazette',
             source_url: 'https://india.gov.in',
-            image_url: '',
+            image_url: 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500',
             category: 'Policy Notification',
             published_at: new Date().toISOString()
           }
@@ -45,7 +45,7 @@ export class GovPressProvider implements NewsProvider {
         content: item.content || item.description || 'Verified official gazette notification issued by administrative departments.',
         source: item.author || 'Gov.in Ministry Bulletin',
         source_url: item.link || 'https://india.gov.in',
-        image_url: item.thumbnail || item.enclosure?.link || '',
+        image_url: item.thumbnail || item.enclosure?.link || 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500',
         category: 'Gazette Release',
         published_at: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString(),
       }));

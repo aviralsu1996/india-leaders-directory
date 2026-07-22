@@ -34,7 +34,7 @@ export class GNewsProvider implements NewsProvider {
         content: article.content || '',
         source: article.source?.name || 'GNews',
         source_url: article.url || '',
-        image_url: article.image || '',
+        image_url: article.image || 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500',
         category: 'Politics',
         published_at: article.publishedAt || new Date().toISOString(),
       }));

@@ -34,7 +34,7 @@ export class GoogleRSSProvider implements NewsProvider {
         content: item.content || item.description || '',
         source: item.author || 'Google News RSS',
         source_url: item.link || '',
-        image_url: item.thumbnail || item.enclosure?.link || '',
+        image_url: item.thumbnail || item.enclosure?.link || 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500',
         category: 'Politics',
         published_at: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString(),
       }));
