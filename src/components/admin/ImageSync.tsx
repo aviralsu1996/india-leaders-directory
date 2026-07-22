@@ -7,6 +7,7 @@ import {
 } from 'lucide-react';
 import { dbService, getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient';
 import { isPlaceholderImage, isPlaceholderCover } from '../../lib/imageUtils';
+import { imageSourcingService } from '../../services/image';
 import { SupabaseLeader } from '../../types';
 
 interface ImageSyncProps {
@@ -143,30 +144,47 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     setScanProgress({ current: 0, total: totalToScan, added: 0, failed: 0 });
 
     try {
-      // Call backend scan endpoint which searches Wikipedia API, updates DB, and writes logs
-      const res = await dbService.scanMissingImages();
-      
-      // Simulate ticking animation for high visual polish
-      for (let i = 1; i <= totalToScan; i++) {
-        await new Promise(r => setTimeout(r, 120));
-        const matched = res.results?.[i - 1];
-        setScanProgress(prev => ({
-          ...prev,
-          current: i,
-          added: prev.added + (matched?.status === 'found' ? 1 : 0),
-          failed: prev.failed + (matched?.status === 'not_found' ? 1 : 0)
-        }));
+      // Runs the verified-source priority chain (Lok Sabha -> Rajya Sabha -> PMO ->
+      // Ministry -> State Govt -> Wikipedia Commons) against every leader with a
+      // missing/placeholder image, without writing anything yet.
+      const candidates = await imageSourcingService.scanForMissingImageCandidates(
+        missingProfiles,
+        (current, total, found) => {
+          setScanProgress(prev => ({
+            ...prev,
+            current,
+            total,
+            added: prev.added + (found ? 1 : 0),
+            failed: prev.failed + (found ? 0 : 1),
+          }));
+        }
+      );
+
+      // Apply each verified candidate. applyImageCandidate re-checks the leader is
+      // still missing an image right before writing, so nothing verified/added by
+      // someone else in the meantime is ever overwritten.
+      let appliedCount = 0;
+      for (const candidate of candidates) {
+        const outcome = await imageSourcingService.applyImageCandidate(candidate);
+        if (outcome.applied) {
+          appliedCount++;
+          await dbService.addSystemLog(
+            'image_added',
+            `Found verified portrait for ${candidate.leaderName} via ${candidate.source}.`,
+            `Source URL: ${candidate.candidateUrl}`
+          );
+        }
       }
 
       await fetchLeadersAndLogs();
       onSyncComplete();
 
       // Trigger Commit and Deploy Pipeline
-      await runBuildAndDeploymentPipeline(`Automated Profile Sync: Mapped ${res.added} leadership portrait assets.`);
+      await runBuildAndDeploymentPipeline(`Automated Profile Sync: Mapped ${appliedCount} leadership portrait assets.`);
 
     } catch (err: any) {
       console.error(err);
-      setErrorMsg('An error occurred during automated Wikipedia media sync.');
+      setErrorMsg('An error occurred during automated verified-source image sync.');
       setAutomationActive('none');
     }
   };
@@ -214,52 +232,51 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     }
   };
 
-  // 3. Individual Replace with Wikipedia lookup
+  // 3. Individual lookup via the verified-source priority chain
   const handleWikidataLookupSingle = async (leader: SupabaseLeader) => {
+    if (!isProfilePlaceholder(leader.image)) {
+      setErrorMsg(`${leader.name} already has a verified image — it will not be overwritten.`);
+      return;
+    }
+
     setLoading(true);
     setErrorMsg(null);
     setSuccessMsg(null);
 
     try {
-      const cleanName = leader.name
-        .replace(/^(Shri|Smt|Dr|Mr|Mrs|Ms|Prof|Maulana)\.?\s+/i, '')
-        .replace(/\s*,?\s*(MP|MLA|Cabinet Minister|Governor|Chief Minister|MoS)$/i, '')
-        .trim();
+      const result = await imageSourcingService.findVerifiedImageCandidate(leader);
 
-      const url = `https://en.wikipedia.org/w/api.php?action=query&titles=${encodeURIComponent(cleanName)}&prop=pageimages&format=json&pithumbsize=500&origin=*`;
-      const res = await fetch(url);
-      const json = await res.json();
-      const pages = json.query?.pages;
-      
-      let foundUrl = '';
-      if (pages) {
-        for (const key in pages) {
-          if (pages[key].thumbnail?.source) {
-            foundUrl = pages[key].thumbnail.source;
-            break;
-          }
+      if (result?.officialImage) {
+        const outcome = await imageSourcingService.applyImageCandidate({
+          leaderId: leader.id,
+          leaderSlug: leader.slug,
+          leaderName: leader.name,
+          candidateUrl: result.officialImage,
+          source: result.source,
+          profileUrl: result.officialProfileUrl,
+        });
+
+        if (outcome.applied) {
+          await dbService.addSystemLog(
+            'image_added',
+            `Manually triggered verified-source lookup for ${leader.name}.`,
+            `Matched via ${result.source}. URL: ${result.officialImage}`
+          );
+
+          await fetchLeadersAndLogs();
+          setSuccessMsg(`Successfully matched and saved a verified profile photo for ${leader.name} (source: ${result.source}).`);
+
+          // Push commit and deploy
+          await runBuildAndDeploymentPipeline(`Updated profile photo for ${leader.name} via ${result.source}.`);
+        } else {
+          setErrorMsg(outcome.reason || `Could not apply the match for ${leader.name}.`);
         }
-      }
-
-      if (foundUrl) {
-        await dbService.updateLeader(leader.id, { image: foundUrl });
-        await dbService.addSystemLog(
-          'image_added',
-          `Manually triggered Wikipedia lookup for ${leader.name}.`,
-          `Asset matched successfully. URL: ${foundUrl}`
-        );
-        
-        await fetchLeadersAndLogs();
-        setSuccessMsg(`Successfully matched and saved Wikipedia profile photo for ${leader.name}!`);
-        
-        // Push commit and deploy
-        await runBuildAndDeploymentPipeline(`Updated profile photo for ${leader.name} via Wikidata search.`);
       } else {
-        setErrorMsg(`Could not find any Wikipedia portrait photo for ${leader.name}. Try uploading custom image.`);
+        setErrorMsg(`No verified photo found for ${leader.name} across official sources or Wikipedia. Try uploading a custom image.`);
       }
     } catch (err) {
       console.error(err);
-      setErrorMsg('Failed to look up image on Wikipedia/Wikimedia Commons.');
+      setErrorMsg('Failed to look up a verified image for this leader.');
     } finally {
       setLoading(false);
     }
