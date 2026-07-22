@@ -11,7 +11,7 @@ const DEFAULT_PRELOADED_NEWS: NewsItem[] = [
     content: 'Prime Minister Narendra Modi on Wednesday chaired a high-level review meeting to assess the progress of major infrastructure projects. Over 15 national highway links, 5 major railway network expansions, and state-wide solar corridors were discussed under the Gati Shakti master plan.',
     source: 'Press Trust of India',
     source_url: 'https://example.com/news/modi-infra-meeting',
-    image_url: 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500',
+    image_url: '',
     category: 'Governance',
     published_at: new Date(Date.now() - 3600000 * 4).toISOString(),
     is_pinned: true,
@@ -26,7 +26,7 @@ const DEFAULT_PRELOADED_NEWS: NewsItem[] = [
     content: 'Under the direct guidance of PM Narendra Modi, the Ministry of Electronics & IT initiated the rural digital empowerment scheme. This will create high-tech community labs in over 50,000 villages across 12 states by March 2027.',
     source: 'National News Grid',
     source_url: 'https://example.com/news/digital-panchayat',
-    image_url: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=500',
+    image_url: '',
     category: 'Development',
     published_at: new Date(Date.now() - 3600000 * 24).toISOString(),
     is_pinned: false,
@@ -195,10 +195,11 @@ export class NewsRepository {
     if (isSupabaseConfigured) {
       const sb = getSupabase();
       if (sb) {
-        // Upsert based on title and source_url if we want deduplication
+        // Upsert against the (leader_slug, title) unique constraint (migration 004) so
+        // re-running a sync never inserts the same article twice, even concurrently.
         const { data, error } = await sb
           .from('news')
-          .insert(items)
+          .upsert(items, { onConflict: 'leader_slug,title', ignoreDuplicates: true })
           .select();
 
         if (!error && data) {

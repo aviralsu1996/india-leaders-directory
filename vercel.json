@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/admin", "destination": "/index.html" },
+    { "source": "/leaders/:slug*", "destination": "/index.html" },
+    { "source": "/search", "destination": "/index.html" },
+    { "source": "/about", "destination": "/index.html" },
+    { "source": "/contact", "destination": "/index.html" }
+  ]
+}

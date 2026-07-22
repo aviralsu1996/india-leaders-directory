@@ -6,3 +6,10 @@ coverage/
 *.log
 .env*
 !.env.example
+
+# Generated at build time by scripts/generate-sitemap.ts (prebuild) — never hand-edit or commit
+public/sitemap.xml
+public/robots.txt
+
+__pycache__/
+*.pyc

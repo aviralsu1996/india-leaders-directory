@@ -26,11 +26,27 @@ serve(async (req) => {
       throw new Error("Missing Supabase configuration environment variables.");
     }
 
+    // Bound how many leaders a single invocation processes. With ~668 leaders and up
+    // to 3 sequential provider HTTP calls each, an unbounded loop risks exceeding the
+    // Edge Function execution time limit and never completing a run. A scheduled cron
+    // (migration 005) calls this function every 6 hours; a random batch each run means
+    // every leader gets covered over time instead of the same alphabetical prefix
+    // always winning (and everyone after a timeout never being processed).
+    let batchLimit = 40;
+    try {
+      const body = await req.json();
+      if (body && Number.isFinite(body.limit) && body.limit > 0) {
+        batchLimit = Math.min(body.limit, 200);
+      }
+    } catch {
+      // No/invalid JSON body — use the default batch size.
+    }
+
     // Create Supabase Admin client
     const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
 
     // Fetch active leaders
-    const { data: leaders, error: leadersError } = await supabase
+    const { data: allLeaders, error: leadersError } = await supabase
       .from("leaders")
       .select("slug, name, constituency, party, designation")
       .eq("status", "Published");
@@ -39,18 +55,22 @@ serve(async (req) => {
       throw new Error(`Failed to load leaders from database: ${leadersError.message}`);
     }
 
-    logs.push(`[DATABASE] Loaded ${leaders?.length || 0} active leaders for syncing`);
+    logs.push(`[DATABASE] Loaded ${allLeaders?.length || 0} active leaders`);
 
-    if (!leaders || leaders.length === 0) {
+    if (!allLeaders || allLeaders.length === 0) {
       return new Response(
         JSON.stringify({ success: true, processed: 0, message: "No active leaders found to sync.", logs }),
         { headers: { ...corsHeaders, "Content-Type": "application/json" } }
       );
     }
 
+    // Shuffle so repeated scheduled runs cover different leaders instead of always
+    // stalling on the same alphabetical prefix if a run times out partway through.
+    const leaders = [...allLeaders].sort(() => Math.random() - 0.5).slice(0, batchLimit);
+    logs.push(`[BATCH] Processing ${leaders.length} of ${allLeaders.length} leaders this run (limit=${batchLimit})`);
+
     let totalSaved = 0;
 
-    // We process leaders. To prevent hitting free tier api rate limits, we sync the first few or do sequentially
     for (const leader of leaders) {
       logs.push(`[LEADER] Processing news sync for ${leader.name}`);
       let fetchedArticles: any[] = [];
@@ -74,7 +94,7 @@ serve(async (req) => {
               content: item.content || item.description || "",
               source: item.author || "Google News",
               source_url: item.link || "",
-              image_url: item.thumbnail || "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500",
+              image_url: item.thumbnail || "",
               category: "Politics",
               published_at: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString(),
             }));
@@ -100,7 +120,7 @@ serve(async (req) => {
                 content: item.content,
                 source: item.source?.name || "GNews",
                 source_url: item.url,
-                image_url: item.image || "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500",
+                image_url: item.image || "",
                 category: "Politics",
                 published_at: item.publishedAt || new Date().toISOString(),
               }));
@@ -127,7 +147,7 @@ serve(async (req) => {
                 content: item.content,
                 source: item.source?.name || "NewsAPI",
                 source_url: item.url,
-                image_url: item.urlToImage || "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500",
+                image_url: item.urlToImage || "",
                 category: "Politics",
                 published_at: item.publishedAt || new Date().toISOString(),
               }));
@@ -142,25 +162,18 @@ serve(async (req) => {
       if (fetchedArticles.length > 0) {
         logs.push(`[SYNC] Retrieved ${fetchedArticles.length} items from ${providerName}`);
 
-        // Deduplicate & Save
-        for (const art of fetchedArticles) {
-          // Check if article already exists in Supabase
-          const { data: existing, error: existError } = await supabase
-            .from("news")
-            .select("id")
-            .eq("leader_slug", leader.slug)
-            .eq("title", art.title)
-            .limit(1);
+        // Upsert against the (leader_slug, title) unique constraint (migration 004).
+        // This is race-safe across concurrent/overlapping cron runs, unlike a
+        // check-then-insert pattern which can double-insert the same article.
+        const { data: saved, error: upsertError } = await supabase
+          .from("news")
+          .upsert(fetchedArticles, { onConflict: "leader_slug,title", ignoreDuplicates: true })
+          .select("id");
 
-          if (!existError && (!existing || existing.length === 0)) {
-            const { error: insertError } = await supabase
-              .from("news")
-              .insert([art]);
-
-            if (!insertError) {
-              totalSaved++;
-            }
-          }
+        if (upsertError) {
+          logs.push(`[SYNC ERROR] Upsert failed for ${leader.name}: ${upsertError.message}`);
+        } else {
+          totalSaved += saved?.length || 0;
         }
       } else {
         logs.push(`[SYNC WARN] No news retrieved for ${leader.name}`);

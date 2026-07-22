@@ -8,6 +8,7 @@ import {
 import { dbService, getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient';
 import { SupabaseLeader, LeaderCategory } from '../../types';
 import ImageLibrary from './ImageLibrary';
+import { LeaderAvatar } from '../directory/GovtDesignSystem';
 
 interface LeadersCrudProps {
   categoryFilter?: string;
@@ -181,7 +182,7 @@ export default function LeadersCrud({ categoryFilter = 'all', onRefreshStats }: 
       instagram: formState.instagram,
       youtube: formState.youtube,
       website: formState.website,
-      image: formState.image || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400',
+      image: formState.image || '',
       cover_image: formState.cover_image,
       gallery: [],
       featured: formState.featured,
@@ -465,15 +466,7 @@ export default function LeadersCrud({ categoryFilter = 'all', onRefreshStats }: 
                     <td className="p-3.5">
                       <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 shadow-sm shrink-0">
-                          <img 
-                            src={leader.image || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100'} 
-                            alt={leader.name} 
-                            className="w-full h-full object-cover"
-                            referrerPolicy="no-referrer"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
-                            }}
-                          />
+                          <LeaderAvatar image={leader.image} name={leader.name} className="w-full h-full object-cover" />
                         </div>
                         <div>
                           <p className="font-bold text-slate-800 dark:text-slate-100">{leader.name}</p>
@@ -574,12 +567,7 @@ export default function LeadersCrud({ categoryFilter = 'all', onRefreshStats }: 
               
               <div className="flex items-center gap-4 translate-y-8">
                 <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-white dark:border-emerald-500 shadow-lg bg-slate-100">
-                  <img 
-                    src={activeLeader.image || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=200'} 
-                    alt={activeLeader.name} 
-                    className="w-full h-full object-cover"
-                    referrerPolicy="no-referrer"
-                  />
+                  <LeaderAvatar image={activeLeader.image} name={activeLeader.name} className="w-full h-full object-cover" />
                 </div>
                 <div>
                   <h3 className="text-base font-black text-white leading-none uppercase tracking-wider">{activeLeader.name}</h3>

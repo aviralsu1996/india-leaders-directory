@@ -10,7 +10,8 @@ import { SupabaseLeader } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
 import { useQuery } from '@tanstack/react-query';
 import { newsRepository } from '../../news/NewsRepository';
-import { PRELOADED_MINISTERS, MinisterDossier, getDirectImageUrl } from '../KnowYourMinister';
+import { PRELOADED_MINISTERS, MinisterDossier } from '../KnowYourMinister';
+import { getDirectImageUrl } from '../../lib/imageUtils';
 import { getSeededReviewsList, getSeededStats } from '../../lib/reviewsSeeder';
 import { LeaderAvatar, LeaderCover } from './GovtDesignSystem';
 
@@ -725,7 +726,7 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
                                     className="w-full h-full object-cover group-hover:scale-105 transition duration-500"
                                     referrerPolicy="no-referrer"
                                     onError={(e) => {
-                                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500';
+                                      (e.target as HTMLImageElement).style.display = 'none';
                                     }}
                                   />
                                   <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-md px-2 py-0.5 rounded text-[10px] font-mono font-bold text-white uppercase tracking-wider">
@@ -804,12 +805,12 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
                               className="aspect-square bg-slate-100 dark:bg-slate-900 rounded-xl overflow-hidden border border-slate-100 dark:border-slate-900 relative group cursor-zoom-in shadow-sm animate-fade-in"
                               onClick={() => setZoomedImage(url)}
                             >
-                              <img 
-                                src={getDirectImageUrl(url)} 
-                                alt="Gallery item" 
-                                className="w-full h-full object-cover" 
+                              <img
+                                src={getDirectImageUrl(url)}
+                                alt="Gallery item"
+                                className="w-full h-full object-cover"
                                 onError={(e) => {
-                                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500';
+                                  (e.target as HTMLImageElement).style.display = 'none';
                                 }}
                               />
                             </div>
@@ -1016,7 +1017,6 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div className="bg-white dark:bg-slate-950 border border-slate-150 dark:border-slate-850 rounded-xl overflow-hidden shadow-sm flex flex-col group">
                           <div className="aspect-video bg-slate-100 dark:bg-slate-900 relative flex items-center justify-center">
-                            <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=500" alt="Video thumbnail" className="w-full h-full object-cover" />
                             <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/30 transition">
                               <span className="p-3 bg-red-600 text-white rounded-full text-xs font-mono font-bold animate-pulse shadow-md">▶</span>
                             </div>
@@ -1033,7 +1033,6 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
 
                         <div className="bg-white dark:bg-slate-950 border border-slate-150 dark:border-slate-850 rounded-xl overflow-hidden shadow-sm flex flex-col group">
                           <div className="aspect-video bg-slate-100 dark:bg-slate-900 relative flex items-center justify-center">
-                            <img src="https://images.unsplash.com/photo-1557804506-669a67965ba0?w=500" alt="Video thumbnail" className="w-full h-full object-cover" />
                             <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/30 transition">
                               <span className="p-3 bg-red-600 text-white rounded-full text-xs font-mono font-bold shadow-md">▶</span>
                             </div>
@@ -1050,7 +1049,6 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
 
                         <div className="bg-white dark:bg-slate-950 border border-slate-150 dark:border-slate-850 rounded-xl overflow-hidden shadow-sm flex flex-col group">
                           <div className="aspect-video bg-slate-100 dark:bg-slate-900 relative flex items-center justify-center">
-                            <img src="https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500" alt="Video thumbnail" className="w-full h-full object-cover" />
                             <div className="absolute inset-0 bg-black/40 flex items-center justify-center group-hover:bg-black/30 transition">
                               <span className="p-3 bg-red-600 text-white rounded-full text-xs font-mono font-bold shadow-md">▶</span>
                             </div>
@@ -1454,14 +1452,10 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
                 className="bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-900 p-4 rounded-xl flex items-center gap-4 cursor-pointer hover:border-emerald-500/30 transition-all"
               >
                 <div className="w-16 h-16 rounded-xl overflow-hidden bg-slate-100 shrink-0 border border-slate-100 dark:border-slate-900">
-                  <img
-                    src={getDirectImageUrl(lead.image)}
-                    alt={lead.name}
-                    referrerPolicy="no-referrer"
+                  <LeaderAvatar
+                    image={lead.image}
+                    name={lead.name}
                     className="w-full h-full object-cover object-top"
-                    onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
-                    }}
                   />
                 </div>
                 <div className="min-w-0 flex-1 text-left">
@@ -1504,9 +1498,7 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
               src={getDirectImageUrl(zoomedImage)}
               alt="Zoomed"
               className="max-w-full max-h-[85vh] object-contain rounded-xl shadow-2xl"
-              onError={(e) => {
-                (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1200';
-              }}
+              onError={() => setZoomedImage(null)}
             />
           </motion.div>
         )}

@@ -255,7 +255,7 @@ export default function BulkImport({ onImportComplete }: BulkImportProps) {
           constituency: rec.constituency,
           party: rec.party,
           bio: rec.bio,
-          image: rec.image || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400',
+          image: rec.image || '',
           status: 'Published' as const,
           gender: 'Male',
           dob: '1970-01-01',
