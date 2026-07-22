@@ -10,7 +10,8 @@ import { SupabaseLeader } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
 import { useQuery } from '@tanstack/react-query';
 import { newsRepository } from '../../news/NewsRepository';
-import { PRELOADED_MINISTERS, MinisterDossier, getDirectImageUrl } from '../KnowYourMinister';
+import { PRELOADED_MINISTERS, MinisterDossier } from '../KnowYourMinister';
+import { getDirectImageUrl } from '../../lib/imageUtils';
 import { getSeededReviewsList, getSeededStats } from '../../lib/reviewsSeeder';
 import { LeaderAvatar, LeaderCover } from './GovtDesignSystem';
 

@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService, compressToWebP } from '../../lib/supabaseClient';
-import { getDirectImageUrl } from '../KnowYourMinister';
+import { getDirectImageUrl } from '../../lib/imageUtils';
 import AdminNewsManager from './AdminNewsManager';
 
 interface DirectoryAdminProps {

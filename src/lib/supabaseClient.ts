@@ -1,5 +1,6 @@
 import { createClient } from '@supabase/supabase-js';
 import { SupabaseLeader } from '../types';
+import { isPlaceholderImage } from './imageUtils';
 
 // Browser env (Vite) or Node env (server)
 const browserEnv = typeof import.meta !== 'undefined' ? (import.meta as any).env : undefined;
@@ -29,36 +30,6 @@ export function getSupabase() {
   if (!isSupabaseConfigured) return null;
   if (!supabaseInstance) supabaseInstance = createClient(supabaseUrl, supabaseAnonKey);
   return supabaseInstance;
-}
-
-// --- Helper utilities ---
-const POLITICAL_COVERS = [
-  'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1200&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=1200&auto=format&fit=crop&q=80',
-  'https://images.unsplash.com/photo-1566847438217-76e82d383f84?w=1200&auto=format&fit=crop&q=80'
-];
-
-export function isPlaceholderImage(url?: string) {
-  if (!url) return true;
-  const lower = String(url).toLowerCase();
-  return lower.includes('placeholder') || lower.includes('avatar') || lower.trim() === '';
-}
-
-export function isPlaceholderCover(url?: string) {
-  if (!url) return true;
-  const lower = String(url).toLowerCase();
-  return (
-    lower.includes('placeholder') ||
-    lower.includes('unsplash.com/photo-1540910419892-4a36d2c3266c') ||
-    lower.trim() === ''
-  );
-}
-
-function getCoverForLeader(category?: string, state?: string) {
-  const idx = ((category || '') + (state || ''))
-    .split('')
-    .reduce((s, ch) => s + ch.charCodeAt(0), 0);
-  return POLITICAL_COVERS[idx % POLITICAL_COVERS.length];
 }
 
 async function searchWikipediaPortrait(name: string): Promise<string | null> {
@@ -323,10 +294,9 @@ const { data, error } = await query.maybeSingle();
     for (const leader of targetLeaders) {
       let updated = false;
       const updates: Partial<SupabaseLeader> = {};
-      if (isPlaceholderCover(leader.cover_image)) {
-        updates.cover_image = getCoverForLeader(leader.category, leader.state);
-        updated = true;
-      }
+      // Cover banners are decorative, not an official document — there is no verified
+      // per-leader source for them, so missing covers are left empty and rendered via
+      // the neutral GovtCoverBanner fallback instead of a stock photo.
       if (isPlaceholderImage(leader.image)) {
         const wikiUrl = await searchWikipediaPortrait(leader.name);
         if (wikiUrl) {
@@ -372,19 +342,15 @@ const { data, error } = await query.maybeSingle();
     return { success: true, scanned, added, failed, results };
   },
 
+  // NOTE: There is no verified official source for a leader's decorative cover banner
+  // (unlike a portrait photo). This intentionally does not write stock/placeholder
+  // imagery into cover_image — leaders without a real cover simply render the neutral
+  // GovtCoverBanner fallback. Kept as a reporting-only scan for the admin dashboard.
   async generateMissingCovers(): Promise<{ success: boolean; scanned: number; generated: number }> {
-    let scanned = 0,
-      generated = 0;
     const allLeaders = await this.getLeaders();
-    scanned = allLeaders.length;
-    for (const leader of allLeaders) {
-      if (isPlaceholderCover(leader.cover_image)) {
-        const resolved = getCoverForLeader(leader.category, leader.state);
-        await this.updateLeader(leader.id, { cover_image: resolved });
-        generated++;
-      }
-    }
-    return { success: true, scanned, generated };
+    // generated is always 0: no verified cover source exists, so nothing is written —
+    // leaders keep rendering the neutral GovtCoverBanner fallback instead.
+    return { success: true, scanned: allLeaders.length, generated: 0 };
   },
 
   async getSystemLogs(): Promise<{ success: boolean; logs: any[] }> {

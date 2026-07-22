@@ -37,10 +37,7 @@ import {
 
 import ContactUs from './ContactUs';
 import { getSeededReviewsList, getSeededStats } from '../lib/reviewsSeeder';
-
-export const getDirectImageUrl = (url?: string) => {
-  return url || '';
-};
+import { getDirectImageUrl } from '../lib/imageUtils';
 
 export interface GroundingSource {
   uri: string;

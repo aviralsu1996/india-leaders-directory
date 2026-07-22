@@ -3,7 +3,6 @@ import { motion } from 'motion/react';
 import { Search, Filter, MapPin, Award, Users, Shield, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
 import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
-import { getDirectImageUrl } from '../KnowYourMinister';
 import { LeaderAvatar, LeaderCover } from './GovtDesignSystem';
 
 interface SearchPageProps {

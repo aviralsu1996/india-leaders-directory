@@ -8,10 +8,6 @@ import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
 import { LeaderAvatar, LeaderCover } from './GovtDesignSystem';
 
-const getDirectImageUrl = (url?: string) => {
-  return url || '';
-};
-
 interface DirectoryHomeProps {
   onSelectLeader: (slug: string) => void;
   onNavigateTo: (page: string, params?: any) => void;

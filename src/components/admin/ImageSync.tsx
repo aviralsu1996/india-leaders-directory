@@ -6,6 +6,7 @@ import {
   CheckCircle2, Terminal, Server, GitBranch, Play
 } from 'lucide-react';
 import { dbService, getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient';
+import { isPlaceholderImage, isPlaceholderCover } from '../../lib/imageUtils';
 import { SupabaseLeader } from '../../types';
 
 interface ImageSyncProps {
@@ -70,29 +71,11 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     }
   };
 
-  // Helper to determine if an image is a placeholder
-  const isProfilePlaceholder = (url?: string) => {
-    if (!url) return true;
-    const lower = url.toLowerCase();
-    return (
-      lower.includes('placeholder') || 
-      lower.includes('avatar') || 
-      lower.includes('unsplash.com/photo-1541872703-74c5e44368f9') ||
-      lower.trim() === ''
-    );
-  };
+  // Placeholder detection is centralized in lib/imageUtils.ts (isPlaceholderImage/isPlaceholderCover)
+  const isProfilePlaceholder = isPlaceholderImage;
+  const isCoverPlaceholder = isPlaceholderCover;
 
-  const isCoverPlaceholder = (url?: string) => {
-    if (!url) return true;
-    const lower = url.toLowerCase();
-    return (
-      lower.includes('placeholder') || 
-      lower.includes('unsplash.com/photo-1540910419892-4a36d2c3266c') || // Standard fallback default
-      lower.trim() === ''
-    );
-  };
-
-  const filteredLeaders = leaders.filter(l => 
+  const filteredLeaders = leaders.filter(l =>
     l.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     (l.party || '').toLowerCase().includes(searchQuery.toLowerCase()) ||
     (l.constituency || '').toLowerCase().includes(searchQuery.toLowerCase())

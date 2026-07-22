@@ -1,9 +1,5 @@
 import React from 'react';
-import { isPlaceholderImage, isPlaceholderCover } from '../../lib/supabaseClient';
-
-const getDirectImageUrl = (url?: string) => {
-  return url || '';
-};
+import { getDirectImageUrl, isPlaceholderImage, isPlaceholderCover } from '../../lib/imageUtils';
 
 /**
  * High-fidelity vector SVG for the Lion Capital of Ashoka (subtle watermark)
