@@ -351,15 +351,13 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     
     setLoading(true);
     try {
-      const updateData = type === 'profile' 
-        ? { image: 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100' }
-        : { cover_image: 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1200' };
+      const updateData = type === 'profile' ? { image: '' } : { cover_image: '' };
 
       await dbService.updateLeader(leader.id, updateData);
       await dbService.addSystemLog(
         'image_failed',
         `Admin deleted ${type} image for ${leader.name}.`,
-        `Reset to default system asset placeholder.`
+        `Cleared — leader now renders the neutral government placeholder until a verified image is added.`
       );
 
       await fetchLeadersAndLogs();
@@ -375,39 +373,28 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     }
   };
 
-  // 6. Regenerate Cover Image Single
+  // 6. Reset Cover Image Single
+  // NOTE: there is no verified official source for a leader's decorative cover banner
+  // (unlike a portrait photo), so this clears cover_image rather than assigning a stock
+  // photo — the leader then renders the neutral GovtCoverBanner fallback.
   const handleRegenerateCoverSingle = async (leader: SupabaseLeader) => {
     setLoading(true);
     try {
-      const POLITICAL_COVERS = [
-        'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=1200',
-        'https://images.unsplash.com/photo-1532375810709-75b1da00537c?w=1200',
-        'https://images.unsplash.com/photo-1566847438217-76e82d383f84?w=1200',
-        'https://images.unsplash.com/photo-1517048676732-d65bc937f952?w=1200',
-        'https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=1200'
-      ];
-      let sum = 0;
-      for (let i = 0; i < leader.name.length; i++) {
-        sum += leader.name.charCodeAt(i);
-      }
-      // pick randomized but stable themed cover
-      const coverUrl = POLITICAL_COVERS[sum % POLITICAL_COVERS.length];
-
-      await dbService.updateLeader(leader.id, { cover_image: coverUrl });
+      await dbService.updateLeader(leader.id, { cover_image: '' });
       await dbService.addSystemLog(
         'image_updated',
-        `Regenerated cover image single for ${leader.name}.`,
-        `Assigned cover art theme path: ${coverUrl.split('?')[0]}`
+        `Reset cover image for ${leader.name}.`,
+        `Cleared — no verified cover source exists, so the neutral government banner is used instead.`
       );
 
       await fetchLeadersAndLogs();
-      setSuccessMsg(`Regenerated cover image successfully for ${leader.name}!`);
+      setSuccessMsg(`Reset cover image for ${leader.name}. Displaying the neutral government banner.`);
 
       // Trigger Commit and Deploy
-      await runBuildAndDeploymentPipeline(`Regenerated cover layout for ${leader.name}.`);
+      await runBuildAndDeploymentPipeline(`Reset cover layout for ${leader.name}.`);
     } catch (err) {
       console.error(err);
-      setErrorMsg('Failed to regenerate cover image.');
+      setErrorMsg('Failed to reset cover image.');
     } finally {
       setLoading(false);
     }

@@ -6,11 +6,13 @@ import {
   Loader2, Moon, Sun, ArrowRight, UserPlus, Info, Copy, FileSpreadsheet, RefreshCw
 } from 'lucide-react';
 import { getSupabase, isSupabaseConfigured, dbService } from '../../lib/supabaseClient';
+import { isPlaceholderImage } from '../../lib/imageUtils';
 import { SupabaseLeader, LeaderCategory } from '../../types';
 import LeadersCrud from './LeadersCrud';
 import ImageLibrary from './ImageLibrary';
 import ImageSync from './ImageSync';
 import BulkImport from './BulkImport';
+import { LeaderAvatar } from '../directory/GovtDesignSystem';
 
 type SidebarMenu = 
   | 'dashboard'
@@ -131,11 +133,7 @@ export default function AdminDashboard() {
       const totalParties = parties.size;
 
       // Missing Images
-      const missingImages = allLeaders.filter(l => 
-        !l.image || 
-        l.image.includes('placeholder') || 
-        l.image.includes('unsplash.com/photo-1541872703-74c5e44368f9')
-      ).length;
+      const missingImages = allLeaders.filter(l => isPlaceholderImage(l.image)).length;
 
       setStats({
         totalLeaders,
@@ -230,7 +228,7 @@ CREATE TABLE IF NOT EXISTS public.leaders (
     instagram VARCHAR(255),
     youtube VARCHAR(255),
     website VARCHAR(255),
-    image TEXT DEFAULT 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400',
+    image TEXT,
     cover_image TEXT,
     gallery TEXT[] DEFAULT '{}',
     featured BOOLEAN DEFAULT FALSE,
@@ -596,12 +594,7 @@ CREATE POLICY "Allow authenticated admin write access" ON public.leaders
                           >
                             <div className="flex items-center gap-3">
                               <div className="w-8 h-8 rounded-full overflow-hidden bg-slate-100 dark:bg-slate-900 border border-slate-200 dark:border-slate-800">
-                                <img 
-                                  src={leader.image || 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100'} 
-                                  alt={leader.name} 
-                                  className="w-full h-full object-cover"
-                                  referrerPolicy="no-referrer"
-                                />
+                                <LeaderAvatar image={leader.image} name={leader.name} className="w-full h-full object-cover" />
                               </div>
                               <div>
                                 <h4 className="font-bold text-slate-800 dark:text-slate-200">{leader.name}</h4>

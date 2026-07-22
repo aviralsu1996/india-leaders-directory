@@ -415,7 +415,7 @@ export default function ImageLibrary({ onSelectImage, selectedUrl }: ImageLibrar
                     className="w-full h-full object-cover group-hover:scale-105 transition-all duration-300"
                     referrerPolicy="no-referrer"
                     onError={(e) => {
-                      (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400';
+                      (e.target as HTMLImageElement).style.display = 'none';
                     }}
                   />
                   

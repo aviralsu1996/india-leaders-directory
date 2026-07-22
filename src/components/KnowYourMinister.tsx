@@ -1135,7 +1135,7 @@ export default function KnowYourMinister() {
                             className="w-full h-full object-cover object-top"
                             onError={(e) => {
                               console.error("Failed to load thumbnail image for", value.name, "url:", value.profileImage);
-                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
+                              (e.target as HTMLImageElement).style.display = 'none';
                             }}
                           />
                         );
@@ -1236,7 +1236,7 @@ export default function KnowYourMinister() {
                             className="w-full h-full object-cover object-top"
                             onError={(e) => {
                               console.error("Failed to load representative photo for", activeLeader.name, "url:", activeLeader.profileImage);
-                              (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=400';
+                              (e.target as HTMLImageElement).style.display = 'none';
                             }}
                           />
                         );
@@ -1636,7 +1636,7 @@ export default function KnowYourMinister() {
                                         referrerPolicy="no-referrer"
                                         className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                                         onError={(e) => {
-                                          e.currentTarget.src = "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=800&auto=format&fit=crop&q=80";
+                                          e.currentTarget.style.display = 'none';
                                         }}
                                       />
                                       {/* Hover overlay button to zoom */}
@@ -2155,7 +2155,7 @@ export default function KnowYourMinister() {
                                 referrerPolicy="no-referrer"
                                 className="w-full h-full object-cover object-top"
                                 onError={(e) => {
-                                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
+                                  (e.target as HTMLImageElement).style.display = 'none';
                                 }}
                               />
                             ) : (
@@ -2183,7 +2183,7 @@ export default function KnowYourMinister() {
                                 referrerPolicy="no-referrer"
                                 className="w-full h-full object-cover object-top"
                                 onError={(e) => {
-                                  (e.target as HTMLImageElement).src = 'https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&q=80&w=100';
+                                  (e.target as HTMLImageElement).style.display = 'none';
                                 }}
                               />
                             ) : (

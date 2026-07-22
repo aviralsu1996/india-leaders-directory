@@ -34,7 +34,7 @@ export class MediastackProvider implements NewsProvider {
         content: article.description || '',
         source: article.source || 'Mediastack',
         source_url: article.url || '',
-        image_url: article.image || 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500',
+        image_url: article.image || '',
         category: article.category || 'Politics',
         published_at: article.published_at || new Date().toISOString(),
       }));

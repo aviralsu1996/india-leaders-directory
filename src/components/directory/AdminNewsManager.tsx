@@ -126,7 +126,7 @@ export default function AdminNewsManager() {
       content: `A custom-authored ministerial update highlighting progressive constituency targets and infrastructural milestones designed for national growth.`,
       source: 'State Information Wing',
       source_url: 'https://example.com/briefings',
-      image_url: 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500',
+      image_url: '',
       category: 'Policy',
       published_at: new Date().toISOString(),
       is_pinned: false,

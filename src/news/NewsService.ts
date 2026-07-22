@@ -108,7 +108,7 @@ export class NewsService {
       content: art.content || art.summary,
       source: art.source,
       source_url: art.source_url,
-      image_url: art.image_url || 'https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500',
+      image_url: art.image_url || '',
       category: art.category || 'Politics',
       published_at: art.published_at || new Date().toISOString(),
       is_pinned: false,

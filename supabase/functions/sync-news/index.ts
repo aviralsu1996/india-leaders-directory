@@ -74,7 +74,7 @@ serve(async (req) => {
               content: item.content || item.description || "",
               source: item.author || "Google News",
               source_url: item.link || "",
-              image_url: item.thumbnail || "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500",
+              image_url: item.thumbnail || "",
               category: "Politics",
               published_at: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString(),
             }));
@@ -100,7 +100,7 @@ serve(async (req) => {
                 content: item.content,
                 source: item.source?.name || "GNews",
                 source_url: item.url,
-                image_url: item.image || "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500",
+                image_url: item.image || "",
                 category: "Politics",
                 published_at: item.publishedAt || new Date().toISOString(),
               }));
@@ -127,7 +127,7 @@ serve(async (req) => {
                 content: item.content,
                 source: item.source?.name || "NewsAPI",
                 source_url: item.url,
-                image_url: item.urlToImage || "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c?w=500",
+                image_url: item.urlToImage || "",
                 category: "Politics",
                 published_at: item.publishedAt || new Date().toISOString(),
               }));
