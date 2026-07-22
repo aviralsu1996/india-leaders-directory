@@ -9,7 +9,7 @@ import LeaderDetailsPage from './components/directory/LeaderDetailsPage';
 import SearchPage from './components/directory/SearchPage';
 import AboutPage from './components/directory/AboutPage';
 import ContactPage from './components/directory/ContactPage';
-import AdminDashboard from './components/admin/AdminDashboard';
+import DirectoryAdmin from './components/directory/DirectoryAdmin';
 
 export default function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -165,7 +165,11 @@ export default function App() {
 
   // If path starts with /admin, bypass the public layout completely to keep them 100% independent
   if (currentPath.startsWith('/admin')) {
-    return <AdminDashboard />;
+    return (
+      <div className={`min-h-screen ${isDarkMode ? 'bg-[#020705] text-slate-200 dark' : 'bg-slate-50 text-slate-800'} transition-colors duration-300 font-sans p-4 md:p-8 max-w-7xl mx-auto`}>
+        <DirectoryAdmin onSelectLeader={handleSelectLeader} />
+      </div>
+    );
   }
 
   return (
