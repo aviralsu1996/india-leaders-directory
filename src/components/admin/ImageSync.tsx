@@ -7,7 +7,8 @@ import {
 } from 'lucide-react';
 import { dbService, getSupabase, isSupabaseConfigured } from '../../lib/supabaseClient';
 import { isPlaceholderImage, isPlaceholderCover } from '../../lib/imageUtils';
-import { imageSourcingService } from '../../services/image';
+import { imageSourcingService, imageDownloadPipeline } from '../../services/image';
+import { auditLogRepository } from '../../services/audit/AuditLogRepository';
 import { SupabaseLeader } from '../../types';
 
 interface ImageSyncProps {
@@ -49,10 +50,8 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     try {
       const data = await dbService.getLeaders();
       setLeaders(data);
-      const logRes = await dbService.getSystemLogs();
-      if (logRes.success) {
-        setSystemLogs(logRes.logs);
-      }
+      const logs = await auditLogRepository.getRecent({ limit: 100 });
+      setSystemLogs(logs);
     } catch (err) {
       console.error('Failed to load leaders and logs:', err);
       setErrorMsg('Failed to fetch political leader data from database.');
@@ -63,10 +62,8 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
 
   const loadLogsOnly = async () => {
     try {
-      const logRes = await dbService.getSystemLogs();
-      if (logRes.success) {
-        setSystemLogs(logRes.logs);
-      }
+      const logs = await auditLogRepository.getRecent({ limit: 100 });
+      setSystemLogs(logs);
     } catch (err) {
       console.error('Failed to fetch system logs:', err);
     }
@@ -160,20 +157,15 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
         }
       );
 
-      // Apply each verified candidate. applyImageCandidate re-checks the leader is
-      // still missing an image right before writing, so nothing verified/added by
-      // someone else in the meantime is ever overwritten.
+      // Download + re-host each verified candidate into Supabase Storage.
+      // downloadAndStore re-checks the leader is still missing an image right
+      // before writing, content-hashes the download to skip duplicate/shared
+      // placeholder images, and queues a retry on any failure instead of
+      // silently dropping it. Every attempt is logged to audit_logs.
       let appliedCount = 0;
       for (const candidate of candidates) {
-        const outcome = await imageSourcingService.applyImageCandidate(candidate);
-        if (outcome.applied) {
-          appliedCount++;
-          await dbService.addSystemLog(
-            'image_added',
-            `Found verified portrait for ${candidate.leaderName} via ${candidate.source}.`,
-            `Source URL: ${candidate.candidateUrl}`
-          );
-        }
+        const outcome = await imageDownloadPipeline.downloadAndStore(candidate, leaders);
+        if (outcome.applied) appliedCount++;
       }
 
       await fetchLeadersAndLogs();
@@ -247,22 +239,19 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
       const result = await imageSourcingService.findVerifiedImageCandidate(leader);
 
       if (result?.officialImage) {
-        const outcome = await imageSourcingService.applyImageCandidate({
-          leaderId: leader.id,
-          leaderSlug: leader.slug,
-          leaderName: leader.name,
-          candidateUrl: result.officialImage,
-          source: result.source,
-          profileUrl: result.officialProfileUrl,
-        });
+        const outcome = await imageDownloadPipeline.downloadAndStore(
+          {
+            leaderId: leader.id,
+            leaderSlug: leader.slug,
+            leaderName: leader.name,
+            candidateUrl: result.officialImage,
+            source: result.source,
+            profileUrl: result.officialProfileUrl,
+          },
+          leaders
+        );
 
         if (outcome.applied) {
-          await dbService.addSystemLog(
-            'image_added',
-            `Manually triggered verified-source lookup for ${leader.name}.`,
-            `Matched via ${result.source}. URL: ${result.officialImage}`
-          );
-
           await fetchLeadersAndLogs();
           setSuccessMsg(`Successfully matched and saved a verified profile photo for ${leader.name} (source: ${result.source}).`);
 
@@ -341,11 +330,15 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
       await dbService.updateLeader(leader.id, updateData);
 
       // Log success
-      await dbService.addSystemLog(
-        type === 'profile' ? 'image_added' : 'image_updated',
-        `Uploaded custom ${type} image for ${leader.name} to Supabase Storage.`,
-        `Saved under bucket pathway: /${bucketName}/${folderPath}`
-      );
+      await auditLogRepository.log({
+        leader_id: leader.id,
+        leader_slug: leader.slug,
+        action: type === 'profile' ? 'image_upload' : 'cover_upload',
+        provider: 'Manual Upload',
+        status: 'success',
+        message: `Uploaded custom ${type} image for ${leader.name} to Supabase Storage.`,
+        details: { path: `${bucketName}/${folderPath}` },
+      });
 
       await fetchLeadersAndLogs();
       setSuccessMsg(`Successfully uploaded custom ${type} image for ${leader.name}!`);
@@ -371,11 +364,14 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
       const updateData = type === 'profile' ? { image: '' } : { cover_image: '' };
 
       await dbService.updateLeader(leader.id, updateData);
-      await dbService.addSystemLog(
-        'image_failed',
-        `Admin deleted ${type} image for ${leader.name}.`,
-        `Cleared — leader now renders the neutral government placeholder until a verified image is added.`
-      );
+      await auditLogRepository.log({
+        leader_id: leader.id,
+        leader_slug: leader.slug,
+        action: type === 'profile' ? 'image_delete' : 'cover_delete',
+        provider: 'Admin',
+        status: 'warning',
+        message: `Admin deleted ${type} image for ${leader.name}. Cleared — renders the neutral government placeholder until a verified image is added.`,
+      });
 
       await fetchLeadersAndLogs();
       setSuccessMsg(`Deleted ${type} image for ${leader.name}.`);
@@ -398,11 +394,14 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     setLoading(true);
     try {
       await dbService.updateLeader(leader.id, { cover_image: '' });
-      await dbService.addSystemLog(
-        'image_updated',
-        `Reset cover image for ${leader.name}.`,
-        `Cleared — no verified cover source exists, so the neutral government banner is used instead.`
-      );
+      await auditLogRepository.log({
+        leader_id: leader.id,
+        leader_slug: leader.slug,
+        action: 'cover_reset',
+        provider: 'Admin',
+        status: 'info',
+        message: `Reset cover image for ${leader.name}. No verified cover source exists, so the neutral government banner is used instead.`,
+      });
 
       await fetchLeadersAndLogs();
       setSuccessMsg(`Reset cover image for ${leader.name}. Displaying the neutral government banner.`);
@@ -417,10 +416,16 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
     }
   };
 
-  // Filter logs by tab type
+  // Filter logs by tab type (audit_logs.status: success/error/warning/info)
+  const LOG_TAB_TO_STATUS: Record<Exclude<LogFilter, 'all'>, string> = {
+    image_added: 'success',
+    image_failed: 'error',
+    image_updated: 'warning',
+    deployment: 'info',
+  };
   const filteredLogs = systemLogs.filter(log => {
     if (activeLogTab === 'all') return true;
-    return log.type === activeLogTab;
+    return log.status === LOG_TAB_TO_STATUS[activeLogTab];
   });
 
   return (
@@ -818,11 +823,11 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
               >
                 UPDATED
               </button>
-              <button 
+              <button
                 onClick={() => setActiveLogTab('deployment')}
                 className={`px-2 py-1 rounded text-[10px] font-bold tracking-tight uppercase transition font-mono ${activeLogTab === 'deployment' ? 'bg-indigo-600 text-white' : 'bg-slate-50 dark:bg-white/5 text-slate-500'}`}
               >
-                DEPLOY
+                INFO
               </button>
             </div>
 
@@ -836,26 +841,25 @@ export default function ImageSync({ onSyncComplete }: ImageSyncProps) {
               ) : (
                 filteredLogs.map((log) => {
                   let badgeColor = 'bg-slate-100 text-slate-600 dark:bg-white/5 dark:text-slate-400';
-                  if (log.type === 'image_added') badgeColor = 'bg-emerald-500/10 text-emerald-500 border-emerald-500/10';
-                  if (log.type === 'image_failed') badgeColor = 'bg-red-500/10 text-red-500 border-red-500/10';
-                  if (log.type === 'image_updated') badgeColor = 'bg-amber-500/10 text-amber-500 border-amber-500/10';
-                  if (log.type === 'deployment') badgeColor = 'bg-indigo-500/10 text-indigo-500 border-indigo-500/10';
-                  if (log.type === 'commit') badgeColor = 'bg-pink-500/10 text-pink-500 border-pink-500/10';
+                  if (log.status === 'success') badgeColor = 'bg-emerald-500/10 text-emerald-500 border-emerald-500/10';
+                  if (log.status === 'error') badgeColor = 'bg-red-500/10 text-red-500 border-red-500/10';
+                  if (log.status === 'warning') badgeColor = 'bg-amber-500/10 text-amber-500 border-amber-500/10';
+                  if (log.status === 'info') badgeColor = 'bg-indigo-500/10 text-indigo-500 border-indigo-500/10';
 
                   return (
                     <div key={log.id} className="p-3 bg-slate-50 dark:bg-[#020504] border border-slate-100 dark:border-white/5 rounded-xl text-[10.5px] space-y-1.5">
                       <div className="flex justify-between items-center">
                         <span className={`px-2 py-0.5 rounded text-[8.5px] font-mono font-bold uppercase border ${badgeColor}`}>
-                          {log.type === 'image_added' ? 'PORTRAIT ADDED' : log.type === 'image_failed' ? 'MATCH FAILED' : log.type === 'image_updated' ? 'IMAGE REPLACED' : log.type === 'deployment' ? 'VERCEL DEPLOY' : 'GIT COMMIT'}
+                          {log.status === 'success' ? 'PORTRAIT ADDED' : log.status === 'error' ? 'MATCH FAILED' : log.status === 'warning' ? 'NEEDS REVIEW' : 'INFO'}
                         </span>
                         <span className="text-[9px] font-mono font-semibold text-slate-400">
-                          {new Date(log.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+                          {log.created_at ? new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : ''}
                         </span>
                       </div>
                       <p className="font-bold text-slate-800 dark:text-slate-200">{log.message}</p>
                       {log.details && (
                         <p className="text-[10px] text-slate-500 leading-normal font-sans border-l-2 border-slate-200 dark:border-white/10 pl-2 py-0.5">
-                          {log.details}
+                          {JSON.stringify(log.details)}
                         </p>
                       )}
                     </div>

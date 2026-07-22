@@ -81,6 +81,29 @@ export async function hashString(input: string): Promise<string> {
   return Math.abs(hash).toString(16).padStart(16, '0');
 }
 
+/**
+ * Content hash of actual image bytes (not just its URL) — used by the image
+ * download pipeline to detect the same photo being served for two different
+ * leaders (e.g. a site mistakenly returning a shared default/logo image),
+ * which a URL-only hash would miss.
+ */
+export async function hashBlob(blob: Blob): Promise<string> {
+  const buf = await blob.arrayBuffer();
+  if (typeof crypto !== 'undefined' && crypto.subtle) {
+    const digest = await crypto.subtle.digest('SHA-256', buf);
+    return Array.from(new Uint8Array(digest))
+      .map((b) => b.toString(16).padStart(2, '0'))
+      .join('');
+  }
+  const bytes = new Uint8Array(buf);
+  let hash = 0;
+  for (let i = 0; i < bytes.length; i++) {
+    hash = (hash << 5) - hash + bytes[i];
+    hash |= 0;
+  }
+  return Math.abs(hash).toString(16).padStart(16, '0');
+}
+
 export const STORAGE_PATHS = {
   profile: 'profile',
   covers: 'covers',
