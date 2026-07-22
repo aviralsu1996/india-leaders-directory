@@ -108,9 +108,7 @@ async function main() {
       cover_image: leader?.cover_image || '',
       featured: typeof leader?.featured === 'boolean' ? leader.featured : false,
       status: normalizeStatus(leader?.status),
-      official_profile_url: leader?.official_profile_url || leader?.website || '',
-      source_name: leader?.source_name || '',
-      parliament_member_id: leader?.parliament_member_id || ''
+      official_profile_url: leader?.official_profile_url || leader?.website || ''
     };
 
     const { data: existing, error: fetchError } = await supabase
