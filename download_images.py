@@ -159,10 +159,12 @@ def download(name: str, query_sources: List[str] = None) -> Optional[bytes]:
         except Exception as e:
             logger.error(f"Wikimedia API search failed for {name}: {e}")
 
-    # Ultimate representational fallback if no public URL resolved
+    # No stock-photo/placeholder fallback: if no official Wikimedia/Commons
+    # portrait resolved, skip this leader rather than downloading a generic
+    # stock image that isn't actually them.
     if not url:
-        url = f"https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=800"
-        logger.info(f"Using generic placeholder Unsplash avatar for {name}: {url}")
+        logger.warning(f"No verified portrait source found for {name} — skipping (no placeholder substituted).")
+        return None
 
     # Download image with automatic retries
     retries = 3
