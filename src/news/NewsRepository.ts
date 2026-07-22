@@ -195,10 +195,11 @@ export class NewsRepository {
     if (isSupabaseConfigured) {
       const sb = getSupabase();
       if (sb) {
-        // Upsert based on title and source_url if we want deduplication
+        // Upsert against the (leader_slug, title) unique constraint (migration 004) so
+        // re-running a sync never inserts the same article twice, even concurrently.
         const { data, error } = await sb
           .from('news')
-          .insert(items)
+          .upsert(items, { onConflict: 'leader_slug,title', ignoreDuplicates: true })
           .select();
 
         if (!error && data) {
