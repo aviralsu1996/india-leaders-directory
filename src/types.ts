@@ -209,7 +209,8 @@ export type LeaderCategory =
   | 'Minister of State'
   | 'Lok Sabha MP'
   | 'Rajya Sabha MP'
-  | 'Governor';
+  | 'Governor'
+  | 'MLA';
 
 export interface SupabaseLeader {
   id: string;
