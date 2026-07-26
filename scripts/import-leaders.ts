@@ -10,7 +10,8 @@ const allowedCategories = new Set([
   'Minister of State',
   'Lok Sabha MP',
   'Rajya Sabha MP',
-  'Governor'
+  'Governor',
+  'MLA'
 ]);
 
 const categoryMap: Record<string, string> = {

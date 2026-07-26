@@ -13,3 +13,5 @@ public/robots.txt
 
 __pycache__/
 *.pyc
+output/
+data/up_mla_list.pdf
