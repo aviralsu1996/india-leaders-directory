@@ -754,6 +754,7 @@ export default function LeadersCrud({ categoryFilter = 'all', onRefreshStats }: 
                     <option value="Lok Sabha MP">Lok Sabha MP</option>
                     <option value="Rajya Sabha MP">Rajya Sabha MP</option>
                     <option value="Governor">Governor</option>
+                    <option value="MLA">MLA</option>
                   </select>
                 </div>
 

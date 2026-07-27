@@ -11,6 +11,7 @@ import LeadersCrud from './LeadersCrud';
 import ImageLibrary from './ImageLibrary';
 import ImageSync from './ImageSync';
 import BulkImport from './BulkImport';
+import MlaSync from './MlaSync';
 
 type SidebarMenu = 
   | 'dashboard'
@@ -23,6 +24,7 @@ type SidebarMenu =
   | 'parties'
   | 'media'
   | 'sync'
+  | 'mlasync'
   | 'settings';
 
 export default function AdminDashboard() {
@@ -268,6 +270,7 @@ CREATE POLICY "Allow authenticated admin write access" ON public.leaders
     { id: 'parties', label: 'Political Parties', icon: Shield },
     { id: 'media', label: 'Image Library', icon: ImageIcon },
     { id: 'sync', label: 'Image Sync', icon: RefreshCw },
+    { id: 'mlasync', label: 'MLA Sync', icon: Sparkles },
     { id: 'settings', label: 'SQL & Settings', icon: SettingsIcon }
   ];
 
@@ -735,6 +738,9 @@ CREATE POLICY "Allow authenticated admin write access" ON public.leaders
 
           {/* E. AUTOMATED PORTRAIT SCANNER SYNC */}
           {activeMenu === 'sync' && <ImageSync onSyncComplete={fetchMetrics} />}
+
+          {/* F. INDIA MLA IMPORT SYSTEM SYNC */}
+          {activeMenu === 'mlasync' && <MlaSync onSyncComplete={fetchMetrics} />}
 
           {/* F. SYSTEM SQL SCHEMAS AND SETTINGS */}
           {activeMenu === 'settings' && (

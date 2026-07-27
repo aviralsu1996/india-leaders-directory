@@ -1,6 +1,7 @@
 import { createClient } from '@supabase/supabase-js';
-import { SupabaseLeader } from '../types';
+import { SupabaseLeader, Job } from '../types';
 import { initialDirectoryLeaders } from '../directoryLeadersData';
+import { INITIAL_GOVT_JOBS } from '../data/govtJobsData';
 
 // Read client-side environment keys (prefixed with VITE_ per guidelines)
 const supabaseUrl = (import.meta as any).env?.VITE_SUPABASE_URL || '';
@@ -49,9 +50,27 @@ export function saveLocalLeaders(leaders: SupabaseLeader[]) {
   localStorage.setItem('know_your_minister_leaders', JSON.stringify(leaders));
 }
 
+export function getLocalJobs(): Job[] {
+  const stored = localStorage.getItem('know_your_minister_jobs');
+  if (!stored) {
+    localStorage.setItem('know_your_minister_jobs', JSON.stringify(INITIAL_GOVT_JOBS));
+    return INITIAL_GOVT_JOBS;
+  }
+  try {
+    return JSON.parse(stored);
+  } catch (e) {
+    return INITIAL_GOVT_JOBS;
+  }
+}
+
+export function saveLocalJobs(jobs: Job[]) {
+  localStorage.setItem('know_your_minister_jobs', JSON.stringify(jobs));
+}
+
 function getLocalFallbackLeaders(filters: {
   category?: string;
   state?: string;
+  district?: string;
   party?: string;
   featured?: boolean;
   status?: string;
@@ -64,6 +83,9 @@ function getLocalFallbackLeaders(filters: {
   }
   if (filters.state && filters.state !== 'all') {
     filtered = filtered.filter(l => (l.state || '').toLowerCase() === (filters.state as string).toLowerCase());
+  }
+  if (filters.district && filters.district !== 'all') {
+    filtered = filtered.filter(l => (l.district || '').toLowerCase() === (filters.district as string).toLowerCase());
   }
   if (filters.party && filters.party !== 'all') {
     filtered = filtered.filter(l => (l.party || '').toLowerCase() === (filters.party as string).toLowerCase());
@@ -80,6 +102,7 @@ function getLocalFallbackLeaders(filters: {
       (l.name || '').toLowerCase().includes(query) ||
       (l.designation || '').toLowerCase().includes(query) ||
       (l.constituency || '').toLowerCase().includes(query) ||
+      (l.district || '').toLowerCase().includes(query) ||
       (l.bio || '').toLowerCase().includes(query)
     );
   }
@@ -205,6 +228,38 @@ export function compressToWebP(
   });
 }
 
+export async function uploadImageToSupabaseStorage(imageUrl: string, filename: string): Promise<string> {
+  if (!isSupabaseConfigured || !imageUrl || imageUrl.includes('supabase.co/storage')) {
+    return imageUrl;
+  }
+  try {
+    const sb = getSupabase();
+    if (!sb) return imageUrl;
+
+    const response = await fetch(imageUrl);
+    if (!response.ok) return imageUrl;
+    const blob = await response.blob();
+
+    const fileExt = blob.type.split('/')[1] || 'jpg';
+    const filePath = `mlas/${filename}-${Date.now()}.${fileExt}`;
+
+    const { error } = await sb.storage
+      .from('leaders')
+      .upload(filePath, blob, { contentType: blob.type, upsert: true });
+
+    if (error) {
+      console.warn('Supabase storage upload failed:', error.message);
+      return imageUrl;
+    }
+
+    const { data: publicData } = sb.storage.from('leaders').getPublicUrl(filePath);
+    return publicData?.publicUrl || imageUrl;
+  } catch (err) {
+    console.warn('Storage upload exception:', err);
+    return imageUrl;
+  }
+}
+
 /**
  * Robust Database Service
  * Proxies calls directly to real Supabase if keys are available,
@@ -212,10 +267,135 @@ export function compressToWebP(
  * 100% functionality and state preservation in the Vercel serverless environment.
  */
 export const dbService = {
+  // Upsert MLA record into leaders table without duplicate creation
+  async upsertMlaLeader(leaderData: {
+    slug: string;
+    name: string;
+    state: string;
+    district: string;
+    constituency: string;
+    party: string;
+    designation?: string;
+    gender?: 'Male' | 'Female';
+    bio?: string;
+    image?: string;
+    cover_image?: string;
+    wikipedia_url?: string;
+    website?: string;
+    assembly_url?: string;
+    election_year?: string;
+    email?: string;
+    mobile?: string;
+    address?: string;
+  }): Promise<{
+    leader: SupabaseLeader;
+    action: 'inserted' | 'updated' | 'unchanged';
+    partyChanged: boolean;
+    imageChanged: boolean;
+  }> {
+    const designation = leaderData.designation || `MLA, ${leaderData.constituency} (${leaderData.district}, ${leaderData.state})`;
+    const slug = leaderData.slug || leaderData.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const category = 'MLA';
+    const status = 'Published';
+
+    let uploadedImageUrl = leaderData.image;
+    if (isSupabaseConfigured && leaderData.image && !leaderData.image.includes('supabase.co/storage')) {
+      try {
+        uploadedImageUrl = await uploadImageToSupabaseStorage(leaderData.image, slug);
+      } catch (e) {
+        console.warn('Image upload attempt caught:', e);
+      }
+    }
+
+    const payload: Partial<SupabaseLeader> = {
+      slug,
+      name: leaderData.name,
+      designation,
+      category,
+      status,
+      state: leaderData.state,
+      district: leaderData.district,
+      constituency: leaderData.constituency,
+      party: leaderData.party,
+      gender: leaderData.gender || 'Male',
+      bio: leaderData.bio || `Official public profile for ${leaderData.name}, serving as Member of Legislative Assembly (MLA) from ${leaderData.constituency}, ${leaderData.district}, ${leaderData.state}.`,
+      image: uploadedImageUrl || leaderData.image || 'https://upload.wikimedia.org/wikipedia/commons/8/89/Portrait_Placeholder.png',
+      cover_image: leaderData.cover_image || getCoverForLeader('MLA', leaderData.state),
+      wikipedia_url: leaderData.wikipedia_url || '',
+      website: leaderData.website || leaderData.wikipedia_url || '',
+      assembly_url: leaderData.assembly_url || '',
+      election_year: leaderData.election_year || '2022',
+      email: leaderData.email || '',
+      mobile: leaderData.mobile || '',
+      address: leaderData.address || `${leaderData.constituency}, ${leaderData.district}, ${leaderData.state}`,
+      updated_at: new Date().toISOString()
+    };
+
+    let partyChanged = false;
+    let imageChanged = false;
+
+    if (isSupabaseConfigured) {
+      const sb = getSupabase();
+      const { data: existing } = await sb.from('leaders').select('*').eq('slug', slug).maybeSingle();
+
+      if (existing) {
+        if (existing.party !== payload.party) partyChanged = true;
+        if (existing.image !== payload.image) imageChanged = true;
+
+        const { data, error } = await sb.from('leaders').update(payload).eq('id', existing.id).select().single();
+        if (!error && data) {
+          return { leader: data as SupabaseLeader, action: 'updated', partyChanged, imageChanged };
+        }
+      } else {
+        const newLeader = {
+          id: `mla-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+          created_at: new Date().toISOString(),
+          featured: true,
+          gallery: [],
+          ...payload
+        };
+        const { data, error } = await sb.from('leaders').insert([newLeader]).select().single();
+        if (!error && data) {
+          return { leader: data as SupabaseLeader, action: 'inserted', partyChanged: false, imageChanged: false };
+        }
+      }
+    }
+
+    // Local storage fallback
+    const leaders = getLocalLeaders();
+    const idx = leaders.findIndex(l => l.slug === slug);
+    if (idx !== -1) {
+      const existing = leaders[idx];
+      if (existing.party !== payload.party) partyChanged = true;
+      if (existing.image !== payload.image) imageChanged = true;
+
+      const updatedLeader: SupabaseLeader = {
+        ...existing,
+        ...payload,
+        category: 'MLA',
+        status: 'Published'
+      };
+      leaders[idx] = updatedLeader;
+      saveLocalLeaders(leaders);
+      return { leader: updatedLeader, action: 'updated', partyChanged, imageChanged };
+    } else {
+      const newLeader: SupabaseLeader = {
+        id: `mla-${Date.now()}-${Math.random().toString(36).substr(2, 6)}`,
+        created_at: new Date().toISOString(),
+        featured: true,
+        gallery: [],
+        ...payload
+      } as SupabaseLeader;
+      leaders.unshift(newLeader);
+      saveLocalLeaders(leaders);
+      return { leader: newLeader, action: 'inserted', partyChanged: false, imageChanged: false };
+    }
+  },
   // Fetch list of leaders
   async getLeaders(filters: {
     category?: string;
     state?: string;
+    district?: string;
     party?: string;
     featured?: boolean;
     status?: string;
@@ -231,6 +411,9 @@ export const dbService = {
       if (filters.state && filters.state !== 'all') {
         query = query.eq('state', filters.state);
       }
+      if (filters.district && filters.district !== 'all') {
+        query = query.eq('district', filters.district);
+      }
       if (filters.party && filters.party !== 'all') {
         query = query.eq('party', filters.party);
       }
@@ -241,7 +424,7 @@ export const dbService = {
         query = query.eq('status', filters.status);
       }
       if (filters.search) {
-        query = query.or(`name.ilike.%${filters.search}%,designation.ilike.%${filters.search}%,constituency.ilike.%${filters.search}%`);
+        query = query.or(`name.ilike.%${filters.search}%,designation.ilike.%${filters.search}%,constituency.ilike.%${filters.search}%,district.ilike.%${filters.search}%`);
       }
 
       // Order by latest
@@ -603,5 +786,221 @@ export const dbService = {
       console.error(e);
     }
     return { success: true, message: 'Your request has been successfully saved in local persistence.' };
+  },
+
+  // GOVERNMENT JOBS DATABASE MODULE
+  async getJobs(filters: {
+    category?: string;
+    state?: string;
+    department?: string;
+    qualification?: string;
+    experience?: string;
+    salary?: string;
+    employment_type?: string;
+    last_date?: string;
+    search?: string;
+  } = {}): Promise<Job[]> {
+    if (isSupabaseConfigured) {
+      try {
+        const sb = getSupabase();
+        let query = sb.from('jobs').select('*').order('created_at', { ascending: false });
+        if (filters.category && filters.category !== 'all') {
+          query = query.eq('category', filters.category);
+        }
+        if (filters.state && filters.state !== 'all') {
+          query = query.ilike('state', `%${filters.state}%`);
+        }
+        if (filters.department && filters.department !== 'all') {
+          query = query.ilike('department', `%${filters.department}%`);
+        }
+        if (filters.employment_type && filters.employment_type !== 'all') {
+          query = query.eq('employment_type', filters.employment_type);
+        }
+        if (filters.search) {
+          const q = `%${filters.search}%`;
+          query = query.or(`title.ilike.${q},organization.ilike.${q},department.ilike.${q},qualification.ilike.${q}`);
+        }
+        const { data, error } = await query;
+        if (!error && data && data.length > 0) {
+          return data as Job[];
+        }
+      } catch (e) {
+        console.warn('Supabase getJobs failed, falling back to local dataset:', e);
+      }
+    }
+
+    // Local Storage & Seed Dataset Fallback
+    let jobs = getLocalJobs();
+
+    if (filters.category && filters.category !== 'all') {
+      if (filters.category === 'Central Government' || filters.category === 'Central') {
+        jobs = jobs.filter(j => j.category === 'Central');
+      } else if (filters.category === 'State Government' || filters.category === 'State') {
+        jobs = jobs.filter(j => j.category === 'State');
+      }
+    }
+    if (filters.state && filters.state !== 'all') {
+      const st = filters.state.toLowerCase();
+      jobs = jobs.filter(j => j.state.toLowerCase().includes(st) || j.state === 'All India');
+    }
+    if (filters.department && filters.department !== 'all') {
+      const dept = filters.department.toLowerCase();
+      jobs = jobs.filter(j => j.department.toLowerCase().includes(dept) || j.organization.toLowerCase().includes(dept));
+    }
+    if (filters.qualification && filters.qualification !== 'all') {
+      const q = filters.qualification.toLowerCase();
+      jobs = jobs.filter(j => j.qualification.toLowerCase().includes(q));
+    }
+    if (filters.experience && filters.experience !== 'all') {
+      const exp = filters.experience.toLowerCase();
+      jobs = jobs.filter(j => j.experience.toLowerCase().includes(exp));
+    }
+    if (filters.employment_type && filters.employment_type !== 'all') {
+      jobs = jobs.filter(j => j.employment_type === filters.employment_type);
+    }
+    if (filters.search) {
+      const query = filters.search.toLowerCase().trim();
+      jobs = jobs.filter(j =>
+        j.title.toLowerCase().includes(query) ||
+        j.organization.toLowerCase().includes(query) ||
+        j.department.toLowerCase().includes(query) ||
+        j.qualification.toLowerCase().includes(query) ||
+        j.state.toLowerCase().includes(query)
+      );
+    }
+
+    return jobs;
+  },
+
+  async getJobBySlug(slug: string): Promise<Job | null> {
+    if (isSupabaseConfigured) {
+      try {
+        const sb = getSupabase();
+        const { data, error } = await sb.from('jobs').select('*').eq('slug', slug).maybeSingle();
+        if (!error && data) return data as Job;
+      } catch (e) {
+        console.warn('Supabase getJobBySlug failed:', e);
+      }
+    }
+    const jobs = getLocalJobs();
+    return jobs.find(j => j.slug === slug) || null;
+  },
+
+  async getJobsStats(): Promise<{ total: number; central: number; state: number; closingSoon: number; open: number; upcoming: number }> {
+    const jobs = await this.getJobs();
+    const total = jobs.length;
+    const central = jobs.filter(j => j.category === 'Central').length;
+    const state = jobs.filter(j => j.category === 'State').length;
+    const closingSoon = jobs.filter(j => j.status === 'Closing Soon').length;
+    const open = jobs.filter(j => j.status === 'Open' || j.status === 'Closing Soon').length;
+    const upcoming = jobs.filter(j => j.status === 'Upcoming').length;
+    return { total, central, state, closingSoon, open, upcoming };
+  },
+
+  async upsertJob(jobData: Partial<Job>): Promise<{ job: Job; action: 'inserted' | 'updated' }> {
+    const title = jobData.title || 'Government Recruitment Notification';
+    const slug = jobData.slug || title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+    const now = new Date().toISOString();
+
+    const payload: Job = {
+      id: jobData.id || `job-${Date.now()}`,
+      title,
+      slug,
+      organization: jobData.organization || 'Government Department',
+      department: jobData.department || 'Administrative Cadre',
+      category: jobData.category || 'Central',
+      state: jobData.state || 'All India',
+      vacancies: jobData.vacancies || 100,
+      salary: jobData.salary || 'As per Govt rules',
+      qualification: jobData.qualification || 'Bachelor Degree',
+      age_limit: jobData.age_limit || '18 - 30 Years',
+      experience: jobData.experience || 'Fresher eligible',
+      employment_type: jobData.employment_type || 'Permanent',
+      notification_pdf: jobData.notification_pdf || '',
+      official_apply_url: jobData.official_apply_url || 'https://india.gov.in',
+      official_website: jobData.official_website || 'https://india.gov.in',
+      application_start: jobData.application_start || '2026-07-01',
+      application_end: jobData.application_end || '2026-08-31',
+      status: jobData.status || 'Open',
+      description: jobData.description || 'Official government recruitment notice.',
+      selection_process: jobData.selection_process || 'Written Examination and Interview',
+      application_fee: jobData.application_fee || 'As per rules',
+      required_documents: jobData.required_documents || ['Class 10th Certificate', 'Degree Certificate', 'Aadhaar Card'],
+      notification_number: jobData.notification_number || 'GOVT-2026-REC',
+      logo: jobData.logo || 'https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg',
+      created_at: jobData.created_at || now,
+      updated_at: now
+    };
+
+    if (isSupabaseConfigured) {
+      try {
+        const sb = getSupabase();
+        const { data: existing } = await sb.from('jobs').select('*').eq('slug', slug).maybeSingle();
+        if (existing) {
+          const { data, error } = await sb.from('jobs').update(payload).eq('id', existing.id).select().single();
+          if (!error && data) return { job: data as Job, action: 'updated' };
+        } else {
+          const { data, error } = await sb.from('jobs').insert([payload]).select().single();
+          if (!error && data) return { job: data as Job, action: 'inserted' };
+        }
+      } catch (e) {
+        console.warn('Supabase upsertJob error:', e);
+      }
+    }
+
+    const jobs = getLocalJobs();
+    const idx = jobs.findIndex(j => j.slug === slug || j.id === payload.id);
+    if (idx !== -1) {
+      jobs[idx] = { ...jobs[idx], ...payload };
+      saveLocalJobs(jobs);
+      return { job: jobs[idx], action: 'updated' };
+    } else {
+      jobs.unshift(payload);
+      saveLocalJobs(jobs);
+      return { job: payload, action: 'inserted' };
+    }
+  },
+
+  async deleteJob(id: string): Promise<{ success: boolean }> {
+    if (isSupabaseConfigured) {
+      try {
+        const sb = getSupabase();
+        await sb.from('jobs').delete().eq('id', id);
+      } catch (e) {
+        console.warn('Supabase deleteJob error:', e);
+      }
+    }
+    const jobs = getLocalJobs();
+    const filtered = jobs.filter(j => j.id !== id);
+    saveLocalJobs(filtered);
+    return { success: true };
+  },
+
+  async syncJobs(type: 'central' | 'state' | 'all'): Promise<{ updated: number; created: number; logs: string[] }> {
+    const logs: string[] = [];
+    let updated = 0;
+    let created = 0;
+
+    logs.push(`[SYNC START] Initializing Government Recruitment Sync Engine for type "${type.toUpperCase()}"...`);
+    
+    const targetJobs = INITIAL_GOVT_JOBS.filter(j => {
+      if (type === 'central') return j.category === 'Central';
+      if (type === 'state') return j.category === 'State';
+      return true;
+    });
+
+    for (const job of targetJobs) {
+      const res = await this.upsertJob(job);
+      if (res.action === 'inserted') {
+        created++;
+        logs.push(`[CREATE] Synchronized official notice: "${job.title}" (${job.organization})`);
+      } else {
+        updated++;
+        logs.push(`[UPDATE] Updated recruitment details: "${job.title}" (${job.organization})`);
+      }
+    }
+
+    logs.push(`[SYNC COMPLETE] ${created} new notices created, ${updated} existing notices refreshed.`);
+    return { updated, created, logs };
   }
 };

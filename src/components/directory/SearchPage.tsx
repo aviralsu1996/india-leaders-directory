@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Search, Filter, MapPin, Award, Users, Shield, RefreshCw, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Search, Filter, MapPin, Award, Users, Shield, RefreshCw, ChevronLeft, ChevronRight, Building } from 'lucide-react';
 import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
 import { getDirectImageUrl } from './DossierData';
 import { LeaderAvatar, LeaderCover } from './GovtDesignSystem';
+import { STATE_DISTRICTS_MAP, getDistrictsForState } from '../../data/districtData';
 
 interface SearchPageProps {
   initialFilters?: {
     category?: string;
     state?: string;
+    district?: string;
     query?: string;
   };
   onSelectLeader: (slug: string) => void;
@@ -24,6 +26,7 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
   const [searchQuery, setSearchQuery] = useState(initialFilters?.query || '');
   const [selectedCategory, setSelectedCategory] = useState(initialFilters?.category || 'all');
   const [selectedState, setSelectedState] = useState(initialFilters?.state || 'all');
+  const [selectedDistrict, setSelectedDistrict] = useState(initialFilters?.district || 'all');
   const [selectedParty, setSelectedParty] = useState('all');
   const [selectedFeatured, setSelectedFeatured] = useState('all');
 
@@ -39,23 +42,31 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
     const parsed: {
       category?: string;
       state?: string;
+      district?: string;
       party?: string;
       gender?: string;
       keyword?: string;
     } = {};
 
     // Detect States
-    const statesList = [
-      'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chhattisgarh', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 
-      'Himachal Pradesh', 'Jharkhand', 'Karnataka', 'Kerala', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 
-      'Mizoram', 'Nagaland', 'Odisha', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 
-      'Uttar Pradesh', 'Uttarakhand', 'West Bengal'
-    ];
+    const statesList = Object.keys(STATE_DISTRICTS_MAP);
     for (const st of statesList) {
       if (normalized.includes(st.toLowerCase())) {
         parsed.state = st;
         break;
       }
+    }
+
+    // Detect Districts
+    for (const [st, districts] of Object.entries(STATE_DISTRICTS_MAP)) {
+      for (const dist of districts) {
+        if (normalized.includes(dist.toLowerCase())) {
+          parsed.district = dist;
+          if (!parsed.state) parsed.state = st;
+          break;
+        }
+      }
+      if (parsed.district) break;
     }
 
     // Detect Parties
@@ -75,7 +86,9 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
     }
 
     // Detect Categories
-    if (normalized.includes('chief minister') || normalized.includes('cm')) {
+    if (normalized.includes('mla') || normalized.includes('mlas') || normalized.includes('legislator') || normalized.includes('legislative assembly')) {
+      parsed.category = 'MLA';
+    } else if (normalized.includes('chief minister') || normalized.includes('cm')) {
       parsed.category = 'Chief Minister';
     } else if (normalized.includes('prime minister') || normalized.includes('pm')) {
       parsed.category = 'Prime Minister';
@@ -103,6 +116,7 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
     // Keyword parsing
     let keywordCleaned = normalized;
     if (parsed.state) keywordCleaned = keywordCleaned.replace(parsed.state.toLowerCase(), '');
+    if (parsed.district) keywordCleaned = keywordCleaned.replace(parsed.district.toLowerCase(), '');
     if (parsed.category) keywordCleaned = keywordCleaned.replace(parsed.category.toLowerCase(), '');
     if (parsed.party) keywordCleaned = keywordCleaned.replace(parsed.party.toLowerCase(), '');
     if (parsed.gender) {
@@ -116,6 +130,8 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
       .replace(/\belected\b/g, '')
       .replace(/\bminister\b/g, '')
       .replace(/\bministers\b/g, '')
+      .replace(/\bmla\b/g, '')
+      .replace(/\bmlas\b/g, '')
       .replace(/\bwho is\b/g, '')
       .replace(/\bshow me\b/g, '')
       .trim();
@@ -137,14 +153,16 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
       
       const queryCategory = nlp?.category || selectedCategory;
       const queryState = nlp?.state || selectedState;
+      const queryDistrict = nlp?.district || selectedDistrict;
       const queryParty = nlp?.party || selectedParty;
       const querySearch = nlp?.keyword || (nlp ? '' : searchQuery);
 
       // Display AI interpretation explanation
-      if (nlp && (nlp.category || nlp.state || nlp.party || nlp.gender || nlp.keyword)) {
+      if (nlp && (nlp.category || nlp.state || nlp.district || nlp.party || nlp.gender || nlp.keyword)) {
         const parts: string[] = [];
         if (nlp.category) parts.push(`Category: "${nlp.category}"`);
         if (nlp.state) parts.push(`State: "${nlp.state}"`);
+        if (nlp.district) parts.push(`District: "${nlp.district}"`);
         if (nlp.party) parts.push(`Party: "${nlp.party}"`);
         if (nlp.gender) parts.push(`Gender: "${nlp.gender}"`);
         if (nlp.keyword) parts.push(`Topic Search: "${nlp.keyword}"`);
@@ -156,6 +174,7 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
       const filters: any = {
         category: queryCategory,
         state: queryState,
+        district: queryDistrict,
         party: queryParty,
         search: querySearch
       };
@@ -183,40 +202,20 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
 
   useEffect(() => {
     loadFilteredLeaders();
-  }, [selectedCategory, selectedState, selectedParty, selectedFeatured, searchQuery]);
+  }, [selectedCategory, selectedState, selectedDistrict, selectedParty, selectedFeatured, searchQuery]);
+
+  // Handle state change: reset district if state changes
+  const handleStateChange = (newState: string) => {
+    setSelectedState(newState);
+    setSelectedDistrict('all');
+  };
+
+  const availableDistricts = selectedState && selectedState !== 'all' ? getDistrictsForState(selectedState) : [];
 
   // List of states & parties in our seed data for selection
   const filterStates = [
     'all',
-    'Andhra Pradesh',
-    'Arunachal Pradesh',
-    'Assam',
-    'Bihar',
-    'Chhattisgarh',
-    'Delhi',
-    'Goa',
-    'Gujarat',
-    'Haryana',
-    'Himachal Pradesh',
-    'Jharkhand',
-    'Karnataka',
-    'Kerala',
-    'Madhya Pradesh',
-    'Maharashtra',
-    'Manipur',
-    'Meghalaya',
-    'Mizoram',
-    'Nagaland',
-    'Odisha',
-    'Punjab',
-    'Rajasthan',
-    'Sikkim',
-    'Tamil Nadu',
-    'Telangana',
-    'Tripura',
-    'Uttar Pradesh',
-    'Uttarakhand',
-    'West Bengal'
+    ...Object.keys(STATE_DISTRICTS_MAP)
   ];
 
   const filterParties = [
@@ -241,17 +240,19 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
     'SKM',
     'DMK',
     'SP',
+    'Jansatta Dal (Loktantrik)',
     'Independent'
   ];
 
   const filterCategories = [
-    'all', 'Prime Minister', 'Chief Minister', 'Deputy Chief Minister', 'Cabinet Minister', 'Minister of State', 'Lok Sabha MP', 'Rajya Sabha MP', 'Governor'
+    'all', 'Prime Minister', 'Chief Minister', 'Deputy Chief Minister', 'Cabinet Minister', 'Minister of State', 'Lok Sabha MP', 'Rajya Sabha MP', 'Governor', 'MLA'
   ];
 
   const handleClearFilters = () => {
     setSearchQuery('');
     setSelectedCategory('all');
     setSelectedState('all');
+    setSelectedDistrict('all');
     setSelectedParty('all');
     setSelectedFeatured('all');
   };
@@ -261,10 +262,10 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
       {/* 1. HEADER SECTION */}
       <div>
         <h1 className="text-3xl font-black text-slate-800 dark:text-white font-display">
-          Search Directory
+          Indian Government Directory Search
         </h1>
         <p className="text-slate-400 dark:text-slate-500 text-xs font-medium">
-          Apply administrative and demographic filters to find legislative profiles.
+          Filter verified government representatives, cabinet ministers, state assembly members, and constitutional office holders.
         </p>
       </div>
 
@@ -277,13 +278,13 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
             type="text"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Type name, constituency, keywords or ministry details..."
+            placeholder="Search representatives, ministries, government jobs, elections, departments, constituencies..."
             className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 pl-12 pr-4 py-3 rounded-xl text-xs text-slate-900 dark:text-white focus:outline-none focus:border-emerald-500 font-medium"
           />
         </div>
 
         {/* Row 2: Select Filters */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
           {/* Category */}
           <div className="space-y-1">
             <label className="block text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider font-mono">Category</label>
@@ -303,11 +304,27 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
             <label className="block text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider font-mono">State</label>
             <select
               value={selectedState}
-              onChange={(e) => setSelectedState(e.target.value)}
+              onChange={(e) => handleStateChange(e.target.value)}
               className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 p-2.5 rounded-xl text-xs text-slate-700 dark:text-slate-300 font-bold focus:outline-none cursor-pointer"
             >
               {filterStates.map((st, idx) => (
                 <option key={idx} value={st}>{st === 'all' ? 'All States' : st}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* District */}
+          <div className="space-y-1">
+            <label className="block text-[9px] font-bold text-slate-400 dark:text-slate-500 uppercase tracking-wider font-mono">District</label>
+            <select
+              value={selectedDistrict}
+              onChange={(e) => setSelectedDistrict(e.target.value)}
+              disabled={selectedState === 'all' && availableDistricts.length === 0}
+              className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-850 p-2.5 rounded-xl text-xs text-slate-700 dark:text-slate-300 font-bold focus:outline-none cursor-pointer disabled:opacity-50"
+            >
+              <option value="all">{selectedState === 'all' ? 'All Districts' : 'All Districts in ' + selectedState}</option>
+              {availableDistricts.map((dist, idx) => (
+                <option key={idx} value={dist}>{dist}</option>
               ))}
             </select>
           </div>
@@ -420,9 +437,11 @@ export default function SearchPage({ initialFilters, onSelectLeader }: SearchPag
                   </div>
 
                   <div className="pt-4 border-t border-slate-50 dark:border-slate-900/40 flex items-center justify-between mt-4">
-                    <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400 dark:text-slate-500 font-mono truncate max-w-[60%]">
-                      <MapPin className="w-3.5 h-3.5" />
-                      <span className="truncate">{leader.constituency}</span>
+                    <div className="flex items-center gap-1 text-[10px] font-bold text-slate-400 dark:text-slate-500 font-mono truncate max-w-[65%]">
+                      <MapPin className="w-3.5 h-3.5 shrink-0" />
+                      <span className="truncate">
+                        {leader.constituency}{leader.district ? `, ${leader.district}` : ''} ({leader.state})
+                      </span>
                     </div>
                     <button
                       onClick={() => onSelectLeader(leader.slug)}

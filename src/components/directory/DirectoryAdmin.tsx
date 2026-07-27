@@ -9,6 +9,8 @@ import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService, compressToWebP } from '../../lib/supabaseClient';
 import { getDirectImageUrl } from './DossierData';
 import AdminNewsManager from './AdminNewsManager';
+import MlaSync from '../admin/MlaSync';
+import AdminJobsManager from '../admin/AdminJobsManager';
 
 interface DirectoryAdminProps {
   onSelectLeader: (slug: string) => void;
@@ -42,7 +44,7 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
   const [selectedIds, setSelectedIds] = useState<string[]>([]);
 
   // Submodules
-  const [adminTab, setAdminTab] = useState<'overview' | 'leaders' | 'news' | 'media' | 'sync'>('overview');
+  const [adminTab, setAdminTab] = useState<'overview' | 'leaders' | 'jobs' | 'news' | 'media' | 'sync' | 'mlasync'>('overview');
 
   // Form Modals
   const [showAddEditModal, setShowAddEditModal] = useState(false);
@@ -73,7 +75,7 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
   // Leader Form State
   const [formState, setFormState] = useState({
     name: '', designation: '', category: 'Cabinet Minister' as LeaderCategory,
-    state: 'Delhi', constituency: 'National Seat', party: 'Independent', gender: 'Male',
+    state: 'Delhi', district: '', constituency: 'National Seat', party: 'Independent', gender: 'Male',
     dob: '1975-01-01', bio: '', education: 'Graduate', profession: 'Public Service',
     mobile: '', email: '', address: '', facebook: '', twitter: '', instagram: '',
     youtube: '', website: '', image: '', cover_image: '', featured: false, status: 'Draft' as 'Published' | 'Draft'
@@ -139,7 +141,7 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
     setEditingLeader(null);
     setFormState({
       name: '', designation: '', category: 'Cabinet Minister',
-      state: 'Delhi', constituency: '', party: 'Independent', gender: 'Male',
+      state: 'Delhi', district: '', constituency: '', party: 'Independent', gender: 'Male',
       dob: '', bio: '', education: '', profession: '',
       mobile: '', email: '', address: '', facebook: '', twitter: '', instagram: '',
       youtube: '', website: '', image: '', cover_image: '', featured: false, status: 'Draft'
@@ -152,7 +154,7 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
     setEditingLeader(leader);
     setFormState({
       name: leader.name, designation: leader.designation, category: leader.category,
-      state: leader.state, constituency: leader.constituency, party: leader.party, gender: leader.gender,
+      state: leader.state, district: leader.district || '', constituency: leader.constituency, party: leader.party, gender: leader.gender,
       dob: leader.dob, bio: leader.bio, education: leader.education, profession: leader.profession,
       mobile: leader.mobile, email: leader.email, address: leader.address, facebook: leader.facebook,
       twitter: leader.twitter, instagram: leader.instagram, youtube: leader.youtube,
@@ -349,7 +351,7 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
   ];
 
   const filterCategories = [
-    'all', 'Prime Minister', 'Chief Minister', 'Deputy Chief Minister', 'Cabinet Minister', 'Minister of State', 'Lok Sabha MP', 'Rajya Sabha MP', 'Governor'
+    'all', 'Prime Minister', 'Chief Minister', 'Deputy Chief Minister', 'Cabinet Minister', 'Minister of State', 'Lok Sabha MP', 'Rajya Sabha MP', 'Governor', 'MLA'
   ];
 
   // LOGIN SCREEN
@@ -440,7 +442,7 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
 
       {/* DASHBOARD TAB CONTROLS */}
       <div className="flex flex-wrap items-center gap-4 border-b border-slate-100 dark:border-slate-900 pb-3">
-        {(['overview', 'leaders', 'news', 'media', 'sync'] as const).map((tab) => (
+        {(['overview', 'leaders', 'jobs', 'news', 'media', 'sync', 'mlasync'] as const).map((tab) => (
           <button
             key={tab}
             onClick={() => setAdminTab(tab)}
@@ -450,7 +452,7 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
                 : 'border-transparent text-slate-400 hover:text-slate-600'
             }`}
           >
-            {tab}
+            {tab === 'mlasync' ? 'MLA Sync' : tab === 'jobs' ? 'Government Jobs' : tab}
           </button>
         ))}
       </div>
@@ -1011,6 +1013,16 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
         </div>
       )}
 
+      {/* SUBMODULE: GOVERNMENT JOBS MANAGER */}
+      {adminTab === 'jobs' && (
+        <AdminJobsManager />
+      )}
+
+      {/* SUBMODULE: INDIA MLA IMPORT SYSTEM SYNC */}
+      {adminTab === 'mlasync' && (
+        <MlaSync onSyncComplete={loadAdminData} />
+      )}
+
       {/* ADD / EDIT LEADER MODAL OVERLAY */}
       <AnimatePresence>
         {showAddEditModal && (
@@ -1082,7 +1094,7 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
                 </div>
 
                 {/* 2. Geographic & Party Fields */}
-                <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-5 gap-3">
                   <div className="space-y-1">
                     <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider font-mono">State *</label>
                     <input
@@ -1092,6 +1104,17 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
                       onChange={(e) => setFormState({ ...formState, state: e.target.value })}
                       className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-250 dark:border-slate-850 px-3 py-2 rounded-xl text-slate-900 dark:text-white"
                       placeholder="e.g. Uttar Pradesh"
+                    />
+                  </div>
+
+                  <div className="space-y-1">
+                    <label className="block text-[9px] font-bold text-slate-400 uppercase tracking-wider font-mono">District</label>
+                    <input
+                      type="text"
+                      value={formState.district || ''}
+                      onChange={(e) => setFormState({ ...formState, district: e.target.value })}
+                      className="w-full bg-slate-50 dark:bg-slate-900 border border-slate-250 dark:border-slate-850 px-3 py-2 rounded-xl text-slate-900 dark:text-white"
+                      placeholder="e.g. Kunda / Pune"
                     />
                   </div>
 

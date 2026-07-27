@@ -239,6 +239,7 @@ function createLeader(params: {
   name: string;
   category: import('./types').LeaderCategory;
   state: string;
+  district?: string;
   constituency?: string;
   party: string;
   gender?: 'Male' | 'Female';
@@ -278,6 +279,7 @@ function createLeader(params: {
     designation: finalDesignation,
     category: params.category,
     state: params.state,
+    district: params.district,
     constituency: params.constituency || 'Legislative Assembly',
     party: params.party,
     gender: params.gender || 'Male',
@@ -594,6 +596,86 @@ governorsRaw.forEach(item => {
     category: 'Governor',
     state: item.state,
     party: 'Independent', // Governors are typically non-partisan during tenure
+    featured: true
+  });
+  if (!addedSlugs.has(leader.slug)) {
+    initialDirectoryLeaders.push(leader);
+    addedSlugs.add(leader.slug);
+  }
+});
+
+// Add prominent Members of Legislative Assembly (MLAs) across states & districts
+const mlasRaw = [
+  // Uttar Pradesh MLAs
+  { name: 'Pankaj Singh', state: 'Uttar Pradesh', district: 'Gautam Buddha Nagar', constituency: 'Noida (61)', party: 'BJP', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500', bio: 'Pankaj Singh is a Member of Legislative Assembly representing the Noida constituency in Uttar Pradesh. He serves as Vice President of BJP Uttar Pradesh.', gender: 'Male' },
+  { name: 'Suresh Kumar Khanna', state: 'Uttar Pradesh', district: 'Shahjahanpur', constituency: 'Shahjahanpur (135)', party: 'BJP', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500', bio: 'Suresh Kumar Khanna is a 9-term MLA from Shahjahanpur and Cabinet Minister for Finance in Uttar Pradesh Government.', gender: 'Male' },
+  { name: 'Aditi Singh', state: 'Uttar Pradesh', district: 'Rae Bareli', constituency: 'Rae Bareli (177)', party: 'BJP', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500', bio: 'Aditi Singh is a prominent MLA representing Rae Bareli constituency in the Uttar Pradesh Legislative Assembly.', gender: 'Female' },
+  { name: 'Brajesh Pathak', state: 'Uttar Pradesh', district: 'Lucknow', constituency: 'Lucknow Cantt (175)', party: 'BJP', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500', bio: 'Brajesh Pathak is Deputy Chief Minister and MLA representing Lucknow Cantonment constituency.', gender: 'Male' },
+  { name: 'Ravidas Mehrotra', state: 'Uttar Pradesh', district: 'Lucknow', constituency: 'Lucknow Central (174)', party: 'SP', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500', bio: 'Ravidas Mehrotra is a senior Samajwadi Party leader and Member of Legislative Assembly from Lucknow Central.', gender: 'Male' },
+  { name: 'Dr. Neeraj Bora', state: 'Uttar Pradesh', district: 'Lucknow', constituency: 'Lucknow North (172)', party: 'BJP', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500', bio: 'Dr. Neeraj Bora is a physician and Member of Legislative Assembly representing Lucknow North.', gender: 'Male' },
+  { name: 'Dr. Neelkanth Tiwari', state: 'Uttar Pradesh', district: 'Varanasi', constituency: 'Varanasi South (388)', party: 'BJP', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500', bio: 'Dr. Neelkanth Tiwari represents Varanasi South in the Uttar Pradesh Legislative Assembly.', gender: 'Male' },
+  { name: 'Saurabh Srivastava', state: 'Uttar Pradesh', district: 'Varanasi', constituency: 'Varanasi Cantt (390)', party: 'BJP', image: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500', bio: 'Saurabh Srivastava is an MLA representing Varanasi Cantonment in the Uttar Pradesh Assembly.', gender: 'Male' },
+  { name: 'Shivpal Singh Yadav', state: 'Uttar Pradesh', district: 'Etawah', constituency: 'Jaswantnagar (199)', party: 'SP', image: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=500', bio: 'Shivpal Singh Yadav is a senior MLA representing Jaswantnagar constituency in Etawah district.', gender: 'Male' },
+  { name: 'Raghuraj Pratap Singh (Raja Bhaiya)', state: 'Uttar Pradesh', district: 'Pratapgarh', constituency: 'Kunda (246)', party: 'Jansatta Dal (Loktantrik)', image: 'https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=500', bio: 'Raghuraj Pratap Singh is a multi-term MLA representing Kunda constituency in Pratapgarh district.', gender: 'Male' },
+
+  // Maharashtra MLAs
+  { name: 'Aaditya Thackeray', state: 'Maharashtra', district: 'Mumbai City', constituency: 'Worli (182)', party: 'SHS', image: 'https://upload.wikimedia.org/wikipedia/commons/0/01/Aaditya_Thackeray_2022.jpg', bio: 'Aaditya Thackeray is a Member of Legislative Assembly representing Worli constituency in Mumbai and former Environment Minister of Maharashtra.', gender: 'Male' },
+  { name: 'Ashish Shelar', state: 'Maharashtra', district: 'Mumbai Suburban', constituency: 'Vandre West (177)', party: 'BJP', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500', bio: 'Ashish Shelar is a Member of Legislative Assembly from Bandra West and President of Mumbai BJP.', gender: 'Male' },
+  { name: 'Chandrakant Patil', state: 'Maharashtra', district: 'Pune', constituency: 'Kothrud (166)', party: 'BJP', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500', bio: 'Chandrakant Patil is Higher and Technical Education Minister of Maharashtra and MLA from Kothrud, Pune.', gender: 'Male' },
+  { name: 'Rohit Pawar', state: 'Maharashtra', district: 'Ahilyanagar (Ahmednagar)', constituency: 'Karjat Jamkhed (227)', party: 'NCP', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500', bio: 'Rohit Pawar is a young entrepreneur and Member of Legislative Assembly representing Karjat Jamkhed.', gender: 'Male' },
+  { name: 'Devendra Fadnavis', state: 'Maharashtra', district: 'Nagpur', constituency: 'Nagpur South West (52)', party: 'BJP', image: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Devendra_Fadnavis_Official_Portrait_2024.jpg', bio: 'Devendra Fadnavis is Deputy Chief Minister of Maharashtra and MLA representing Nagpur South West.', gender: 'Male' },
+
+  // Karnataka MLAs
+  { name: 'B.Y. Vijayendra', state: 'Karnataka', district: 'Shivamogga', constituency: 'Shikaripura (115)', party: 'BJP', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500', bio: 'B.Y. Vijayendra is Karnataka State BJP President and MLA representing Shikaripura in Shivamogga district.', gender: 'Male' },
+  { name: 'Priyank Kharge', state: 'Karnataka', district: 'Kalaburagi', constituency: 'Chittapur (40)', party: 'INC', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500', bio: 'Priyank Kharge is IT/BT and Panchayat Raj Minister in Karnataka Government and MLA from Chittapur.', gender: 'Male' },
+  { name: 'Rizwan Arshad', state: 'Karnataka', district: 'Bengaluru Urban', constituency: 'Shivajinagar (162)', party: 'INC', image: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500', bio: 'Rizwan Arshad is an active lawmaker representing Shivajinagar constituency in central Bengaluru.', gender: 'Male' },
+
+  // West Bengal MLAs
+  { name: 'Babul Supriyo', state: 'West Bengal', district: 'Kolkata', constituency: 'Ballygunge (161)', party: 'TMC', image: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500', bio: 'Babul Supriyo is Information Technology minister in West Bengal and MLA representing Ballygunge in Kolkata.', gender: 'Male' },
+  { name: 'Suvendu Adhikari', state: 'West Bengal', district: 'Purba Medinipur', constituency: 'Nandigram (210)', party: 'BJP', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500', bio: 'Suvendu Adhikari is Leader of Opposition in West Bengal Legislative Assembly and MLA from Nandigram.', gender: 'Male' },
+  { name: 'Firhad Hakim', state: 'West Bengal', district: 'Kolkata', constituency: 'Kolkata Port (158)', party: 'TMC', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500', bio: 'Firhad Hakim is Mayor of Kolkata and Urban Development minister representing Kolkata Port Assembly.', gender: 'Male' },
+
+  // Delhi MLAs
+  { name: 'Atishi Marlena', state: 'Delhi', district: 'South Delhi', constituency: 'Kalkaji (51)', party: 'AAP', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500', bio: 'Atishi Marlena is Chief Minister of Delhi and MLA representing Kalkaji constituency in South Delhi.', gender: 'Female' },
+  { name: 'Saurabh Bharadwaj', state: 'Delhi', district: 'South Delhi', constituency: 'Greater Kailash (50)', party: 'AAP', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500', bio: 'Saurabh Bharadwaj is Cabinet Minister in Delhi Government and MLA from Greater Kailash.', gender: 'Male' },
+  { name: 'Vijender Gupta', state: 'Delhi', district: 'North West Delhi', constituency: 'Rohini (13)', party: 'BJP', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500', bio: 'Vijender Gupta is senior leader and MLA representing Rohini constituency in North West Delhi.', gender: 'Male' },
+
+  // Gujarat MLAs
+  { name: 'Harsh Sanghavi', state: 'Gujarat', district: 'Surat', constituency: 'Majura (165)', party: 'BJP', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500', bio: 'Harsh Sanghavi is Home Minister of State in Gujarat Government and MLA representing Majura, Surat.', gender: 'Male' },
+  { name: 'Rivaba Jadeja', state: 'Gujarat', district: 'Jamnagar', constituency: 'Jamnagar North (78)', party: 'BJP', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500', bio: 'Rivaba Jadeja is a Member of Legislative Assembly representing Jamnagar North in Gujarat Assembly.', gender: 'Female' },
+  { name: 'Jignesh Mevani', state: 'Gujarat', district: 'Banaskantha', constituency: 'Vadgam (11)', party: 'INC', image: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=500', bio: 'Jignesh Mevani is a prominent social activist and MLA representing Vadgam constituency in Gujarat.', gender: 'Male' },
+
+  // Bihar MLAs
+  { name: 'Tejashwi Yadav', state: 'Bihar', district: 'Vaishali', constituency: 'Raghopur (128)', party: 'RJD', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500', bio: 'Tejashwi Yadav is Leader of Opposition in Bihar Legislative Assembly and MLA from Raghopur in Vaishali.', gender: 'Male' },
+  { name: 'Shreyasi Singh', state: 'Bihar', district: 'Jamui', constituency: 'Jamui (241)', party: 'BJP', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500', bio: 'Shreyasi Singh is an international Commonwealth shooting champion and MLA representing Jamui in Bihar.', gender: 'Female' },
+  { name: 'Nitin Nabin', state: 'Bihar', district: 'Patna', constituency: 'Bankipur (182)', party: 'BJP', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500', bio: 'Nitin Nabin is Cabinet Minister for Urban Development in Bihar and MLA from Bankipur, Patna.', gender: 'Male' },
+
+  // Rajasthan MLAs
+  { name: 'Sachin Pilot', state: 'Rajasthan', district: 'Tonk', constituency: 'Tonk (96)', party: 'INC', image: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500', bio: 'Sachin Pilot is former Deputy Chief Minister of Rajasthan and MLA representing Tonk constituency.', gender: 'Male' },
+  { name: 'Diya Kumari', state: 'Rajasthan', district: 'Jaipur', constituency: 'Vidyadhar Nagar (50)', party: 'BJP', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500', bio: 'Diya Kumari is Deputy Chief Minister of Rajasthan and MLA representing Vidyadhar Nagar in Jaipur.', gender: 'Female' },
+  { name: 'Rajyavardhan Singh Rathore', state: 'Rajasthan', district: 'Jaipur', constituency: 'Jhotwara (46)', party: 'BJP', image: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500', bio: 'Col. Rajyavardhan Singh Rathore (Retd.) is Olympic medalist, Cabinet Minister and MLA from Jhotwara, Jaipur.', gender: 'Male' },
+
+  // Tamil Nadu MLAs
+  { name: 'Udhayanidhi Stalin', state: 'Tamil Nadu', district: 'Chennai', constituency: 'Chepauk-Thiruvallikeni (18)', party: 'DMK', image: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500', bio: 'Udhayanidhi Stalin is Deputy Chief Minister and Youth Welfare Minister of Tamil Nadu and MLA from Chepauk-Thiruvallikeni.', gender: 'Male' },
+  { name: 'Vanathi Srinivasan', state: 'Tamil Nadu', district: 'Coimbatore', constituency: 'Coimbatore South (120)', party: 'BJP', image: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500', bio: 'Vanathi Srinivasan is National President of BJP Mahila Morcha and MLA representing Coimbatore South.', gender: 'Female' },
+
+  // Telangana MLAs
+  { name: 'K.T. Rama Rao (KTR)', state: 'Telangana', district: 'Rajanna Sircilla', constituency: 'Sircilla (29)', party: 'BRS', image: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500', bio: 'K.T. Rama Rao is Working President of BRS and MLA representing Sircilla constituency in Rajanna Sircilla district.', gender: 'Male' },
+  { name: 'Akbaruddin Owaisi', state: 'Telangana', district: 'Hyderabad', constituency: 'Chandrayangutta (67)', party: 'AIMIM', image: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500', bio: 'Akbaruddin Owaisi is AIMIM floor leader in Telangana Legislative Assembly and 5-term MLA from Chandrayangutta.', gender: 'Male' }
+];
+
+mlasRaw.forEach(item => {
+  const leader = createLeader({
+    name: item.name,
+    category: 'MLA',
+    state: item.state,
+    district: item.district,
+    constituency: item.constituency,
+    party: item.party,
+    designation: `MLA, ${item.constituency} (${item.district}, ${item.state})`,
+    image: item.image,
+    gender: item.gender as 'Male' | 'Female',
+    bio: item.bio,
     featured: true
   });
   if (!addedSlugs.has(leader.slug)) {
