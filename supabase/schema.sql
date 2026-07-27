@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS public.leaders (
   designation VARCHAR(255) NOT NULL,
   category leader_category NOT NULL,
   state VARCHAR(100) NOT NULL,
+  district VARCHAR(255),
   constituency VARCHAR(255) NOT NULL,
   party VARCHAR(100) NOT NULL,
   gender VARCHAR(50) NOT NULL,
