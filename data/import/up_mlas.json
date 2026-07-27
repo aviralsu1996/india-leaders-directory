@@ -1,0 +1,3982 @@
+[
+  {
+    "serial": 1,
+    "name": "Shri Umar Ali Khan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "1-behat",
+    "district": "Saharanpur",
+    "image": "/storage/leaders/up/umar-ali-khan.png"
+  },
+  {
+    "serial": 2,
+    "name": "Shri Mukesh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Choudhary\nBhartiya Janata Party",
+    "constituency": "2-nakur",
+    "district": "Saharanpur",
+    "image": "/storage/leaders/up/mukesh.png"
+  },
+  {
+    "serial": 3,
+    "name": "Shri Rajeev Gumber",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "3-saharanpur Nagar",
+    "district": "Saharanpur",
+    "image": "/storage/leaders/up/rajeev-gumber.png"
+  },
+  {
+    "serial": 4,
+    "name": "Shri Ashu Malik",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "4-saharanpur",
+    "district": "Saharanpur",
+    "image": "/storage/leaders/up/ashu-malik.png"
+  },
+  {
+    "serial": 5,
+    "name": "Shri Brijesh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "5-deoband",
+    "district": "Saharanpur",
+    "image": "/storage/leaders/up/brijesh.png"
+  },
+  {
+    "serial": 6,
+    "name": "Shri Devender Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Nim\nBhartiya Janata Party",
+    "constituency": "6-rampur Maniharan",
+    "district": "Saharanpur",
+    "image": "/storage/leaders/up/devender-kumar.png"
+  },
+  {
+    "serial": 7,
+    "name": "Shri Kirat Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "7-gangoh",
+    "district": "Saharanpur",
+    "image": "/storage/leaders/up/kirat-singh.png"
+  },
+  {
+    "serial": 8,
+    "name": "Shri Nahid Hasan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "8-kairana",
+    "district": "Shamali",
+    "image": "/storage/leaders/up/nahid-hasan.png"
+  },
+  {
+    "serial": 9,
+    "name": "Shri Ashraf Ali Khan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rastriya Lok Dal",
+    "constituency": "9-thana Bhawan",
+    "district": "Shamali",
+    "image": "/storage/leaders/up/ashraf-ali-khan.png"
+  },
+  {
+    "serial": 10,
+    "name": "Shri Persann Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rastriya Lok Dal",
+    "constituency": "10-shamli",
+    "district": "Shamali",
+    "image": "/storage/leaders/up/persann-kumar.png"
+  },
+  {
+    "serial": 11,
+    "name": "Shri Rajpal Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Baliyan\nRastriya Lok Dal",
+    "constituency": "11-budhana",
+    "district": "Muzaffarnagar",
+    "image": "/storage/leaders/up/rajpal-singh.png"
+  },
+  {
+    "serial": 12,
+    "name": "Shri Pankaj Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Malik\nSamajwadi Party",
+    "constituency": "12-charthawal",
+    "district": "Muzaffarnagar",
+    "image": "/storage/leaders/up/pankaj-kumar.png"
+  },
+  {
+    "serial": 13,
+    "name": "Shri Anil Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rastriya Lok Dal",
+    "constituency": "13-purqazi",
+    "district": "Muzaffarnagar",
+    "image": "/storage/leaders/up/anil-kumar.png"
+  },
+  {
+    "serial": 14,
+    "name": "Shri Kapil Dev Agarwal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "14-muzaffar Nagar",
+    "district": "Muzaffarnagar",
+    "image": "/storage/leaders/up/kapil-dev-agarwal.png"
+  },
+  {
+    "serial": 15,
+    "name": "Shri Madan Bhaiya",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rastriya Lok Dal",
+    "constituency": "15-khatauli",
+    "district": "Muzaffarnagar",
+    "image": "/storage/leaders/up/madan-bhaiya.png"
+  },
+  {
+    "serial": 16,
+    "name": "Smt. Mithlesh Pal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rastriya Lok Dal",
+    "constituency": "16-meerapur",
+    "district": "Muzaffarnagar",
+    "image": "/storage/leaders/up/mithlesh-pal.png"
+  },
+  {
+    "serial": 17,
+    "name": "Shri Tasleem Ahmad",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "17-najibabad",
+    "district": "Bijnor",
+    "image": "/storage/leaders/up/tasleem-ahmad.png"
+  },
+  {
+    "serial": 18,
+    "name": "Shri Manoj Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Paras\nSamajwadi Party",
+    "constituency": "18-nagina",
+    "district": "Bijnor",
+    "image": "/storage/leaders/up/manoj-kumar.png"
+  },
+  {
+    "serial": 19,
+    "name": "Kunwar Sushant Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "19-barhapur",
+    "district": "Bijnor",
+    "image": "/storage/leaders/up/kunwar-sushant-singh.png"
+  },
+  {
+    "serial": 20,
+    "name": "Shri Ashok Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rana\nBhartiya Janata Party",
+    "constituency": "20-dhampur",
+    "district": "Bijnor",
+    "image": "/storage/leaders/up/ashok-kumar.png"
+  },
+  {
+    "serial": 21,
+    "name": "Shri Omkumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "21-nehtaur",
+    "district": "Bijnor",
+    "image": "/storage/leaders/up/omkumar.png"
+  },
+  {
+    "serial": 22,
+    "name": "Smt. Suchi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "22-bijnor",
+    "district": "Bijnor",
+    "image": "/storage/leaders/up/suchi.png"
+  },
+  {
+    "serial": 23,
+    "name": "Shri Swami Omvesh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "23-chandpur",
+    "district": "Bijnor",
+    "image": "/storage/leaders/up/swami-omvesh.png"
+  },
+  {
+    "serial": 24,
+    "name": "Shri Ram Avatar Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Saini\nSamajwadi Party",
+    "constituency": "24-noorpur",
+    "district": "Bijnor",
+    "image": "/storage/leaders/up/ram-avatar-singh.png"
+  },
+  {
+    "serial": 25,
+    "name": "Shri Kamal Akhtar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "25-kanth",
+    "district": "Moradabad",
+    "image": "/storage/leaders/up/kamal-akhtar.png"
+  },
+  {
+    "serial": 26,
+    "name": "Shri Navab Jan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "26-thakurdwara",
+    "district": "Moradabad",
+    "image": "/storage/leaders/up/navab-jan.png"
+  },
+  {
+    "serial": 27,
+    "name": "Mohammad Nasir",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Qureshi\nSamajwadi Party",
+    "constituency": "27-moradabad Rural",
+    "district": "Moradabad",
+    "image": "/storage/leaders/up/mohammad-nasir.png"
+  },
+  {
+    "serial": 28,
+    "name": "Shri Ritesh Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Gupta\nBhartiya Janata Party",
+    "constituency": "28-moradabad Nagar",
+    "district": "Moradabad",
+    "image": "/storage/leaders/up/ritesh-kumar.png"
+  },
+  {
+    "serial": 29,
+    "name": "Shri Ramveer Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "29-kundarki",
+    "district": "Moradabad",
+    "image": "/storage/leaders/up/ramveer-singh.png"
+  },
+  {
+    "serial": 30,
+    "name": "Mau. Faheem Irfan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "30-bilari",
+    "district": "Moradabad",
+    "image": "/storage/leaders/up/mau-faheem-irfan.png"
+  },
+  {
+    "serial": 31,
+    "name": "Smt. Gulab Debi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "31-chandausi",
+    "district": "Sambhal",
+    "image": "/storage/leaders/up/gulab-debi.png"
+  },
+  {
+    "serial": 32,
+    "name": "Smt. Pinki Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "32-asmoli",
+    "district": "Sambhal",
+    "image": "/storage/leaders/up/pinki-singh.png"
+  },
+  {
+    "serial": 33,
+    "name": "Shri Iqbal Mehmood",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "33-sambhal",
+    "district": "Sambhal",
+    "image": "/storage/leaders/up/iqbal-mehmood.png"
+  },
+  {
+    "serial": 34,
+    "name": "Shri Shafiq Ahmed",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Ansari\nApna Dal(sone Lal)",
+    "constituency": "34-suar",
+    "district": "Rampur",
+    "image": "/storage/leaders/up/shafiq-ahmed.png"
+  },
+  {
+    "serial": 35,
+    "name": "Shri Naseer Ahmad",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Khan\nSamajwadi Party",
+    "constituency": "35-chamraua",
+    "district": "Rampur",
+    "image": "/storage/leaders/up/naseer-ahmad.png"
+  },
+  {
+    "serial": 36,
+    "name": "Shri Baldev Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Aulakh\nBhartiya Janata Party",
+    "constituency": "36-bilaspur",
+    "district": "Rampur",
+    "image": "/storage/leaders/up/baldev-singh.png"
+  },
+  {
+    "serial": 37,
+    "name": "Shri Akash Saxena",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "(Hani)\nBhartiya Janata Party",
+    "constituency": "37-rampur",
+    "district": "Rampur",
+    "image": "/storage/leaders/up/akash-saxena.png"
+  },
+  {
+    "serial": 38,
+    "name": "Smt. Rajbala Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "38-milak",
+    "district": "Rampur",
+    "image": "/storage/leaders/up/rajbala-singh.png"
+  },
+  {
+    "serial": 39,
+    "name": "Shri Rajeev Tarara",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "39-dhanaura",
+    "district": "Amroha",
+    "image": "/storage/leaders/up/rajeev-tarara.png"
+  },
+  {
+    "serial": 40,
+    "name": "Shri Samarpal Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "40-naugawan Sadat",
+    "district": "Amroha",
+    "image": "/storage/leaders/up/samarpal-singh.png"
+  },
+  {
+    "serial": 41,
+    "name": "Shri Mehboob Ali",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "41-amroha",
+    "district": "Amroha",
+    "image": "/storage/leaders/up/mehboob-ali.png"
+  },
+  {
+    "serial": 42,
+    "name": "Shri Mahendra Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Khadagvanshi\nBhartiya Janata Party",
+    "constituency": "42-hasanpur",
+    "district": "Amroha",
+    "image": "/storage/leaders/up/mahena-singh.png"
+  },
+  {
+    "serial": 43,
+    "name": "Shri Ghulam",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Mohammad\nRastriya Lok Dal",
+    "constituency": "43-siwalkhas",
+    "district": "Meerut",
+    "image": "/storage/leaders/up/ghulam.png"
+  },
+  {
+    "serial": 44,
+    "name": "Shri Atul Pradhan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "44-sardhana",
+    "district": "Meerut",
+    "image": "/storage/leaders/up/atul-pradhan.png"
+  },
+  {
+    "serial": 45,
+    "name": "Shri Dinesh Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "45-hastinapur",
+    "district": "Meerut",
+    "image": "/storage/leaders/up/dinesh-kumar.png"
+  },
+  {
+    "serial": 46,
+    "name": "Shri Shahid Manzoor",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "46-kithore",
+    "district": "Meerut",
+    "image": "/storage/leaders/up/shahid-manzoor.png"
+  },
+  {
+    "serial": 47,
+    "name": "Shri Amit Agarwal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "47-meerut Cantt.",
+    "district": "Meerut",
+    "image": "/storage/leaders/up/amit-agarwal.png"
+  },
+  {
+    "serial": 48,
+    "name": "Shri Rafiq Ansari",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "48-meerut",
+    "district": "Meerut",
+    "image": "/storage/leaders/up/rafiq-ansari.png"
+  },
+  {
+    "serial": 49,
+    "name": "Dr. Somendra Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Tomar\nBhartiya Janata Party",
+    "constituency": "49-meerut South",
+    "district": "Meerut",
+    "image": "/storage/leaders/up/somena-singh.png"
+  },
+  {
+    "serial": 50,
+    "name": "Dr. Ajay Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rastriya Lok Dal",
+    "constituency": "50-chhaprauli",
+    "district": "Bagpat",
+    "image": "/storage/leaders/up/ajay-kumar.png"
+  },
+  {
+    "serial": 51,
+    "name": "Shri Krishan Pal Malik",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "51-baraut",
+    "district": "Bagpat",
+    "image": "/storage/leaders/up/krishan-pal-malik.png"
+  },
+  {
+    "serial": 52,
+    "name": "Shri Yogesh Dhama",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "52-baghpat",
+    "district": "Bagpat",
+    "image": "/storage/leaders/up/yogesh-dhama.png"
+  },
+  {
+    "serial": 53,
+    "name": "Shri Nand Kishor",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Gurjar\nBhartiya Janata Party",
+    "constituency": "53-loni",
+    "district": "Ghaziabad",
+    "image": "/storage/leaders/up/nand-kishor.png"
+  },
+  {
+    "serial": 54,
+    "name": "Shri Ajit Pal Tyagi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "54-muradnagar",
+    "district": "Ghaziabad",
+    "image": "/storage/leaders/up/ajit-pal-tyagi.png"
+  },
+  {
+    "serial": 55,
+    "name": "Shri Sunil Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Sharma\nBhartiya Janata Party",
+    "constituency": "55-sahibabad",
+    "district": "Ghaziabad",
+    "image": "/storage/leaders/up/sunil-kumar.png"
+  },
+  {
+    "serial": 56,
+    "name": "Shri Sanjeev Sharma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "56-gaziabad",
+    "district": "Ghaziabad",
+    "image": "/storage/leaders/up/sanjeev-sharma.png"
+  },
+  {
+    "serial": 57,
+    "name": "Dr. Manju Shiwach",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "57-modi Nagar",
+    "district": "Ghaziabad",
+    "image": "/storage/leaders/up/manju-shiwach.png"
+  },
+  {
+    "serial": 58,
+    "name": "Shri Dharmesh Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Tomar\nBhartiya Janata Party",
+    "constituency": "58-dholana",
+    "district": "Hapur",
+    "image": "/storage/leaders/up/dharmesh-singh.png"
+  },
+  {
+    "serial": 59,
+    "name": "Shri Vijaypal (Aadhti)",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "59-hapur",
+    "district": "Hapur",
+    "image": "/storage/leaders/up/vijaypal-aadhti.png"
+  },
+  {
+    "serial": 60,
+    "name": "Shri Harendra Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "60-garhmukteshwar",
+    "district": "Hapur",
+    "image": "/storage/leaders/up/harena-singh.png"
+  },
+  {
+    "serial": 61,
+    "name": "Shri Pankaj Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "61-noida",
+    "district": "Gbnagar",
+    "image": "/storage/leaders/up/pankaj-singh.png"
+  },
+  {
+    "serial": 62,
+    "name": "Shri Tejpal Singh Nagar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "62-dadri",
+    "district": "Gbnagar",
+    "image": "/storage/leaders/up/tejpal-singh-nagar.png"
+  },
+  {
+    "serial": 63,
+    "name": "Shri Dhirendra Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "63-jewar",
+    "district": "Gbnagar",
+    "image": "/storage/leaders/up/dhirena-singh.png"
+  },
+  {
+    "serial": 64,
+    "name": "Shri Lakshmi Raj Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "64-sikandrabad",
+    "district": "Bulandshahar",
+    "image": "/storage/leaders/up/lakshmi-raj-singh.png"
+  },
+  {
+    "serial": 65,
+    "name": "Shri Pradeep Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Chaudhary\nBhartiya Janata Party",
+    "constituency": "65-bulandshahr",
+    "district": "Bulandshahar",
+    "image": "/storage/leaders/up/pradeep-kumar.png"
+  },
+  {
+    "serial": 66,
+    "name": "Shri Devendra Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Lodhi\nBhartiya Janata Party",
+    "constituency": "66-syana",
+    "district": "Bulandshahar",
+    "image": "/storage/leaders/up/devena-singh.png"
+  },
+  {
+    "serial": 67,
+    "name": "Shri Sanjay Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Sharma\nBhartiya Janata Party",
+    "constituency": "67-anupshahr",
+    "district": "Bulandshahar",
+    "image": "/storage/leaders/up/sanjay-kumar.png"
+  },
+  {
+    "serial": 68,
+    "name": "Shri Chandrapal Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "68-debai",
+    "district": "Bulandshahar",
+    "image": "/storage/leaders/up/chanapal-singh.png"
+  },
+  {
+    "serial": 69,
+    "name": "Shri Anil Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "69-shikarpur",
+    "district": "Bulandshahar",
+    "image": "/storage/leaders/up/anil-kumar.png"
+  },
+  {
+    "serial": 70,
+    "name": "Smt. Minakshi Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "70-khurja",
+    "district": "Bulandshahar",
+    "image": "/storage/leaders/up/minakshi-singh.png"
+  },
+  {
+    "serial": 71,
+    "name": "Shri Surender Diler",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "71-khair",
+    "district": "Aligarh",
+    "image": "/storage/leaders/up/surender-diler.png"
+  },
+  {
+    "serial": 72,
+    "name": "Shri Jaiveer Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "72-barauli",
+    "district": "Aligarh",
+    "image": "/storage/leaders/up/jaiveer-singh.png"
+  },
+  {
+    "serial": 73,
+    "name": "Shri Sandeep Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nBhartiya Janata Party",
+    "constituency": "73-atrauli",
+    "district": "Aligarh",
+    "image": "/storage/leaders/up/sandeep-kumar.png"
+  },
+  {
+    "serial": 74,
+    "name": "Shri Ravendra Pal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nBhartiya Janata Party",
+    "constituency": "74-chharra",
+    "district": "Aligarh",
+    "image": "/storage/leaders/up/ravena-pal.png"
+  },
+  {
+    "serial": 75,
+    "name": "Shri Anil Parashar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "75-koil",
+    "district": "Aligarh",
+    "image": "/storage/leaders/up/anil-parashar.png"
+  },
+  {
+    "serial": 76,
+    "name": "Smt. Mukta Sanjeev",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Raja\nBhartiya Janata Party",
+    "constituency": "76-aligarh",
+    "district": "Aligarh",
+    "image": "/storage/leaders/up/mukta-sanjeev.png"
+  },
+  {
+    "serial": 77,
+    "name": "Shri Rajkumar Sahyogi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "77-iglas",
+    "district": "Aligarh",
+    "image": "/storage/leaders/up/rajkumar-sahyogi.png"
+  },
+  {
+    "serial": 78,
+    "name": "Smt. Anjula Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Mahaur\nBhartiya Janata Party",
+    "constituency": "78-hathras",
+    "district": "Hathras",
+    "image": "/storage/leaders/up/anjula-singh.png"
+  },
+  {
+    "serial": 79,
+    "name": "Shri Pradeep Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh Urf Guddu Chaudhary\nRastriya Lok Dal",
+    "constituency": "79-sadabad",
+    "district": "Hathras",
+    "image": "/storage/leaders/up/pradeep-kumar.png"
+  },
+  {
+    "serial": 80,
+    "name": "Shri Birendra Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rana\nBhartiya Janata Party",
+    "constituency": "80-sikandra Rao",
+    "district": "Hathras",
+    "image": "/storage/leaders/up/birena-singh.png"
+  },
+  {
+    "serial": 81,
+    "name": "Shri Laxmi Narayan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "81-chhata",
+    "district": "Mathura",
+    "image": "/storage/leaders/up/laxmi-narayan.png"
+  },
+  {
+    "serial": 82,
+    "name": "Shri Rajesh Pal Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Urf Rajesh Chaudhary\nBhartiya Janata Party",
+    "constituency": "82-mant",
+    "district": "Mathura",
+    "image": "/storage/leaders/up/rajesh-pal-singh.png"
+  },
+  {
+    "serial": 83,
+    "name": "Shri Meghshyam",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "83-goverdhan",
+    "district": "Mathura",
+    "image": "/storage/leaders/up/meghshyam.png"
+  },
+  {
+    "serial": 84,
+    "name": "Shri Shrikant Sharma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "84-mathura",
+    "district": "Mathura",
+    "image": "/storage/leaders/up/kant-sharma.png"
+  },
+  {
+    "serial": 85,
+    "name": "Shri Puran Prakash",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "85-baldev",
+    "district": "Mathura",
+    "image": "/storage/leaders/up/puran-prakash.png"
+  },
+  {
+    "serial": 86,
+    "name": "Dr. Dharmpal Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "86-etmadpur",
+    "district": "Agra",
+    "image": "/storage/leaders/up/dharmpal-singh.png"
+  },
+  {
+    "serial": 87,
+    "name": "Dr. G S Dharmesh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "87-agra Cantt.",
+    "district": "Agra",
+    "image": "/storage/leaders/up/g-s-dharmesh.png"
+  },
+  {
+    "serial": 88,
+    "name": "Shri Yogendra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Upadhyaya\nBhartiya Janata Party",
+    "constituency": "88-agra South",
+    "district": "Agra",
+    "image": "/storage/leaders/up/yogena.png"
+  },
+  {
+    "serial": 89,
+    "name": "Shri Purushottam",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Khandelwal\nBhartiya Janata Party",
+    "constituency": "89-agra North",
+    "district": "Agra",
+    "image": "/storage/leaders/up/purushottam.png"
+  },
+  {
+    "serial": 90,
+    "name": "Smt. Baby Rani Maurya",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "90-agra Rural",
+    "district": "Agra",
+    "image": "/storage/leaders/up/baby-rani-maurya.png"
+  },
+  {
+    "serial": 91,
+    "name": "Shri Babulal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "91-fatehpur Sikri",
+    "district": "Agra",
+    "image": "/storage/leaders/up/babulal.png"
+  },
+  {
+    "serial": 92,
+    "name": "Shri Bhagwan Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Kushwaha\nBhartiya Janata Party",
+    "constituency": "92-kheragarh",
+    "district": "Agra",
+    "image": "/storage/leaders/up/bhagwan-singh.png"
+  },
+  {
+    "serial": 93,
+    "name": "Shri Chhotey Lal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Verma\nBhartiya Janata Party",
+    "constituency": "93-fatehabad",
+    "district": "Agra",
+    "image": "/storage/leaders/up/chhotey-lal.png"
+  },
+  {
+    "serial": 94,
+    "name": "Smt. Rani Pakshalika",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nBhartiya Janata Party",
+    "constituency": "94-bah",
+    "district": "Agra",
+    "image": "/storage/leaders/up/rani-pakshalika.png"
+  },
+  {
+    "serial": 95,
+    "name": "Shri Prem Pal Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Dhangar\nBhartiya Janata Party",
+    "constituency": "95-tundla",
+    "district": "Firozabad",
+    "image": "/storage/leaders/up/prem-pal-singh.png"
+  },
+  {
+    "serial": 96,
+    "name": "Er. Sachin Yadav Urf",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Jakhai\nSamajwadi Party",
+    "constituency": "96-jasrana",
+    "district": "Firozabad",
+    "image": "/storage/leaders/up/er-sachin-yadav-urf.png"
+  },
+  {
+    "serial": 97,
+    "name": "Shri Manish Asija",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "97-firozabad",
+    "district": "Firozabad",
+    "image": "/storage/leaders/up/manish-asija.png"
+  },
+  {
+    "serial": 98,
+    "name": "Dr. Mukesh Chandra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Verma (Mallah)\nSamajwadi Party",
+    "constituency": "98-shikohabad",
+    "district": "Firozabad",
+    "image": "/storage/leaders/up/mukesh-chana.png"
+  },
+  {
+    "serial": 99,
+    "name": "Shri Sarvesh Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "99-sirsaganj",
+    "district": "Firozabad",
+    "image": "/storage/leaders/up/sarvesh-singh.png"
+  },
+  {
+    "serial": 100,
+    "name": "Shri Devendra Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "100-kasganj",
+    "district": "Kasganj",
+    "image": "/storage/leaders/up/devena-singh.png"
+  },
+  {
+    "serial": 101,
+    "name": "Shri Hariom",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "101-amanpur",
+    "district": "Kasganj",
+    "image": "/storage/leaders/up/hariom.png"
+  },
+  {
+    "serial": 102,
+    "name": "Smt. Nadira Sultan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Alias Bitiya\nSamajwadi Party",
+    "constituency": "102-patiyali",
+    "district": "Kasganj",
+    "image": "/storage/leaders/up/nadira-sultan.png"
+  },
+  {
+    "serial": 103,
+    "name": "Shri Satyapal Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rathore\nBhartiya Janata Party",
+    "constituency": "103-aliganj",
+    "district": "Etah",
+    "image": "/storage/leaders/up/satyapal-singh.png"
+  },
+  {
+    "serial": 104,
+    "name": "Shri Vipin Kumar David",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "104-etah",
+    "district": "Etah",
+    "image": "/storage/leaders/up/vipin-kumar-david.png"
+  },
+  {
+    "serial": 105,
+    "name": "Shri Virendra Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Lodhi\nBhartiya Janata Party",
+    "constituency": "105-marhara",
+    "district": "Etah",
+    "image": "/storage/leaders/up/virena-singh.png"
+  },
+  {
+    "serial": 106,
+    "name": "Shri Sanjeev Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Diwakar\nBhartiya Janata Party",
+    "constituency": "106-jalesar",
+    "district": "Etah",
+    "image": "/storage/leaders/up/sanjeev-kumar.png"
+  },
+  {
+    "serial": 107,
+    "name": "Shri Jayveer Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "107-mainpuri",
+    "district": "Mainpuri",
+    "image": "/storage/leaders/up/jayveer-singh.png"
+  },
+  {
+    "serial": 108,
+    "name": "Shri Ram Naresh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Agnihotri\nBhartiya Janata Party",
+    "constituency": "108-bhongaon",
+    "district": "Mainpuri",
+    "image": "/storage/leaders/up/ram-naresh.png"
+  },
+  {
+    "serial": 109,
+    "name": "Er. Brajesh Katheriya",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "109-kishani",
+    "district": "Mainpuri",
+    "image": "/storage/leaders/up/er-brajesh-katheriya.png"
+  },
+  {
+    "serial": 110,
+    "name": "Shri Tej Pratap Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "110-karhal",
+    "district": "Mainpuri",
+    "image": "/storage/leaders/up/tej-pratap-singh.png"
+  },
+  {
+    "serial": 111,
+    "name": "Shri Ramkhiladi Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "111-gunnaur",
+    "district": "Sambhal",
+    "image": "/storage/leaders/up/ramkhiladi-singh.png"
+  },
+  {
+    "serial": 112,
+    "name": "Shri Ashutosh Maurya",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Urf Raju\nSamajwadi Party",
+    "constituency": "112-bisauli",
+    "district": "Badaun",
+    "image": "/storage/leaders/up/ashutosh-maurya.png"
+  },
+  {
+    "serial": 113,
+    "name": "Shri Brajesh Yadav",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "113-sahaswan",
+    "district": "Badaun",
+    "image": "/storage/leaders/up/brajesh-yadav.png"
+  },
+  {
+    "serial": 114,
+    "name": "Shri Harish Chandra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "114-bilsi",
+    "district": "Badaun",
+    "image": "/storage/leaders/up/harish-chana.png"
+  },
+  {
+    "serial": 115,
+    "name": "Shri Mahesh Chandra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Gupta\nBhartiya Janata Party",
+    "constituency": "115-badaun",
+    "district": "Badaun",
+    "image": "/storage/leaders/up/mahesh-chana.png"
+  },
+  {
+    "serial": 116,
+    "name": "Shri Himanshu Yadav",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "116-shekhupur",
+    "district": "Badaun",
+    "image": "/storage/leaders/up/himanshu-yadav.png"
+  },
+  {
+    "serial": 117,
+    "name": "Shri Rajeev Singh Urf",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Babbu Bhaiya\nBhartiya Janata Party",
+    "constituency": "117-dataganj",
+    "district": "Badaun",
+    "image": "/storage/leaders/up/rajeev-singh-urf.png"
+  },
+  {
+    "serial": 118,
+    "name": "Shri Ataur Rehman",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "118-baheri",
+    "district": "Bareilly",
+    "image": "/storage/leaders/up/ataur-rehman.png"
+  },
+  {
+    "serial": 119,
+    "name": "Dr. D. C. Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "119-meerganj",
+    "district": "Bareilly",
+    "image": "/storage/leaders/up/d-c-verma.png"
+  },
+  {
+    "serial": 120,
+    "name": "Shri Shazil Islam",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Ansari\nSamajwadi Party",
+    "constituency": "120-bhojipura",
+    "district": "Bareilly",
+    "image": "/storage/leaders/up/shazil-islam.png"
+  },
+  {
+    "serial": 121,
+    "name": "Dr. M. P. Arya",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "121-nawabganj",
+    "district": "Bareilly",
+    "image": "/storage/leaders/up/m-p-arya.png"
+  },
+  {
+    "serial": 122,
+    "name": "Dr. Raghavendra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Sharma\nBhartiya Janata Party",
+    "constituency": "123-bithari Chainpur",
+    "district": "Bareilly",
+    "image": "/storage/leaders/up/raghavena.png"
+  },
+  {
+    "serial": 123,
+    "name": "Dr. Arun Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "124-bareilly",
+    "district": "Bareilly",
+    "image": "/storage/leaders/up/arun-kumar.png"
+  },
+  {
+    "serial": 124,
+    "name": "Shri Sanjeev Agarwal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "125-bareilly Cantt.",
+    "district": "Bareilly",
+    "image": "/storage/leaders/up/sanjeev-agarwal.png"
+  },
+  {
+    "serial": 125,
+    "name": "Shri Dharmpal Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "126-aonla",
+    "district": "Bareilly",
+    "image": "/storage/leaders/up/dharmpal-singh.png"
+  },
+  {
+    "serial": 126,
+    "name": "Shri Sanjay Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Gangwar\nBhartiya Janata Party",
+    "constituency": "127-pilibhit",
+    "district": "Pilibhit",
+    "image": "/storage/leaders/up/sanjay-singh.png"
+  },
+  {
+    "serial": 127,
+    "name": "Shri Jaydrath Urf",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Pravaktanand\nBhartiya Janata Party",
+    "constituency": "128-barkhera",
+    "district": "Pilibhit",
+    "image": "/storage/leaders/up/jayath-urf.png"
+  },
+  {
+    "serial": 128,
+    "name": "Shri Baburam",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "129-puranpur",
+    "district": "Pilibhit",
+    "image": "/storage/leaders/up/baburam.png"
+  },
+  {
+    "serial": 129,
+    "name": "Shri Vivek Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Verma\nBhartiya Janata Party",
+    "constituency": "130-bisalpur",
+    "district": "Pilibhit",
+    "image": "/storage/leaders/up/vivek-kumar.png"
+  },
+  {
+    "serial": 130,
+    "name": "Dr. Veer Vikram Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "\"Prince\"\nBhartiya Janata Party",
+    "constituency": "131-katra",
+    "district": "Shahjahanpur",
+    "image": "/storage/leaders/up/veer-vikram-singh.png"
+  },
+  {
+    "serial": 131,
+    "name": "Shri Hari Prakash",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Verma\nBhartiya Janata Party",
+    "constituency": "132-jalalabad",
+    "district": "Shahjahanpur",
+    "image": "/storage/leaders/up/hari-prakash.png"
+  },
+  {
+    "serial": 132,
+    "name": "Smt. Salona Kushwaha",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "133-tilhar",
+    "district": "Shahjahanpur",
+    "image": "/storage/leaders/up/salona-kushwaha.png"
+  },
+  {
+    "serial": 133,
+    "name": "Shri Chetram",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "134-powayan",
+    "district": "Shahjahanpur",
+    "image": "/storage/leaders/up/chetram.png"
+  },
+  {
+    "serial": 134,
+    "name": "Shri Suresh Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Khanna\nBhartiya Janata Party",
+    "constituency": "135-shahjahanpur",
+    "district": "Shahjahanpur",
+    "image": "/storage/leaders/up/suresh-kumar.png"
+  },
+  {
+    "serial": 135,
+    "name": "Shri Arvind Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nBhartiya Janata Party",
+    "constituency": "136-dadraul",
+    "district": "Shahjahanpur",
+    "image": "/storage/leaders/up/arvind-kumar.png"
+  },
+  {
+    "serial": 136,
+    "name": "Shri Harvinder Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Sahni Alias Romi Sahni\nBhartiya Janata Party",
+    "constituency": "137-palia",
+    "district": "Lakhim Kheri",
+    "image": "/storage/leaders/up/harvinder-kumar.png"
+  },
+  {
+    "serial": 137,
+    "name": "Shri Shashank Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "138-nighasan",
+    "district": "Lakhim Kheri",
+    "image": "/storage/leaders/up/shashank-verma.png"
+  },
+  {
+    "serial": 138,
+    "name": "Shri Aman Giri",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "139-gola Gokrannath",
+    "district": "Lakhim Kheri",
+    "image": "/storage/leaders/up/aman-giri.png"
+  },
+  {
+    "serial": 139,
+    "name": "Smt. Manju Tyagi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "140-sri Nagar",
+    "district": "Lakhim Kheri",
+    "image": "/storage/leaders/up/manju-tyagi.png"
+  },
+  {
+    "serial": 140,
+    "name": "Shri Vinod Shankar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Awasthi\nBhartiya Janata Party",
+    "constituency": "141-dhaurahra",
+    "district": "Lakhim Kheri",
+    "image": "/storage/leaders/up/vinod-shankar.png"
+  },
+  {
+    "serial": 141,
+    "name": "Shri Yogesh Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "142-lakhimpur",
+    "district": "Lakhim Kheri",
+    "image": "/storage/leaders/up/yogesh-verma.png"
+  },
+  {
+    "serial": 142,
+    "name": "Shri Saurabh Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Sonu\nBhartiya Janata Party",
+    "constituency": "143-kasta",
+    "district": "Lakhim Kheri",
+    "image": "/storage/leaders/up/saurabh-singh.png"
+  },
+  {
+    "serial": 143,
+    "name": "Shri Lokendra Pratap",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nBhartiya Janata Party",
+    "constituency": "144-mohammdi",
+    "district": "Lakhim Kheri",
+    "image": "/storage/leaders/up/lokena-pratap.png"
+  },
+  {
+    "serial": 144,
+    "name": "Shri Shashank Trivedi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "145-maholi",
+    "district": "Sitapur",
+    "image": "/storage/leaders/up/shashank-trivedi.png"
+  },
+  {
+    "serial": 145,
+    "name": "Shri Rakesh Rathour",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "146-sitapur",
+    "district": "Sitapur",
+    "image": "/storage/leaders/up/rakesh-rathour.png"
+  },
+  {
+    "serial": 146,
+    "name": "Shri Suresh Rahi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "147-hargaon",
+    "district": "Sitapur",
+    "image": "/storage/leaders/up/suresh-rahi.png"
+  },
+  {
+    "serial": 147,
+    "name": "Shri Anil Kumar Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "148-laharpur",
+    "district": "Sitapur",
+    "image": "/storage/leaders/up/anil-kumar-verma.png"
+  },
+  {
+    "serial": 148,
+    "name": "Shri Nirmal Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "149-biswan",
+    "district": "Sitapur",
+    "image": "/storage/leaders/up/nirmal-verma.png"
+  },
+  {
+    "serial": 149,
+    "name": "Shri Gyan Tiwari",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "150-sevata",
+    "district": "Sitapur",
+    "image": "/storage/leaders/up/gyan-tiwari.png"
+  },
+  {
+    "serial": 150,
+    "name": "Smt. Asha Maurya",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "151-mahmoodabad",
+    "district": "Sitapur",
+    "image": "/storage/leaders/up/asha-maurya.png"
+  },
+  {
+    "serial": 151,
+    "name": "Shri Manish Rawat",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "152-sidhauli",
+    "district": "Sitapur",
+    "image": "/storage/leaders/up/manish-rawat.png"
+  },
+  {
+    "serial": 152,
+    "name": "Shri Ramkrishna",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhargava\nBhartiya Janata Party",
+    "constituency": "153-misrikh",
+    "district": "Sitapur",
+    "image": "/storage/leaders/up/ramkrishna.png"
+  },
+  {
+    "serial": 153,
+    "name": "Shri Madhavendra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Pratap Singh\nBhartiya Janata Party",
+    "constituency": "154-sawaijpur",
+    "district": "Hardoi",
+    "image": "/storage/leaders/up/madhavena.png"
+  },
+  {
+    "serial": 154,
+    "name": "Smt. Rajni Tiwari",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "155-shahabad",
+    "district": "Hardoi",
+    "image": "/storage/leaders/up/rajni-tiwari.png"
+  },
+  {
+    "serial": 155,
+    "name": "Shri Nitin Agarwal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "156-hardoi",
+    "district": "Hardoi",
+    "image": "/storage/leaders/up/nitin-agarwal.png"
+  },
+  {
+    "serial": 156,
+    "name": "Shri Shyam Prakash",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "157-gopamau",
+    "district": "Hardoi",
+    "image": "/storage/leaders/up/shyam-prakash.png"
+  },
+  {
+    "serial": 157,
+    "name": "Shri Prabhash Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "158-sandi",
+    "district": "Hardoi",
+    "image": "/storage/leaders/up/prabhash-kumar.png"
+  },
+  {
+    "serial": 158,
+    "name": "Shri Ashish Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh 'Ashu'\nBhartiya Janata Party",
+    "constituency": "159-bilgram-mallanwan",
+    "district": "Hardoi",
+    "image": "/storage/leaders/up/ashish-kumar.png"
+  },
+  {
+    "serial": 159,
+    "name": "Shri Rampal Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "160-balamau",
+    "district": "Hardoi",
+    "image": "/storage/leaders/up/rampal-verma.png"
+  },
+  {
+    "serial": 160,
+    "name": "Smt. Alka Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "'Arkvanshi'\nBhartiya Janata Party",
+    "constituency": "161-sandila",
+    "district": "Hardoi",
+    "image": "/storage/leaders/up/alka-singh.png"
+  },
+  {
+    "serial": 161,
+    "name": "Shri Shrikant Katiyar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "162-bangermau",
+    "district": "Unnao",
+    "image": "/storage/leaders/up/kant-katiyar.png"
+  },
+  {
+    "serial": 162,
+    "name": "Shri Bamba Lal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "163-safipur",
+    "district": "Unnao",
+    "image": "/storage/leaders/up/bamba-lal.png"
+  },
+  {
+    "serial": 163,
+    "name": "Shri Brajesh Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "164-mohan",
+    "district": "Unnao",
+    "image": "/storage/leaders/up/brajesh-kumar.png"
+  },
+  {
+    "serial": 164,
+    "name": "Shri Pankaj Gupta",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "165-unnao",
+    "district": "Unnao",
+    "image": "/storage/leaders/up/pankaj-gupta.png"
+  },
+  {
+    "serial": 165,
+    "name": "Shri Ashutosh Shukla",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "166-bhagwantnagar",
+    "district": "Unnao",
+    "image": "/storage/leaders/up/ashutosh-shukla.png"
+  },
+  {
+    "serial": 166,
+    "name": "Shri Anil Kumar Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "167-purwa",
+    "district": "Unnao",
+    "image": "/storage/leaders/up/anil-kumar-singh.png"
+  },
+  {
+    "serial": 167,
+    "name": "Smt. Jai Devi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "168-malihabad",
+    "district": "Lucknow",
+    "image": "/storage/leaders/up/jai-devi.png"
+  },
+  {
+    "serial": 168,
+    "name": "Shri Yogesh Shukla",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "169-bakshi Kaa Talab",
+    "district": "Lucknow",
+    "image": "/storage/leaders/up/yogesh-shukla.png"
+  },
+  {
+    "serial": 169,
+    "name": "Dr. Rajeshwar Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "170-sarojini Nagar",
+    "district": "Lucknow",
+    "image": "/storage/leaders/up/rajeshwar-singh.png"
+  },
+  {
+    "serial": 170,
+    "name": "Shri Armaan Khan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "171-lucknow West",
+    "district": "Lucknow",
+    "image": "/storage/leaders/up/armaan-khan.png"
+  },
+  {
+    "serial": 171,
+    "name": "Dr. Neeraj Bora",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "172-lucknow North",
+    "district": "Lucknow",
+    "image": "/storage/leaders/up/neeraj-bora.png"
+  },
+  {
+    "serial": 172,
+    "name": "Shri O.p. Srivastava",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "173-lucknow East",
+    "district": "Lucknow",
+    "image": "/storage/leaders/up/o-p-srivastava.png"
+  },
+  {
+    "serial": 173,
+    "name": "Shri Ravidas Mehrotra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "174-lucknow Central",
+    "district": "Lucknow",
+    "image": "/storage/leaders/up/ravidas-mehrotra.png"
+  },
+  {
+    "serial": 174,
+    "name": "Shri Brajesh Pathak",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "175-lucknow Cantt.",
+    "district": "Lucknow",
+    "image": "/storage/leaders/up/brajesh-pathak.png"
+  },
+  {
+    "serial": 175,
+    "name": "Shri Amresh Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "176-mohanlalganj",
+    "district": "Lucknow",
+    "image": "/storage/leaders/up/aesh-kumar.png"
+  },
+  {
+    "serial": 176,
+    "name": "Shri Shyam Sunder",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "177-bachhrawan",
+    "district": "Raebareli",
+    "image": "/storage/leaders/up/shyam-sunder.png"
+  },
+  {
+    "serial": 177,
+    "name": "Shri Mayankeshwar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Sharan Singh\nBhartiya Janata Party",
+    "constituency": "178-tiloi",
+    "district": "Amethi",
+    "image": "/storage/leaders/up/mayankeshwar.png"
+  },
+  {
+    "serial": 178,
+    "name": "Shri Rahul Rajpoot Urf",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rahul Lodhi\nSamajwadi Party",
+    "constituency": "179-harchandpur",
+    "district": "Raebareli",
+    "image": "/storage/leaders/up/rahul-rajpoot-urf.png"
+  },
+  {
+    "serial": 179,
+    "name": "Smt. Aditi Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "180-rae Bareli",
+    "district": "Raebareli",
+    "image": "/storage/leaders/up/aditi-singh.png"
+  },
+  {
+    "serial": 180,
+    "name": "Shri Ashok Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "181-salon",
+    "district": "Raebareli",
+    "image": "/storage/leaders/up/ashok-kumar.png"
+  },
+  {
+    "serial": 181,
+    "name": "Shri Devendra Pratap",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nSamajwadi Party",
+    "constituency": "182-sareni",
+    "district": "Raebareli",
+    "image": "/storage/leaders/up/devena-pratap.png"
+  },
+  {
+    "serial": 182,
+    "name": "Dr. Manoj Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Pandey\nUnattached Members",
+    "constituency": "183-unchahar",
+    "district": "Raebareli",
+    "image": "/storage/leaders/up/manoj-kumar.png"
+  },
+  {
+    "serial": 183,
+    "name": "Shri Suresh Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "184-jagdishpur",
+    "district": "Amethi",
+    "image": "/storage/leaders/up/suresh-kumar.png"
+  },
+  {
+    "serial": 184,
+    "name": "Shri Rakesh Pratap",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nUnattached Members",
+    "constituency": "185-gauriganj",
+    "district": "Amethi",
+    "image": "/storage/leaders/up/rakesh-pratap.png"
+  },
+  {
+    "serial": 185,
+    "name": "Smt. Maharaji",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Prajapati\nSamajwadi Party",
+    "constituency": "186-amethi",
+    "district": "Amethi",
+    "image": "/storage/leaders/up/maharaji.png"
+  },
+  {
+    "serial": 186,
+    "name": "Mo. Tahir Khan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "187-isauli",
+    "district": "Sultanpur",
+    "image": "/storage/leaders/up/mo-tahir-khan.png"
+  },
+  {
+    "serial": 187,
+    "name": "Shri Vinod Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "188-sultanpur",
+    "district": "Sultanpur",
+    "image": "/storage/leaders/up/vinod-singh.png"
+  },
+  {
+    "serial": 188,
+    "name": "Shri Raj Prasad",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Upadhyay\nBhartiya Janata Party",
+    "constituency": "189-sadar",
+    "district": "Sultanpur",
+    "image": "/storage/leaders/up/raj-prasad.png"
+  },
+  {
+    "serial": 189,
+    "name": "Shri Sitaram Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "190-lambhua",
+    "district": "Sultanpur",
+    "image": "/storage/leaders/up/sitaram-verma.png"
+  },
+  {
+    "serial": 190,
+    "name": "Shri Rajesh Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Gautam\nBhartiya Janata Party",
+    "constituency": "191-kadipur",
+    "district": "Sultanpur",
+    "image": "/storage/leaders/up/rajesh-kumar.png"
+  },
+  {
+    "serial": 191,
+    "name": "Dr. Surabhi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Apna Dal(sone Lal)",
+    "constituency": "192-kaimganj",
+    "district": "Farrukhabad",
+    "image": "/storage/leaders/up/surabhi.png"
+  },
+  {
+    "serial": 192,
+    "name": "Shri Sushil Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Shakya\nBhartiya Janata Party",
+    "constituency": "193-amritpur",
+    "district": "Farrukhabad",
+    "image": "/storage/leaders/up/sushil-kumar.png"
+  },
+  {
+    "serial": 193,
+    "name": "Major Sunil Dutt",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Dwivedi\nBhartiya Janata Party",
+    "constituency": "194-farrukhabad",
+    "district": "Farrukhabad",
+    "image": "/storage/leaders/up/major-sunil-dutt.png"
+  },
+  {
+    "serial": 194,
+    "name": "Shri Nagendra Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rathour\nBhartiya Janata Party",
+    "constituency": "195-bhojpur",
+    "district": "Farrukhabad",
+    "image": "/storage/leaders/up/nagena-singh.png"
+  },
+  {
+    "serial": 195,
+    "name": "Smt. Archana Pandey",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "196-chhibramau",
+    "district": "Kannauj",
+    "image": "/storage/leaders/up/archana-pandey.png"
+  },
+  {
+    "serial": 196,
+    "name": "Shri Kailash Rajput",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "197-tirwa",
+    "district": "Kannauj",
+    "image": "/storage/leaders/up/kailash-rajput.png"
+  },
+  {
+    "serial": 197,
+    "name": "Shri Asim Arun",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "198-kannauj",
+    "district": "Kannauj",
+    "image": "/storage/leaders/up/asim-arun.png"
+  },
+  {
+    "serial": 198,
+    "name": "Shri Shivpal Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Yadav\nSamajwadi Party",
+    "constituency": "199-jaswantnagar",
+    "district": "Etawah",
+    "image": "/storage/leaders/up/shivpal-singh.png"
+  },
+  {
+    "serial": 199,
+    "name": "Smt. Sarita Bhadauriya",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "200-etawah",
+    "district": "Etawah",
+    "image": "/storage/leaders/up/sarita-bhadauriya.png"
+  },
+  {
+    "serial": 200,
+    "name": "Shri Raghvendra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Kumar Singh\nSamajwadi Party",
+    "constituency": "201-bharthana",
+    "district": "Etawah",
+    "image": "/storage/leaders/up/raghvena.png"
+  },
+  {
+    "serial": 201,
+    "name": "Smt. Rekha Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "202-bidhuna",
+    "district": "Auraya",
+    "image": "/storage/leaders/up/rekha-verma.png"
+  },
+  {
+    "serial": 202,
+    "name": "Shri Pradeep Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Yadav\nSamajwadi Party",
+    "constituency": "203-dibiyapur",
+    "district": "Auraya",
+    "image": "/storage/leaders/up/pradeep-kumar.png"
+  },
+  {
+    "serial": 203,
+    "name": "Smt. Gudiya Devi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "204-auraiya",
+    "district": "Auraya",
+    "image": "/storage/leaders/up/gudiya-devi.png"
+  },
+  {
+    "serial": 204,
+    "name": "Smt. Poonam",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Sankhwar\nBhartiya Janata Party",
+    "constituency": "205-rasulabad",
+    "district": "Kanpurdehat",
+    "image": "/storage/leaders/up/poonam.png"
+  },
+  {
+    "serial": 205,
+    "name": "Smt. Pratibha Shukla",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "206-akbarpur - Raniya",
+    "district": "Kanpurdehat",
+    "image": "/storage/leaders/up/pratibha-shukla.png"
+  },
+  {
+    "serial": 206,
+    "name": "Shri Ajit Singh Pal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "207-sikandra",
+    "district": "Kanpurdehat",
+    "image": "/storage/leaders/up/ajit-singh-pal.png"
+  },
+  {
+    "serial": 207,
+    "name": "Shri Rakesh Sachan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "208-bhognipur",
+    "district": "Kanpurdehat",
+    "image": "/storage/leaders/up/rakesh-sachan.png"
+  },
+  {
+    "serial": 208,
+    "name": "Shri Mohit Sonkar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "'Rahul Bachha'\nBhartiya Janata Party",
+    "constituency": "209-bilhaur",
+    "district": "Kanpurnagar",
+    "image": "/storage/leaders/up/mohit-sonkar.png"
+  },
+  {
+    "serial": 209,
+    "name": "Shri Abhijeet Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Sanga\nBhartiya Janata Party",
+    "constituency": "210-bithoor",
+    "district": "Kanpurnagar",
+    "image": "/storage/leaders/up/abhijeet-singh.png"
+  },
+  {
+    "serial": 210,
+    "name": "Smt. Neelima Katiyar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "211-kalyanpur",
+    "district": "Kanpurnagar",
+    "image": "/storage/leaders/up/neelima-katiyar.png"
+  },
+  {
+    "serial": 211,
+    "name": "Shri Surendra Maithani",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "212-govindnagar",
+    "district": "Kanpurnagar",
+    "image": "/storage/leaders/up/surena-maithani.png"
+  },
+  {
+    "serial": 212,
+    "name": "Smt. Naseem Solanki",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "213-sishamau",
+    "district": "Kanpurnagar",
+    "image": "/storage/leaders/up/naseem-solanki.png"
+  },
+  {
+    "serial": 213,
+    "name": "Shri Amitabh Bajpai",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "214-arya Nagar",
+    "district": "Kanpurnagar",
+    "image": "/storage/leaders/up/amitabh-bajpai.png"
+  },
+  {
+    "serial": 214,
+    "name": "Shri Mahesh Trivedi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "215-kidwai Nagar",
+    "district": "Kanpurnagar",
+    "image": "/storage/leaders/up/mahesh-trivedi.png"
+  },
+  {
+    "serial": 215,
+    "name": "Shri Mohammad Hasan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Roomi\nSamajwadi Party",
+    "constituency": "216-kanpur Cantt.",
+    "district": "Kanpurnagar",
+    "image": "/storage/leaders/up/mohammad-hasan.png"
+  },
+  {
+    "serial": 216,
+    "name": "Shri Satish Mahana",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "217-maharajpur",
+    "district": "Kanpurnagar",
+    "image": "/storage/leaders/up/satish-mahana.png"
+  },
+  {
+    "serial": 217,
+    "name": "Smt. Saroj Kureel",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Apna Dal(sone Lal)",
+    "constituency": "218-ghatampur",
+    "district": "Kanpurnagar",
+    "image": "/storage/leaders/up/saroj-kureel.png"
+  },
+  {
+    "serial": 218,
+    "name": "Shri Mool Chandra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nBhartiya Janata Party",
+    "constituency": "219-madhaugarh",
+    "district": "Jalaun",
+    "image": "/storage/leaders/up/mool-chana.png"
+  },
+  {
+    "serial": 219,
+    "name": "Shri Vinod Chaturvedi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "220-kalpi",
+    "district": "Jalaun",
+    "image": "/storage/leaders/up/vinod-chaturvedi.png"
+  },
+  {
+    "serial": 220,
+    "name": "Shri Gauri Shankar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Verma (Kori)\nBhartiya Janata Party",
+    "constituency": "221-orai",
+    "district": "Jalaun",
+    "image": "/storage/leaders/up/gauri-shankar.png"
+  },
+  {
+    "serial": 221,
+    "name": "Shri Rajeev Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "''Parichha''\nBhartiya Janata Party",
+    "constituency": "222-babina",
+    "district": "Jhansi",
+    "image": "/storage/leaders/up/rajeev-singh.png"
+  },
+  {
+    "serial": 222,
+    "name": "Shri Ravi Sharma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "223-jhansi Nagar",
+    "district": "Jhansi",
+    "image": "/storage/leaders/up/ravi-sharma.png"
+  },
+  {
+    "serial": 223,
+    "name": "Dr. Rashmi Arya",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Apna Dal(sone Lal)",
+    "constituency": "224-mauranipur",
+    "district": "Jhansi",
+    "image": "/storage/leaders/up/rashmi-arya.png"
+  },
+  {
+    "serial": 224,
+    "name": "Shri Jawahar Lal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rajput\nBhartiya Janata Party",
+    "constituency": "225-garautha",
+    "district": "Jhansi",
+    "image": "/storage/leaders/up/jawahar-lal.png"
+  },
+  {
+    "serial": 225,
+    "name": "Shri Ramratan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Kushwaha\nBhartiya Janata Party",
+    "constituency": "226-lalitpur",
+    "district": "Lalitpur",
+    "image": "/storage/leaders/up/raatan.png"
+  },
+  {
+    "serial": 226,
+    "name": "Shri Manohar Lal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "227-mehroni",
+    "district": "Lalitpur",
+    "image": "/storage/leaders/up/manohar-lal.png"
+  },
+  {
+    "serial": 227,
+    "name": "Dr. Manoj Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Prajapati\nBhartiya Janata Party",
+    "constituency": "228-hamirpur",
+    "district": "Hamirpur",
+    "image": "/storage/leaders/up/manoj-kumar.png"
+  },
+  {
+    "serial": 228,
+    "name": "Smt. Manisha",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "229-rath",
+    "district": "Hamirpur",
+    "image": "/storage/leaders/up/manisha.png"
+  },
+  {
+    "serial": 229,
+    "name": "Shri Rakesh Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Goswami\nBhartiya Janata Party",
+    "constituency": "230-mahoba",
+    "district": "Mahoba",
+    "image": "/storage/leaders/up/rakesh-kumar.png"
+  },
+  {
+    "serial": 230,
+    "name": "Shri Brijbhushan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rajput\nBhartiya Janata Party",
+    "constituency": "231-charkhari",
+    "district": "Mahoba",
+    "image": "/storage/leaders/up/brijbhushan.png"
+  },
+  {
+    "serial": 231,
+    "name": "Shri Ramkesh Nishad",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "232-tindwari",
+    "district": "Banda",
+    "image": "/storage/leaders/up/ramkesh-nishad.png"
+  },
+  {
+    "serial": 232,
+    "name": "Shri Vishambhar Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Yadav\nSamajwadi Party",
+    "constituency": "233-baberu",
+    "district": "Banda",
+    "image": "/storage/leaders/up/vishambhar-singh.png"
+  },
+  {
+    "serial": 233,
+    "name": "Smt. Ommani Varma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "234-naraini",
+    "district": "Banda",
+    "image": "/storage/leaders/up/ommani-varma.png"
+  },
+  {
+    "serial": 234,
+    "name": "Shri Prakash Dwivedi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "235-banda",
+    "district": "Banda",
+    "image": "/storage/leaders/up/prakash-dwivedi.png"
+  },
+  {
+    "serial": 235,
+    "name": "Shri Anil Pradhan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "236-chitrakoot",
+    "district": "Chitrakoot",
+    "image": "/storage/leaders/up/anil-pradhan.png"
+  },
+  {
+    "serial": 236,
+    "name": "Shri Avinash Chandra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Dwivedi\nApna Dal(sone Lal)",
+    "constituency": "237-manikpur",
+    "district": "Chitrakoot",
+    "image": "/storage/leaders/up/avinash-chana.png"
+  },
+  {
+    "serial": 237,
+    "name": "Shri Rajendra Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Patel\nBhartiya Janata Party",
+    "constituency": "238-jahanabad",
+    "district": "Fatehpur",
+    "image": "/storage/leaders/up/rajena-singh.png"
+  },
+  {
+    "serial": 238,
+    "name": "Shri Jay Kumar Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Jaiki\nApna Dal(sone Lal)",
+    "constituency": "239-bindki",
+    "district": "Fatehpur",
+    "image": "/storage/leaders/up/jay-kumar-singh.png"
+  },
+  {
+    "serial": 239,
+    "name": "Shri Chandra Prakash",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Lodhi (Advocate)\nSamajwadi Party",
+    "constituency": "240-fatehpur",
+    "district": "Fatehpur",
+    "image": "/storage/leaders/up/chana-prakash.png"
+  },
+  {
+    "serial": 240,
+    "name": "Shri Vikas Gupta",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "241-ayah Shah",
+    "district": "Fatehpur",
+    "image": "/storage/leaders/up/vikas-gupta.png"
+  },
+  {
+    "serial": 241,
+    "name": "Smt. Usha Maurya Urf",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Aneela Maurya\nSamajwadi Party",
+    "constituency": "242-husainganj",
+    "district": "Fatehpur",
+    "image": "/storage/leaders/up/usha-maurya-urf.png"
+  },
+  {
+    "serial": 242,
+    "name": "Smt. Krishna Paswan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "243-khaga",
+    "district": "Fatehpur",
+    "image": "/storage/leaders/up/krishna-paswan.png"
+  },
+  {
+    "serial": 243,
+    "name": "Smt. Aradhana Mishra,",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Mona\nIndian National\nCongress",
+    "constituency": "244-rampur Khas",
+    "district": "Pratapgarh",
+    "image": "/storage/leaders/up/aradhana-mishra.png"
+  },
+  {
+    "serial": 244,
+    "name": "Shri Vinod Saroj",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Jansatta Dal Loktantrik",
+    "constituency": "245-babaganj",
+    "district": "Pratapgarh",
+    "image": "/storage/leaders/up/vinod-saroj.png"
+  },
+  {
+    "serial": 245,
+    "name": "Shri Raghuraj Pratap",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nJansatta Dal Loktantrik",
+    "constituency": "246-kunda",
+    "district": "Pratapgarh",
+    "image": "/storage/leaders/up/raghuraj-pratap.png"
+  },
+  {
+    "serial": 246,
+    "name": "Shri Jeet Lal Patel",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Apna Dal(sone Lal)",
+    "constituency": "247-bishwavnathganj",
+    "district": "Pratapgarh",
+    "image": "/storage/leaders/up/jeet-lal-patel.png"
+  },
+  {
+    "serial": 247,
+    "name": "Shri Rajendra Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Maurya\nBhartiya Janata Party",
+    "constituency": "248-pratapgarh",
+    "district": "Pratapgarh",
+    "image": "/storage/leaders/up/rajena-kumar.png"
+  },
+  {
+    "serial": 248,
+    "name": "Shri Ram Singh Patel",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "249-patti",
+    "district": "Pratapgarh",
+    "image": "/storage/leaders/up/ram-singh-patel.png"
+  },
+  {
+    "serial": 249,
+    "name": "Dr. Rakesh Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Verma Alias Dr. R. K. Verma\nSamajwadi Party",
+    "constituency": "250-raniganj",
+    "district": "Pratapgarh",
+    "image": "/storage/leaders/up/rakesh-kumar.png"
+  },
+  {
+    "serial": 250,
+    "name": "Dr. Pallavi Patel",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "251-sirathu",
+    "district": "Kaushambhi",
+    "image": "/storage/leaders/up/pallavi-patel.png"
+  },
+  {
+    "serial": 251,
+    "name": "Shri Indrajeet Saroj",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "252-manjhanpur",
+    "district": "Kaushambhi",
+    "image": "/storage/leaders/up/inajeet-saroj.png"
+  },
+  {
+    "serial": 252,
+    "name": "Smt. Pooja Pal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "253-chail",
+    "district": "Kaushambhi",
+    "image": "/storage/leaders/up/pooja-pal.png"
+  },
+  {
+    "serial": 253,
+    "name": "Shri Guru Prasad",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Maurya\nBhartiya Janata Party",
+    "constituency": "254-phaphamau",
+    "district": "Prayagraj",
+    "image": "/storage/leaders/up/guru-prasad.png"
+  },
+  {
+    "serial": 254,
+    "name": "Smt. Geeta Shastri",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "(Pasi)\nSamajwadi Party",
+    "constituency": "255-soraon",
+    "district": "Prayagraj",
+    "image": "/storage/leaders/up/geeta-shastri.png"
+  },
+  {
+    "serial": 255,
+    "name": "Shri Deepak Patel",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "256-phulpur",
+    "district": "Prayagraj",
+    "image": "/storage/leaders/up/deepak-patel.png"
+  },
+  {
+    "serial": 256,
+    "name": "Smt. Vijama Yadav",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "257-pratappur",
+    "district": "Prayagraj",
+    "image": "/storage/leaders/up/vijama-yadav.png"
+  },
+  {
+    "serial": 257,
+    "name": "Shri Hakim Lal Bind",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "258-handia",
+    "district": "Prayagraj",
+    "image": "/storage/leaders/up/hakim-lal-bind.png"
+  },
+  {
+    "serial": 258,
+    "name": "Shri Sandeep Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "259-meja",
+    "district": "Prayagraj",
+    "image": "/storage/leaders/up/sandeep-singh.png"
+  },
+  {
+    "serial": 259,
+    "name": "Shri Piyush Ranjan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Nishad\nBhartiya Janata Party",
+    "constituency": "260-karachhana",
+    "district": "Prayagraj",
+    "image": "/storage/leaders/up/piyush-ranjan.png"
+  },
+  {
+    "serial": 260,
+    "name": "Shri Sidharth Nath",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nBhartiya Janata Party",
+    "constituency": "261-prayagraj",
+    "district": "(Allahabad) West",
+    "image": "/storage/leaders/up/sidharth-nath.png"
+  },
+  {
+    "serial": 261,
+    "name": "Shri Harshvardhan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bajpai\nBhartiya Janata Party",
+    "constituency": "262-prayagraj",
+    "district": "(Allahabad) North",
+    "image": "/storage/leaders/up/harshvardhan.png"
+  },
+  {
+    "serial": 262,
+    "name": "Shri Nand Gopal Gupta",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "\"Nandi\"\nBhartiya Janata Party",
+    "constituency": "263-prayagraj",
+    "district": "(Allahabad) South",
+    "image": "/storage/leaders/up/nand-gopal-gupta.png"
+  },
+  {
+    "serial": 263,
+    "name": "Shri Vachaspati",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Apna Dal(sone Lal)",
+    "constituency": "264-bara",
+    "district": "Prayagraj",
+    "image": "/storage/leaders/up/vachaspati.png"
+  },
+  {
+    "serial": 264,
+    "name": "Shri Raj Mani",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "265-koraon",
+    "district": "Prayagraj",
+    "image": "/storage/leaders/up/raj-mani.png"
+  },
+  {
+    "serial": 265,
+    "name": "Shri Sakendra Pratap",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Verma\nBhartiya Janata Party",
+    "constituency": "266-kursi",
+    "district": "Barabanki",
+    "image": "/storage/leaders/up/sakena-pratap.png"
+  },
+  {
+    "serial": 266,
+    "name": "Shri Fareed Mahfooz",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Kidwai\nSamajwadi Party",
+    "constituency": "267-ram Nagar",
+    "district": "Barabanki",
+    "image": "/storage/leaders/up/fareed-mahfooz.png"
+  },
+  {
+    "serial": 267,
+    "name": "Shri Dharmraj Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Yadav\nSamajwadi Party",
+    "constituency": "268-barabanki",
+    "district": "Barabanki",
+    "image": "/storage/leaders/up/dharaj-singh.png"
+  },
+  {
+    "serial": 268,
+    "name": "Shri Gaurav Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "269-zaidpur",
+    "district": "Barabanki",
+    "image": "/storage/leaders/up/gaurav-kumar.png"
+  },
+  {
+    "serial": 269,
+    "name": "Shri Satish Chandra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Sharma\nBhartiya Janata Party",
+    "constituency": "270-dariyabad",
+    "district": "Barabanki",
+    "image": "/storage/leaders/up/satish-chana.png"
+  },
+  {
+    "serial": 270,
+    "name": "Shri Ram Chandra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Yadav\nBhartiya Janata Party",
+    "constituency": "271-rudauli",
+    "district": "Ayodhya",
+    "image": "/storage/leaders/up/ram-chana.png"
+  },
+  {
+    "serial": 271,
+    "name": "Shri Dinesh Rawat",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "272-haidergarh",
+    "district": "Barabanki",
+    "image": "/storage/leaders/up/dinesh-rawat.png"
+  },
+  {
+    "serial": 272,
+    "name": "Shri Chandrabhanu Paswan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "273-milkipur",
+    "district": "Ayodhya",
+    "image": "/storage/leaders/up/chanabhanu-paswan.png"
+  },
+  {
+    "serial": 273,
+    "name": "Dr. Amit Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Chauhan\nBhartiya Janata Party",
+    "constituency": "274-bikapur",
+    "district": "Ayodhya",
+    "image": "/storage/leaders/up/amit-singh.png"
+  },
+  {
+    "serial": 274,
+    "name": "Shri Ved Prakash",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Gupta\nBhartiya Janata Party",
+    "constituency": "275-ayodhya",
+    "district": "Ayodhya",
+    "image": "/storage/leaders/up/ved-prakash.png"
+  },
+  {
+    "serial": 275,
+    "name": "Shri Abhay Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Unattached Members",
+    "constituency": "276-goshainganj",
+    "district": "Ayodhya",
+    "image": "/storage/leaders/up/abhay-singh.png"
+  },
+  {
+    "serial": 276,
+    "name": "Shri Dharmraj Nishad",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "277-katehari",
+    "district": "Ambedkarnagar",
+    "image": "/storage/leaders/up/dharaj-nishad.png"
+  },
+  {
+    "serial": 277,
+    "name": "Shri Ram Murti Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "278-tanda",
+    "district": "Ambedkarnagar",
+    "image": "/storage/leaders/up/ram-murti-verma.png"
+  },
+  {
+    "serial": 278,
+    "name": "Shri Tribhuwan Dutt",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "279-alapur",
+    "district": "Ambedkarnagar",
+    "image": "/storage/leaders/up/tribhuwan-dutt.png"
+  },
+  {
+    "serial": 279,
+    "name": "Shri Rakesh Pandey",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "280-jalalpur",
+    "district": "Ambedkarnagar",
+    "image": "/storage/leaders/up/rakesh-pandey.png"
+  },
+  {
+    "serial": 280,
+    "name": "Shri Ram Achal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rajbhar\nSamajwadi Party",
+    "constituency": "281-akbarpur",
+    "district": "Ambedkarnagar",
+    "image": "/storage/leaders/up/ram-achal.png"
+  },
+  {
+    "serial": 281,
+    "name": "Smt. Saroj Sonkar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "282-balha",
+    "district": "Behraich",
+    "image": "/storage/leaders/up/saroj-sonkar.png"
+  },
+  {
+    "serial": 282,
+    "name": "Shri Ram Niwas Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Apna Dal(sone Lal)",
+    "constituency": "283-nanpara",
+    "district": "Behraich",
+    "image": "/storage/leaders/up/ram-niwas-verma.png"
+  },
+  {
+    "serial": 283,
+    "name": "Smt. Mariya Ali",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "284-matera",
+    "district": "Behraich",
+    "image": "/storage/leaders/up/mariya-ali.png"
+  },
+  {
+    "serial": 284,
+    "name": "Shri Sureshwar Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "285-mahasi",
+    "district": "Behraich",
+    "image": "/storage/leaders/up/sureshwar-singh.png"
+  },
+  {
+    "serial": 285,
+    "name": "Smt. Anupma Jaiswal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "286-bahraich",
+    "district": "Behraich",
+    "image": "/storage/leaders/up/anupma-jaiswal.png"
+  },
+  {
+    "serial": 286,
+    "name": "Shri Subhash Tripathi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "287-payagpur",
+    "district": "Behraich",
+    "image": "/storage/leaders/up/subhash-tripathi.png"
+  },
+  {
+    "serial": 287,
+    "name": "Shri Anand Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Yadav\nSamajwadi Party",
+    "constituency": "288-kaiserganj",
+    "district": "Behraich",
+    "image": "/storage/leaders/up/anand-kumar.png"
+  },
+  {
+    "serial": 288,
+    "name": "Smt. Indrani Devi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "289-bhinga",
+    "district": "Shravasti",
+    "image": "/storage/leaders/up/inani-devi.png"
+  },
+  {
+    "serial": 289,
+    "name": "Shri Ram Feran Pandey",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "290-shrawasti",
+    "district": "Shravasti",
+    "image": "/storage/leaders/up/ram-feran-pandey.png"
+  },
+  {
+    "serial": 290,
+    "name": "Shri Kailash Nath",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "291-tulsipur",
+    "district": "Balrampur",
+    "image": "/storage/leaders/up/kailash-nath.png"
+  },
+  {
+    "serial": 291,
+    "name": "Shri Rakesh Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Yadav\nSamajwadi Party",
+    "constituency": "292-gainsari",
+    "district": "Balrampur",
+    "image": "/storage/leaders/up/rakesh-kumar.png"
+  },
+  {
+    "serial": 292,
+    "name": "Shri Rampratap Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Urf Shashikant Verma\nBhartiya Janata Party",
+    "constituency": "293-utraula",
+    "district": "Balrampur",
+    "image": "/storage/leaders/up/rampratap-verma.png"
+  },
+  {
+    "serial": 293,
+    "name": "Shri Paltoo Ram",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "294-balrampur",
+    "district": "Balrampur",
+    "image": "/storage/leaders/up/paltoo-ram.png"
+  },
+  {
+    "serial": 294,
+    "name": "Shri Vinay Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Dwivedi\nBhartiya Janata Party",
+    "constituency": "295-mehnaun",
+    "district": "Gonda",
+    "image": "/storage/leaders/up/vinay-kumar.png"
+  },
+  {
+    "serial": 295,
+    "name": "Shri Prateek Bhushan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nBhartiya Janata Party",
+    "constituency": "296-gonda",
+    "district": "Gonda",
+    "image": "/storage/leaders/up/prateek-bhushan.png"
+  },
+  {
+    "serial": 296,
+    "name": "Shri Bawan Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "297-katra Bazar",
+    "district": "Gonda",
+    "image": "/storage/leaders/up/bawan-singh.png"
+  },
+  {
+    "serial": 297,
+    "name": "Shri Ajay",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "298-colonelganj",
+    "district": "Gonda",
+    "image": "/storage/leaders/up/ajay.png"
+  },
+  {
+    "serial": 298,
+    "name": "Shri Prem Nrayan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Pandey\nBhartiya Janata Party",
+    "constituency": "299-tarabganj",
+    "district": "Gonda",
+    "image": "/storage/leaders/up/prem-nrayan.png"
+  },
+  {
+    "serial": 299,
+    "name": "Shri Ramapati Shastri",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "300-mankapur",
+    "district": "Gonda",
+    "image": "/storage/leaders/up/ramapati-shastri.png"
+  },
+  {
+    "serial": 300,
+    "name": "Shri Prabhat Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Verma\nBhartiya Janata Party",
+    "constituency": "301-gaura",
+    "district": "Gonda",
+    "image": "/storage/leaders/up/prabhat-kumar.png"
+  },
+  {
+    "serial": 301,
+    "name": "Shri Vinay Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Apna Dal(sone Lal)",
+    "constituency": "302-shohratgarh",
+    "district": "Sidharthnagar",
+    "image": "/storage/leaders/up/vinay-verma.png"
+  },
+  {
+    "serial": 302,
+    "name": "Shri Shyamdhani Rahi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "303-kapilvastu",
+    "district": "Sidharthnagar",
+    "image": "/storage/leaders/up/shyamdhani-rahi.png"
+  },
+  {
+    "serial": 303,
+    "name": "Shri Jai Pratap Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "304-bansi",
+    "district": "Sidharthnagar",
+    "image": "/storage/leaders/up/jai-pratap-singh.png"
+  },
+  {
+    "serial": 304,
+    "name": "Shri Mata Prasad",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Pandey\nSamajwadi Party",
+    "constituency": "305-itwa",
+    "district": "Sidharthnagar",
+    "image": "/storage/leaders/up/mata-prasad.png"
+  },
+  {
+    "serial": 305,
+    "name": "Smt. Saiyada Khatoon",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "306-doomariyaganj",
+    "district": "Sidharthnagar",
+    "image": "/storage/leaders/up/saiyada-khatoon.png"
+  },
+  {
+    "serial": 306,
+    "name": "Shri Ajay Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "307-harraiya",
+    "district": "Basti",
+    "image": "/storage/leaders/up/ajay-singh.png"
+  },
+  {
+    "serial": 307,
+    "name": "Shri Kavindra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Chaudhary\nSamajwadi Party",
+    "constituency": "308-kaptanganj",
+    "district": "Basti",
+    "image": "/storage/leaders/up/kavina.png"
+  },
+  {
+    "serial": 308,
+    "name": "Shri Rajendra Prasad",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Chaudhary\nSamajwadi Party",
+    "constituency": "309-rudhauli",
+    "district": "Basti",
+    "image": "/storage/leaders/up/rajena-prasad.png"
+  },
+  {
+    "serial": 309,
+    "name": "Shri Mahendra Nath",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Yadav\nSamajwadi Party",
+    "constituency": "310-basti Sadar",
+    "district": "Basti",
+    "image": "/storage/leaders/up/mahena-nath.png"
+  },
+  {
+    "serial": 310,
+    "name": "Shri Dudhram",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Suheldev Bhartiya\nSamaj Party",
+    "constituency": "311-mahadewa",
+    "district": "Basti",
+    "image": "/storage/leaders/up/dudhram.png"
+  },
+  {
+    "serial": 311,
+    "name": "Shri Anil Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Tripathi\nNirbal Indian Shoshit\nHamara Aam Dal",
+    "constituency": "312-menhdawal",
+    "district": "Sknagar",
+    "image": "/storage/leaders/up/anil-kumar.png"
+  },
+  {
+    "serial": 312,
+    "name": "Shri Ankur Tiwari",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "313-khalilabad",
+    "district": "Sknagar",
+    "image": "/storage/leaders/up/ankur-tiwari.png"
+  },
+  {
+    "serial": 313,
+    "name": "Shri Ganesh Chandra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "314-dhanghata",
+    "district": "Sknagar",
+    "image": "/storage/leaders/up/ganesh-chana.png"
+  },
+  {
+    "serial": 314,
+    "name": "Shri Virendra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Chaudhary\nIndian National\nCongress",
+    "constituency": "315-pharenda",
+    "district": "Maharajganj",
+    "image": "/storage/leaders/up/virena.png"
+  },
+  {
+    "serial": 315,
+    "name": "Shri Rishi Tripathi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Nirbal Indian Shoshit\nHamara Aam Dal",
+    "constituency": "316-nautanwan",
+    "district": "Maharajganj",
+    "image": "/storage/leaders/up/rishi-tripathi.png"
+  },
+  {
+    "serial": 316,
+    "name": "Shri Premsagar Patel",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "317-siswa",
+    "district": "Maharajganj",
+    "image": "/storage/leaders/up/premsagar-patel.png"
+  },
+  {
+    "serial": 317,
+    "name": "Shri Jay Mangal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "318-maharajganj",
+    "district": "Maharajganj",
+    "image": "/storage/leaders/up/jay-mangal.png"
+  },
+  {
+    "serial": 318,
+    "name": "Shri Gyanendra Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "319-paniyara",
+    "district": "Maharajganj",
+    "image": "/storage/leaders/up/gyanena-singh.png"
+  },
+  {
+    "serial": 319,
+    "name": "Shri Fateh Bahadur",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "320-caimpiyarganj",
+    "district": "Gorakhpur",
+    "image": "/storage/leaders/up/fateh-bahadur.png"
+  },
+  {
+    "serial": 320,
+    "name": "Shri Mahendra Pal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nBhartiya Janata Party",
+    "constituency": "321-pipraich",
+    "district": "Gorakhpur",
+    "image": "/storage/leaders/up/mahena-pal.png"
+  },
+  {
+    "serial": 321,
+    "name": "Yogi Adityanath",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "322-gorakhpur Urban",
+    "district": "Gorakhpur",
+    "image": "/storage/leaders/up/yogi-adityanath.png"
+  },
+  {
+    "serial": 322,
+    "name": "Shri Bipin Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "323-gorakhpur Rural",
+    "district": "Gorakhpur",
+    "image": "/storage/leaders/up/bipin-singh.png"
+  },
+  {
+    "serial": 323,
+    "name": "Shri Pradeep Shukla",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "324-sahajanwa",
+    "district": "Gorakhpur",
+    "image": "/storage/leaders/up/pradeep-shukla.png"
+  },
+  {
+    "serial": 324,
+    "name": "Shri Shriram Chauhan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "325-khajani",
+    "district": "Gorakhpur",
+    "image": "/storage/leaders/up/ram-chauhan.png"
+  },
+  {
+    "serial": 325,
+    "name": "Er. Sarvan Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Nishad\nBhartiya Janata Party",
+    "constituency": "326-chauri-chaura",
+    "district": "Gorakhpur",
+    "image": "/storage/leaders/up/er-sarvan-kumar.png"
+  },
+  {
+    "serial": 326,
+    "name": "Dr. Vimlesh Paswan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "327-bansgaon",
+    "district": "Gorakhpur",
+    "image": "/storage/leaders/up/vimlesh-paswan.png"
+  },
+  {
+    "serial": 327,
+    "name": "Shri Rajesh Tripathi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "328-chillupar",
+    "district": "Gorakhpur",
+    "image": "/storage/leaders/up/rajesh-tripathi.png"
+  },
+  {
+    "serial": 328,
+    "name": "Shri Viveka Nand",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Pandey\nNirbal Indian Shoshit\nHamara Aam Dal",
+    "constituency": "329-khadda",
+    "district": "Kushinagar",
+    "image": "/storage/leaders/up/viveka-nand.png"
+  },
+  {
+    "serial": 329,
+    "name": "Shri Manish Kumar Urf",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Mantu\nBhartiya Janata Party",
+    "constituency": "330-padrauna",
+    "district": "Kushinagar",
+    "image": "/storage/leaders/up/manish-kumar-urf.png"
+  },
+  {
+    "serial": 330,
+    "name": "Dr. Asim Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "331-tamkuhi Raj",
+    "district": "Kushinagar",
+    "image": "/storage/leaders/up/asim-kumar.png"
+  },
+  {
+    "serial": 331,
+    "name": "Shri Surendra Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Kushwaha\nBhartiya Janata Party",
+    "constituency": "332-fazilnagar",
+    "district": "Kushinagar",
+    "image": "/storage/leaders/up/surena-kumar.png"
+  },
+  {
+    "serial": 332,
+    "name": "Shri Panchanand",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Pathak (P.n. Pathak)\nBhartiya Janata Party",
+    "constituency": "333-kushinagar",
+    "district": "Kushinagar",
+    "image": "/storage/leaders/up/panchanand.png"
+  },
+  {
+    "serial": 333,
+    "name": "Shri Mohan Verma",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "334-hata",
+    "district": "Kushinagar",
+    "image": "/storage/leaders/up/mohan-verma.png"
+  },
+  {
+    "serial": 334,
+    "name": "Shri Vinay Prakash",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Gond\nBhartiya Janata Party",
+    "constituency": "335-ramkola",
+    "district": "Kushinagar",
+    "image": "/storage/leaders/up/vinay-prakash.png"
+  },
+  {
+    "serial": 335,
+    "name": "Shri Jai Prakash Nishad",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "336-rudrapur",
+    "district": "Deoria",
+    "image": "/storage/leaders/up/jai-prakash-nishad.png"
+  },
+  {
+    "serial": 336,
+    "name": "Dr. Shalabh Mani",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Tripathi\nBhartiya Janata Party",
+    "constituency": "337-deoria",
+    "district": "Deoria",
+    "image": "/storage/leaders/up/shalabh-mani.png"
+  },
+  {
+    "serial": 337,
+    "name": "Shri Surya Pratap",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Shahi\nBhartiya Janata Party",
+    "constituency": "338-pathardeva",
+    "district": "Deoria",
+    "image": "/storage/leaders/up/surya-pratap.png"
+  },
+  {
+    "serial": 338,
+    "name": "Shri Surendra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Chaurasiya\nBhartiya Janata Party",
+    "constituency": "339-rampur Karkhana",
+    "district": "Deoria",
+    "image": "/storage/leaders/up/surena.png"
+  },
+  {
+    "serial": 339,
+    "name": "Shri Sabhakunwar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "340-bhatpar Rani",
+    "district": "Deoria",
+    "image": "/storage/leaders/up/sabhakunwar.png"
+  },
+  {
+    "serial": 340,
+    "name": "Smt. Vijaylaxmi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Gautam\nBhartiya Janata Party",
+    "constituency": "341-salempur",
+    "district": "Deoria",
+    "image": "/storage/leaders/up/vijaylaxmi.png"
+  },
+  {
+    "serial": 341,
+    "name": "Shri Deepak Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Mishra \"Shaka\"\nBhartiya Janata Party",
+    "constituency": "342-barhaj",
+    "district": "Deoria",
+    "image": "/storage/leaders/up/deepak-kumar.png"
+  },
+  {
+    "serial": 342,
+    "name": "Dr. Sangram Yadav",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "343-atrauliya",
+    "district": "Azamgarh",
+    "image": "/storage/leaders/up/sangram-yadav.png"
+  },
+  {
+    "serial": 343,
+    "name": "Shri Nafees Ahmad",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "344-gopalpur",
+    "district": "Azamgarh",
+    "image": "/storage/leaders/up/nafees-ahmad.png"
+  },
+  {
+    "serial": 344,
+    "name": "Dr. Hriday Narayan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh Patel\nSamajwadi Party",
+    "constituency": "345-sagri",
+    "district": "Azamgarh",
+    "image": "/storage/leaders/up/hriday-narayan.png"
+  },
+  {
+    "serial": 345,
+    "name": "Shri Akhilesh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "346-mubarakpur",
+    "district": "Azamgarh",
+    "image": "/storage/leaders/up/akhilesh.png"
+  },
+  {
+    "serial": 346,
+    "name": "Shri Durga Prasad",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Yadav\nSamajwadi Party",
+    "constituency": "347-azamgarh",
+    "district": "Azamgarh",
+    "image": "/storage/leaders/up/durga-prasad.png"
+  },
+  {
+    "serial": 347,
+    "name": "Shri Ramakant Yadav",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "349-phoolpur Pawai",
+    "district": "Azamgarh",
+    "image": "/storage/leaders/up/ramakant-yadav.png"
+  },
+  {
+    "serial": 348,
+    "name": "Shri Kamlakant",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rajbhar Urf Pappu\nSamajwadi Party",
+    "constituency": "350-didarganj",
+    "district": "Azamgarh",
+    "image": "/storage/leaders/up/kamlakant.png"
+  },
+  {
+    "serial": 349,
+    "name": "Shri Bechai Saroj",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "351-lalganj",
+    "district": "Azamgarh",
+    "image": "/storage/leaders/up/bechai-saroj.png"
+  },
+  {
+    "serial": 350,
+    "name": "Smt. Puja",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "352-mehnagar",
+    "district": "Azamgarh",
+    "image": "/storage/leaders/up/puja.png"
+  },
+  {
+    "serial": 351,
+    "name": "Shri Ram Bilash",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Chauhan\nBhartiya Janata Party",
+    "constituency": "353-madhuban",
+    "district": "Mau",
+    "image": "/storage/leaders/up/ram-bilash.png"
+  },
+  {
+    "serial": 352,
+    "name": "Shri Rajendra Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "355-muhammadabad-",
+    "district": "Gohna (Sc)",
+    "image": "/storage/leaders/up/rajena-kumar.png"
+  },
+  {
+    "serial": 353,
+    "name": "Shri Abbas Ansari",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Suheldev Bhartiya\nSamaj Party",
+    "constituency": "356-mau",
+    "district": "Mau",
+    "image": "/storage/leaders/up/abbas-ansari.png"
+  },
+  {
+    "serial": 354,
+    "name": "Shri Hansu Ram",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Suheldev Bhartiya\nSamaj Party",
+    "constituency": "357-belthara Road",
+    "district": "Ballia",
+    "image": "/storage/leaders/up/hansu-ram.png"
+  },
+  {
+    "serial": 355,
+    "name": "Shri Umashankar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nBahujan Samaj Party",
+    "constituency": "358-rasara",
+    "district": "Ballia",
+    "image": "/storage/leaders/up/umashankar.png"
+  },
+  {
+    "serial": 356,
+    "name": "Shri Ziyauddin Rizivi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "359-sikanderpur",
+    "district": "Ballia",
+    "image": "/storage/leaders/up/ziyauddin-rizivi.png"
+  },
+  {
+    "serial": 357,
+    "name": "Shri Sangram Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "360-phephana",
+    "district": "Ballia",
+    "image": "/storage/leaders/up/sangram-singh.png"
+  },
+  {
+    "serial": 358,
+    "name": "Shri Daya Shankar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nBhartiya Janata Party",
+    "constituency": "361-ballia Nagar",
+    "district": "Ballia",
+    "image": "/storage/leaders/up/daya-shankar.png"
+  },
+  {
+    "serial": 359,
+    "name": "Smt. Ketakee Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "362-bansdih",
+    "district": "Ballia",
+    "image": "/storage/leaders/up/ketakee-singh.png"
+  },
+  {
+    "serial": 360,
+    "name": "Shri Jai Prakash Anchal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "363-bairia",
+    "district": "Ballia",
+    "image": "/storage/leaders/up/jai-prakash-anchal.png"
+  },
+  {
+    "serial": 361,
+    "name": "Shri Ramesh Chandra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Mishra\nBhartiya Janata Party",
+    "constituency": "364-badlapur",
+    "district": "Jaunpur",
+    "image": "/storage/leaders/up/ramesh-chana.png"
+  },
+  {
+    "serial": 362,
+    "name": "Shri Ramesh Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Nirbal Indian Shoshit\nHamara Aam Dal",
+    "constituency": "365-shahganj",
+    "district": "Jaunpur",
+    "image": "/storage/leaders/up/ramesh-singh.png"
+  },
+  {
+    "serial": 363,
+    "name": "Shri Girish Chandra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Yadav\nBhartiya Janata Party",
+    "constituency": "366-jaunpur",
+    "district": "Jaunpur",
+    "image": "/storage/leaders/up/girish-chana.png"
+  },
+  {
+    "serial": 364,
+    "name": "Shri Lucky Yadav",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "367-malhani",
+    "district": "Jaunpur",
+    "image": "/storage/leaders/up/lucky-yadav.png"
+  },
+  {
+    "serial": 365,
+    "name": "Shri Pankaj Patel",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "368-mungra Badshahpur Jaunpur",
+    "district": "366.",
+    "image": "/storage/leaders/up/pankaj-patel.png"
+  },
+  {
+    "serial": 367,
+    "name": "Dr. R.k. Patel",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Apna Dal(sone Lal)",
+    "constituency": "370-mariyahu",
+    "district": "Jaunpur",
+    "image": "/storage/leaders/up/r-k-patel.png"
+  },
+  {
+    "serial": 368,
+    "name": "Shri Jagdish Narayan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Suheldev Bhartiya\nSamaj Party",
+    "constituency": "371-zafrabad",
+    "district": "Jaunpur",
+    "image": "/storage/leaders/up/jagdish-narayan.png"
+  },
+  {
+    "serial": 369,
+    "name": "Shri Tufani Saroj",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "372-kerakat",
+    "district": "Jaunpur",
+    "image": "/storage/leaders/up/tufani-saroj.png"
+  },
+  {
+    "serial": 370,
+    "name": "Shri Bedi",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Suheldev Bhartiya\nSamaj Party",
+    "constituency": "373-jakhanian",
+    "district": "Ghazipur",
+    "image": "/storage/leaders/up/bedi.png"
+  },
+  {
+    "serial": 371,
+    "name": "Shri Ankit Bharti",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "374-saidpur",
+    "district": "Ghazipur",
+    "image": "/storage/leaders/up/ankit-bharti.png"
+  },
+  {
+    "serial": 372,
+    "name": "Shri Jaikishan Sahu",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "375-ghazipur",
+    "district": "Ghazipur",
+    "image": "/storage/leaders/up/jaikishan-sahu.png"
+  },
+  {
+    "serial": 373,
+    "name": "Dr. Virendra Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Yadav\nSamajwadi Party",
+    "constituency": "376-jangipur",
+    "district": "Ghazipur",
+    "image": "/storage/leaders/up/virena-kumar.png"
+  },
+  {
+    "serial": 374,
+    "name": "Shri Om Prakash",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Rajbhar\nSuheldev Bhartiya\nSamaj Party",
+    "constituency": "377-zahoorabad",
+    "district": "Ghazipur",
+    "image": "/storage/leaders/up/om-prakash.png"
+  },
+  {
+    "serial": 375,
+    "name": "Shri Suhaib Alias",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Mannu Ansari\nSamajwadi Party",
+    "constituency": "378-mohammadabad",
+    "district": "Ghazipur",
+    "image": "/storage/leaders/up/suhaib-alias.png"
+  },
+  {
+    "serial": 376,
+    "name": "Shri Om Prakash",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "379-zamania",
+    "district": "Ghazipur",
+    "image": "/storage/leaders/up/om-prakash.png"
+  },
+  {
+    "serial": 377,
+    "name": "Shri Ramesh Jaiswal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "380-mughalsarai",
+    "district": "Chandauli",
+    "image": "/storage/leaders/up/ramesh-jaiswal.png"
+  },
+  {
+    "serial": 378,
+    "name": "Shri Prabhu Narayan",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Yadav\nSamajwadi Party",
+    "constituency": "381-sakaldiha",
+    "district": "Chandauli",
+    "image": "/storage/leaders/up/prabhu-narayan.png"
+  },
+  {
+    "serial": 379,
+    "name": "Shri Shushil Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "382-saiyadraja",
+    "district": "Chandauli",
+    "image": "/storage/leaders/up/shushil-singh.png"
+  },
+  {
+    "serial": 380,
+    "name": "Shri Kailash",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "383-chakia",
+    "district": "Chandauli",
+    "image": "/storage/leaders/up/kailash.png"
+  },
+  {
+    "serial": 381,
+    "name": "Dr. Awadhesh Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "384-pindra",
+    "district": "Varanasi",
+    "image": "/storage/leaders/up/awadhesh-singh.png"
+  },
+  {
+    "serial": 382,
+    "name": "Shri Tribhuwan Ram",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "385-ajagara",
+    "district": "Varanasi",
+    "image": "/storage/leaders/up/tribhuwan-ram.png"
+  },
+  {
+    "serial": 383,
+    "name": "Shri Anil Rajbhar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "386-shivpur",
+    "district": "Varanasi",
+    "image": "/storage/leaders/up/anil-rajbhar.png"
+  },
+  {
+    "serial": 384,
+    "name": "Dr. Sunil Patel",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Apna Dal(sone Lal)",
+    "constituency": "387-rohaniya",
+    "district": "Varanasi",
+    "image": "/storage/leaders/up/sunil-patel.png"
+  },
+  {
+    "serial": 385,
+    "name": "Shri Ravindra Jaiswal",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "388-varanasi North",
+    "district": "Varanasi",
+    "image": "/storage/leaders/up/ravina-jaiswal.png"
+  },
+  {
+    "serial": 386,
+    "name": "Dr. Neelkanth Tiwari",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "389-varanasi South",
+    "district": "Varanasi",
+    "image": "/storage/leaders/up/neelkanth-tiwari.png"
+  },
+  {
+    "serial": 387,
+    "name": "Shri Saurabh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Srivastava\nBhartiya Janata Party",
+    "constituency": "390-varanasi Cantt.",
+    "district": "Varanasi",
+    "image": "/storage/leaders/up/saurabh.png"
+  },
+  {
+    "serial": 388,
+    "name": "Shri Neel Ratan Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "391-sevapuri",
+    "district": "Varanasi",
+    "image": "/storage/leaders/up/neel-ratan-singh.png"
+  },
+  {
+    "serial": 389,
+    "name": "Shri Zahid",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Samajwadi Party",
+    "constituency": "392-bhadohi",
+    "district": "Bhadohi",
+    "image": "/storage/leaders/up/zahid.png"
+  },
+  {
+    "serial": 390,
+    "name": "Shri Vipul Dubey",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Nirbal Indian Shoshit\nHamara Aam Dal",
+    "constituency": "393-gyanpur",
+    "district": "Bhadohi",
+    "image": "/storage/leaders/up/vipul-dubey.png"
+  },
+  {
+    "serial": 391,
+    "name": "Shri Dinanath",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhashkar\nBhartiya Janata Party",
+    "constituency": "394-aurai",
+    "district": "Bhadohi",
+    "image": "/storage/leaders/up/dinanath.png"
+  },
+  {
+    "serial": 392,
+    "name": "Smt. Rinki Kol",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Apna Dal(sone Lal)",
+    "constituency": "395-chhanbey",
+    "district": "Mirzapur",
+    "image": "/storage/leaders/up/rinki-kol.png"
+  },
+  {
+    "serial": 393,
+    "name": "Shri Ratnakar Mishra",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "396-mirzapur",
+    "district": "Mirzapur",
+    "image": "/storage/leaders/up/ratnakar-mishra.png"
+  },
+  {
+    "serial": 394,
+    "name": "Smt. Suchismita",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Maurya\nBhartiya Janata Party",
+    "constituency": "397-majhawan",
+    "district": "Mirzapur",
+    "image": "/storage/leaders/up/suchismita.png"
+  },
+  {
+    "serial": 395,
+    "name": "Shri Anurag Singh",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "398-chunar",
+    "district": "Mirzapur",
+    "image": "/storage/leaders/up/anurag-singh.png"
+  },
+  {
+    "serial": 396,
+    "name": "Shri Rama Shankar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Singh\nBhartiya Janata Party",
+    "constituency": "399-marihan",
+    "district": "Mirzapur",
+    "image": "/storage/leaders/up/rama-shankar.png"
+  },
+  {
+    "serial": 397,
+    "name": "Dr. Anil Kumar Maurya",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "400-ghorawal",
+    "district": "Sonbhadra",
+    "image": "/storage/leaders/up/anil-kumar-maurya.png"
+  },
+  {
+    "serial": 398,
+    "name": "Shri Bhupesh Chaubey",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Bhartiya Janata Party",
+    "constituency": "401-robertsganj",
+    "district": "Sonbhadra",
+    "image": "/storage/leaders/up/bhupesh-chaubey.png"
+  },
+  {
+    "serial": 399,
+    "name": "Shri Sanjeev Kumar",
+    "designation": "MLA",
+    "state": "Uttar Pradesh",
+    "party": "Gond\nBhartiya Janata Party",
+    "constituency": "402-obra",
+    "district": "Sonbhadra",
+    "image": "/storage/leaders/up/sanjeev-kumar.png"
+  }
+]
