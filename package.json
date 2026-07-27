@@ -7,7 +7,9 @@
     "dev": "vite",
     "build": "vite build",
     "clean": "rm -rf dist",
-    "lint": "tsc --noEmit"
+    "lint": "tsc --noEmit",
+    "import:leaders": "tsx scripts/import-leaders.ts",
+    "import:mlas": "tsx scripts/import-leaders.ts --all-states"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",

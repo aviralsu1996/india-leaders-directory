@@ -6,3 +6,14 @@ coverage/
 *.log
 .env*
 !.env.example
+
+__pycache__/
+*.pyc
+
+# Ephemeral working files for the MLA extraction pipeline (scripts/extract_state_mlas.py)
+output/
+
+# Raw source PDFs a state coordinator drops in locally (see config/states.json) -
+# large binaries, not meant to be committed. The extracted data/import/*_mlas.json
+# files they produce ARE committed.
+data/import/*.pdf
