@@ -9,7 +9,8 @@
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
     "import:leaders": "tsx scripts/import-leaders.ts",
-    "import:up-mlas": "tsx scripts/import-leaders.ts --file=data/import/up_mlas.json"
+    "import:state": "tsx scripts/import-state.ts",
+    "import:all": "tsx scripts/import-all.ts"
   },
   "dependencies": {
     "@google/genai": "^2.4.0",
