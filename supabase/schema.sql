@@ -14,8 +14,7 @@ CREATE TYPE leader_category AS ENUM (
   'Minister of State',
   'Lok Sabha MP',
   'Rajya Sabha MP',
-  'Governor',
-  'MLA'
+  'Governor'
 );
 
 -- 2. Create the leaders table

@@ -13,6 +13,7 @@ import { newsRepository } from '../../news/NewsRepository';
 import { PRELOADED_MINISTERS, MinisterDossier, getDirectImageUrl } from './DossierData';
 import { getSeededReviewsList, getSeededStats } from '../../lib/reviewsSeeder';
 import { LeaderAvatar, LeaderCover } from './GovtDesignSystem';
+import SalaryEntitlementsSection from '../salary/SalaryEntitlementsSection';
 
 interface Review {
   id: string;
@@ -94,7 +95,7 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
   const [activeTab, setActiveTab] = useState<'bio' | 'gallery'>('bio');
   const [zoomedImage, setZoomedImage] = useState<string | null>(null);
 
-  const [dossierTab, setDossierTab] = useState<'overview' | 'bio' | 'family' | 'financials' | 'projects' | 'parliament' | 'press' | 'media' | 'events' | 'news' | 'trips' | 'gallery'>('overview');
+  const [dossierTab, setDossierTab] = useState<'overview' | 'bio' | 'family' | 'projects' | 'parliament' | 'press' | 'media' | 'events' | 'news' | 'trips' | 'gallery'>('overview');
   const [userReviews, setUserReviews] = useState<Review[]>([]);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [likedReviews, setLikedReviews] = useState<Record<string, boolean>>({});
@@ -247,7 +248,7 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
   if (loading) {
     return (
       <div className="py-24 text-center text-slate-400 font-mono text-xs">
-        Compiling leader dossier...
+        Compiling official government dossier...
       </div>
     );
   }
@@ -255,7 +256,7 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
   if (!leader) {
     return (
       <div className="py-16 text-center space-y-4">
-        <p className="text-slate-400 text-sm">Leader dossier not found.</p>
+        <p className="text-slate-400 text-sm">Government Representative Profile not found.</p>
         <button
           onClick={onBack}
           className="px-4 py-2 bg-slate-100 rounded-lg text-xs font-bold text-slate-700"
@@ -459,6 +460,9 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
               )}
             </div>
           </div>
+
+          {/* New Section: Salary, Benefits & Official Entitlements */}
+          <SalaryEntitlementsSection leader={leader} />
         </div>
 
         {/* Right Side: Grounded AI Intelligence Dossier */}
@@ -471,7 +475,7 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
                   <span>Grounded Intelligence dossier</span>
                 </div>
                 <h3 className="text-2xl font-black text-slate-850 dark:text-white font-display">Constitutional Audit & Dossier Disclosures</h3>
-                <p className="text-xs text-slate-500">Cross-referenced public records, financial declarations, and verified constituency pipelines.</p>
+                <p className="text-xs text-slate-500">Cross-referenced public records, executive profiles, and verified constituency pipelines.</p>
               </div>
             </div>
 
@@ -481,7 +485,6 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
                 { id: 'overview', label: 'Overview', icon: Info },
                 { id: 'bio', label: 'Bio & Timeline', icon: BookOpen },
                 { id: 'family', label: 'Family & Contacts', icon: Users },
-                { id: 'financials', label: 'Finance & Assets', icon: DollarSign },
                 { id: 'projects', label: 'Impact Projects', icon: Award },
                 { id: 'parliament', label: 'Parliament Intel', icon: Building },
                 { id: 'press', label: 'Press & Gov Intel', icon: FileText },
@@ -599,38 +602,6 @@ export default function LeaderDetailsPage({ slug, onBack, onSelectLeader }: Lead
                       <div className="space-y-2 pt-4 border-t border-slate-100 dark:border-slate-900">
                         <h5 className="font-bold uppercase font-mono tracking-wider text-slate-400">Political Network & Influence Circle</h5>
                         <p className="text-slate-600 dark:text-slate-300 leading-relaxed">{dossier.network}</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {dossierTab === 'financials' && (
-                    <div className="space-y-6 text-left">
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <div className="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-150 dark:border-slate-850 space-y-1 shadow-sm">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase font-mono tracking-widest">Declared Annual Income</span>
-                          <p className="text-sm font-black text-slate-900 dark:text-white leading-relaxed">{dossier.income}</p>
-                        </div>
-                        <div className="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-150 dark:border-slate-850 space-y-1 shadow-sm">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase font-mono tracking-widest flex items-center gap-1">
-                            <Home className="w-3.5 h-3.5 text-emerald-500" />
-                            <span>Real Estate Properties</span>
-                          </span>
-                          <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{dossier.property}</p>
-                        </div>
-                        <div className="bg-white dark:bg-slate-950 p-5 rounded-2xl border border-slate-150 dark:border-slate-850 space-y-1 shadow-sm">
-                          <span className="text-[10px] font-bold text-slate-400 uppercase font-mono tracking-widest flex items-center gap-1">
-                            <Car className="w-3.5 h-3.5 text-indigo-500" />
-                            <span>Movable Assets</span>
-                          </span>
-                          <p className="text-xs text-slate-600 dark:text-slate-300 leading-relaxed">{dossier.assets}</p>
-                        </div>
-                      </div>
-                      <div className="bg-amber-50/10 dark:bg-slate-950/60 p-4 border border-amber-200/30 dark:border-slate-850 rounded-xl flex items-start gap-3 shadow-sm">
-                        <Shield className="w-5 h-5 text-amber-500 shrink-0 mt-0.5" />
-                        <div className="space-y-1 text-[11px] leading-relaxed text-slate-500">
-                          <span className="font-bold text-slate-700 dark:text-slate-300">Election Affidavit Compliance Statement</span>
-                          <p>Financial values represent summaries compiled from self-declared candidate affidavits submitted during nomination filings. These values are in the public domain under Section 125A of Representation of the People Act, 1951.</p>
-                        </div>
                       </div>
                     </div>
                   )}

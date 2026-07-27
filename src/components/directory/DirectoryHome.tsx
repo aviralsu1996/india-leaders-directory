@@ -2,11 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { 
   Search, MapPin, Users, Award, Shield, ArrowRight, 
-  Sparkles, Building, ChevronRight, Activity, TrendingUp, Flame
+  Sparkles, Building, ChevronRight, Activity, TrendingUp, Flame, Briefcase
 } from 'lucide-react';
 import { SupabaseLeader, LeaderCategory } from '../../types';
 import { dbService } from '../../lib/supabaseClient';
 import { LeaderAvatar, LeaderCover } from './GovtDesignSystem';
+import GovernmentEmblem from '../GovernmentEmblem';
 
 const getDirectImageUrl = (url?: string) => {
   return url || '';
@@ -141,6 +142,7 @@ export default function DirectoryHome({ onSelectLeader, onNavigateTo }: Director
     { title: 'Cabinet Minister', desc: 'Central cabinet decision-makers and portfolio heads', icon: Users, count: 30 },
     { title: 'Lok Sabha MP', desc: 'Elected lawmakers representing constituencies', icon: Award, count: 543 },
     { title: 'Governor', desc: 'Constitutional heads representing the President', icon: MapPin, count: 28 },
+    { title: 'MLA', desc: 'Members of Legislative Assembly across state constituencies', icon: Award, count: 4120 },
   ];
 
   const states = [
@@ -157,18 +159,21 @@ export default function DirectoryHome({ onSelectLeader, onNavigateTo }: Director
         <div className="absolute top-0 right-0 w-[450px] h-[450px] bg-emerald-500/5 dark:bg-emerald-500/10 rounded-full blur-3xl pointer-events-none -mr-24 -mt-24" />
         
         <div className="relative z-10 max-w-3xl space-y-8">
-          <div className="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-100 dark:border-emerald-900/30 text-emerald-700 dark:text-emerald-400 rounded-full text-xs font-mono font-bold uppercase tracking-wider">
-            <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-            <span>Verified Public Servant Database</span>
+          <div className="inline-flex items-center gap-2.5 px-3.5 py-1.5 bg-emerald-50 dark:bg-emerald-950/40 border border-emerald-200/60 dark:border-emerald-800/40 text-emerald-800 dark:text-emerald-300 rounded-full text-xs font-mono font-bold uppercase tracking-wider shadow-sm">
+            <GovernmentEmblem size="sm" />
+            <span>Official Government of India Information Portal</span>
           </div>
 
           <div className="space-y-4">
-            <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-none text-slate-800 dark:text-white font-display">
-              India Political <br />
-              <span className="bg-gradient-to-r from-emerald-600 to-teal-600 bg-clip-text text-transparent">Leaders Directory</span>
+            <h1 className="text-4xl sm:text-6xl font-black tracking-tight leading-none text-slate-800 dark:text-white font-display uppercase">
+              INDIAN GOVERNMENT <br />
+              <span className="bg-gradient-to-r from-emerald-600 via-teal-600 to-amber-500 bg-clip-text text-transparent">DIRECTORY</span>
             </h1>
-            <p className="text-slate-500 dark:text-slate-400 text-sm sm:text-base leading-relaxed max-w-2xl font-sans font-medium">
-              A public utility framework compiling verified cabinet portfolios, state legislatures, biographies, constituency statistics, and social accountability trackers. Powered by dynamic Google Grounding, verified affidavits, and media records.
+            <p className="text-emerald-700 dark:text-emerald-400 font-extrabold text-lg sm:text-xl font-sans tracking-wide">
+              India's Unified Government Information Portal
+            </p>
+            <p className="text-slate-600 dark:text-slate-300 text-sm sm:text-base leading-relaxed max-w-2xl font-sans font-medium">
+              India's comprehensive digital platform for verified Government Representatives, Elections, Government Jobs, Ministries, Legislative Bodies, Public Administration, Governance Analytics and Official Public Information.
             </p>
           </div>
 
@@ -182,7 +187,7 @@ export default function DirectoryHome({ onSelectLeader, onNavigateTo }: Director
                   required
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search leaders by name, state, constituency, or party..."
+                  placeholder="Search representatives, ministries, government jobs, elections, departments, constituencies..."
                   className="w-full bg-transparent pl-12 pr-4 py-3 text-sm focus:outline-none text-slate-900 dark:text-white font-medium"
                 />
               </div>
@@ -338,14 +343,20 @@ export default function DirectoryHome({ onSelectLeader, onNavigateTo }: Director
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {categories.map((cat, idx) => {
             const Icon = cat.icon;
             return (
               <motion.button
                 key={idx}
                 whileHover={{ y: -4 }}
-                onClick={() => onNavigateTo('search', { category: cat.title })}
+                onClick={() => {
+                  if (cat.title === 'Government Jobs') {
+                    onNavigateTo('jobs');
+                  } else {
+                    onNavigateTo('search', { category: cat.title });
+                  }
+                }}
                 className="p-6 bg-white dark:bg-slate-950 border border-slate-100 dark:border-slate-900 rounded-2xl shadow-sm text-left flex flex-col justify-between h-44 cursor-pointer hover:border-emerald-500/30 transition-all group"
               >
                 <div className="p-3 bg-slate-50 dark:bg-slate-900 text-emerald-600 dark:text-emerald-400 rounded-xl w-12 h-12 flex items-center justify-center border border-slate-100 dark:border-slate-800">

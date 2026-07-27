@@ -210,7 +210,8 @@ export type LeaderCategory =
   | 'Lok Sabha MP'
   | 'Rajya Sabha MP'
   | 'Governor'
-  | 'MLA';
+  | 'MLA'
+  | 'Government Jobs';
 
 export interface SupabaseLeader {
   id: string;
@@ -219,6 +220,7 @@ export interface SupabaseLeader {
   designation: string;
   category: LeaderCategory;
   state: string;
+  district?: string;
   constituency: string;
   party: string;
   gender: string;
@@ -243,5 +245,80 @@ export interface SupabaseLeader {
   updated_at?: string;
   membership_status?: string;
   lok_sabha_terms?: string;
+  wikipedia_url?: string;
+  assembly_url?: string;
+  election_year?: string;
+}
+
+export interface SalaryStructure {
+  id: string;
+  designation: string;
+  state: string;
+  basic_salary: number;
+  annual_salary: number;
+  constituency_allowance: number;
+  office_allowance: number;
+  staff_allowance: number;
+  travel_allowance: number;
+  daily_allowance: number;
+  housing: string;
+  vehicle: string;
+  medical: string;
+  security: string;
+  telephone: string;
+  internet: string;
+  pension: string;
+  other_benefits: string;
+  effective_from: string;
+  last_updated: string;
+  source: string;
+  official_notification: string;
+}
+
+export interface Job {
+  id: string;
+  title: string;
+  slug: string;
+  organization: string;
+  department: string;
+  category: 'Central' | 'State';
+  state: string;
+  vacancies: number;
+  salary: string;
+  qualification: string;
+  age_limit: string;
+  experience: string;
+  employment_type: 'Permanent' | 'Contract' | 'Internship';
+  notification_pdf?: string;
+  official_apply_url: string;
+  official_website: string;
+  application_start: string;
+  application_end: string;
+  status: 'Open' | 'Closing Soon' | 'Closed' | 'Upcoming';
+  created_at?: string;
+  updated_at?: string;
+  description?: string;
+  selection_process?: string;
+  application_fee?: string;
+  required_documents?: string[];
+  notification_number?: string;
+  logo?: string;
+  tentative_exam_date?: string;
+  expected_notification_date?: string;
+}
+
+export interface GovtJobPortal {
+  id: string;
+  name: string;
+  abbreviation: string;
+  category: 'Central Agency' | 'Banking & Finance' | 'Railways' | 'Defence' | 'State PSC' | 'National Career';
+  logo: string;
+  official_website: string;
+  recruitment_portal: string;
+  description: string;
+  key_exams: string[];
+  helpline: string;
+  headquarters: string;
+  verified: boolean;
 }
 
