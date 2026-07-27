@@ -31,6 +31,25 @@ is entirely config-driven - no state's name, PDF path, or output folder is
 hardcoded anywhere in the scripts. Adding a new state means adding one line
 to `config/states.json`, never adding code.
 
+```
+config/states.json         every state/UT this pipeline knows about
+data/import/<code>_mlas.json   one state's import-ready leader records
+scripts/
+  lib/
+    states.ts / states.py      shared config loader (TS side / Python side)
+    importCore.ts               shared import logic - the only copy of it
+    imageProviders.ts           official-image fallback chain
+    logger.ts                   logs/import.log writer
+  parse_pdf.py                 PDF text -> structured rows
+  extract_images.py            PDF embedded photos -> files
+  match_images.py               pairs images to rows positionally
+  rename_images.py              renames to <slug>.png, sets final image path
+  extract_state_mlas.py         orchestrates the four scripts above
+  import-state.ts               entrypoint: one state, by code
+  import-all.ts                 entrypoint: every configured state
+  import-leaders.ts             entrypoint: legacy data-store.json / --file / --state / --all-states
+```
+
 ### 1. Configure states
 
 `config/states.json` lists every state/UT with a Legislative Assembly (28
@@ -85,14 +104,28 @@ care how the file was produced.
 ### 3. Import into Supabase
 
 ```bash
-npm run import:mlas                              # every configured state that has a data file
-npm run import:mlas -- --state=up                 # a single state
-npm run import:mlas -- --state=up --dry-run        # preview without touching the database
-npm run import:mlas -- --state=up --download-images
+npm run import:state up                                   # a single state (positional code, see config/states.json)
+npm run import:all                                         # every configured state that has a data file
+
+# combine with flags via `--` (see the note below):
+npm run import:state -- up --dry-run                       # preview without touching the database
+npm run import:state -- up --download-images
+npm run import:all -- --dry-run
+npm run import:all -- --chunk-size=100                     # tune the transaction batch size (default 200)
 ```
 
-(npm needs the `--` separator to forward flags to the script - `npm run
-import:mlas --state=up` *without* it is silently swallowed by npm itself.)
+`npm run import:state up` (a single bare positional code, no flags) works
+without `--`. Once you add a `--flag`, npm needs the `--` separator to
+forward it to the script instead of swallowing it itself - e.g.
+`npm run import:state --dry-run up` silently drops `--dry-run`, but
+`npm run import:state -- up --dry-run` passes both through correctly.
+
+`scripts/import-state.ts` and `scripts/import-all.ts` are thin CLI
+entrypoints; all the actual logic (loading records, resolving slugs,
+verifying/resolving images, committing to Supabase, logging, reporting)
+lives once in `scripts/lib/importCore.ts` and is shared by both of them
+plus the legacy `scripts/import-leaders.ts` - nothing is duplicated between
+the three.
 
 For every MLA, the importer generates: `slug`, `state`, `constituency`
 (constituency + district), `party`, `designation`/`category` = `MLA`,
@@ -106,7 +139,17 @@ existing row is updated, otherwise a new one is inserted. This also
 resolves name collisions *across* states correctly - two different
 people named "Anil Kumar" in two different states get distinct slugs
 (the second falls back to `anil-kumar-<constituency>`) instead of one
-overwriting the other.
+overwriting the other. Duplicate detection is a bulk pre-fetch (a handful
+of queries for the whole batch, checking every candidate slug at once via
+`.in()`), not one query per record, so this scales to the full national
+dataset without one round trip per leader.
+
+**Transactional, chunked commits:** records are written in batches of
+`--chunk-size` (default 200) using a single atomic `upsert` per batch keyed
+by slug. If any row in a batch fails a database constraint, that entire
+batch rolls back together and is reported under `Failed` - you never end up
+with half of a batch silently committed and half missing. One bad batch
+doesn't stop the rest of the run; every other batch is still attempted.
 
 **Images:** each leader's `image` path is verified against `public/`
 before being written - a missing file is reported and the field is left
@@ -116,8 +159,9 @@ downloaded into `public/storage/leaders/<code>/` and pointed at from there.
 Unsplash (or any other stock-photo service) is never used as a fallback.
 
 The legacy `npm run import:leaders` (no state, reads `data-store.json`'s
-`directoryLeaders`) still works exactly as before - the MLA pipeline is an
-addition to the same script, not a replacement.
+`directoryLeaders`) still works exactly as before, and also still accepts
+`--file=<path>`, `--state=<code>`, and `--all-states` for scripting/ad-hoc
+use - the MLA pipeline is an addition, not a replacement.
 
 ### Official image fallback chain
 
@@ -142,7 +186,18 @@ it in production.
 
 ### Logging and reports
 
-Every run appends to `logs/import.log` (gitignored) and prints a summary:
+Every run (except `--dry-run`, which writes nothing to disk) produces three things:
+
+- **`logs/import.log`** (gitignored, append-only) - a timestamped line per
+  event: job start, every warning/error, the final report.
+- **`logs/import-summary.json`** (gitignored, overwritten each run) - the
+  same final statistics as machine-readable JSON, for scripting/CI.
+- **`logs/missing-images.json`** (gitignored, overwritten each run) - every
+  leader whose image couldn't be found, with `state`, `name`, `slug`, and
+  the `expectedPath` that was checked - a ready-made to-do list for
+  sourcing photos, not just a count.
+
+Console summary:
 
 ```
 === Import Report ===
@@ -151,14 +206,17 @@ Processed: 398
 Inserted: 398
 Updated: 0
 Skipped: 0
-Failed: 0
+Failed (rolled back): 0
 Images missing (skipped): 398
 Images downloaded: 0
 =====================
 ```
 
-`Failed` counts records that hit a database error; a single bad record is
-logged and skipped rather than aborting the rest of the batch.
+`Failed (rolled back)` counts records whose batch hit a database constraint
+error and was rolled back atomically (see "Transactional, chunked
+commits" above) - not aborted-and-abandoned, but reported so they can be
+fixed and re-imported (re-running is always safe, since imports are
+idempotent).
 
 ### Known data-quality caveat
 
