@@ -126,7 +126,8 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
       if (editingLeader) {
         await dbService.updateLeader(editingLeader.id, formState);
       } else {
-        await dbService.createLeader(formState);
+        const slug = formState.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        await dbService.createLeader({ ...formState, slug, gallery: [] });
       }
       setShowAddEditModal(false);
       setEditingLeader(null);
