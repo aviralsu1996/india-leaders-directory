@@ -209,9 +209,11 @@ export type LeaderCategory =
   | 'Minister of State'
   | 'Lok Sabha MP'
   | 'Rajya Sabha MP'
+  | 'MLA'
   | 'Governor';
 
 export type SyncStatus = 'pending' | 'synced' | 'failed' | 'skipped';
+
 
 export interface SupabaseLeader {
   id: string;
@@ -222,6 +224,7 @@ export interface SupabaseLeader {
   state: string;
   constituency: string;
   party: string;
+  district?: string;
   gender: string;
   dob: string;
   bio: string;

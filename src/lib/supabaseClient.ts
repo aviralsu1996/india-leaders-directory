@@ -113,7 +113,7 @@ export const dbService = {
     if (filters.status && filters.status !== 'all') query = query.eq('status', filters.status);
     if (filters.search) {
       query = query.or(
-        `name.ilike.%${filters.search}%,designation.ilike.%${filters.search}%,constituency.ilike.%${filters.search}%`
+        `name.ilike.%${filters.search}%,designation.ilike.%${filters.search}%,constituency.ilike.%${filters.search}%,district.ilike.%${filters.search}%,party.ilike.%${filters.search}%,state.ilike.%${filters.search}%`
       );
     }
     query = query.order('created_at', { ascending: false });
@@ -153,7 +153,7 @@ export const dbService = {
     if (filters.status && filters.status !== 'all') query = query.eq('status', filters.status);
     if (filters.search) {
       query = query.or(
-        `name.ilike.%${filters.search}%,designation.ilike.%${filters.search}%,constituency.ilike.%${filters.search}%`
+        `name.ilike.%${filters.search}%,designation.ilike.%${filters.search}%,constituency.ilike.%${filters.search}%,district.ilike.%${filters.search}%,party.ilike.%${filters.search}%,state.ilike.%${filters.search}%`
       );
     }
     query = query.order('created_at', { ascending: false }).range(offset, offset + limit - 1);
@@ -195,7 +195,7 @@ const { data, error } = await query.maybeSingle();
     const { data, error, count } = await sb
       .from('leaders')
       .select('*', { count: 'exact' })
-      .or(`name.ilike.${ilike},designation.ilike.${ilike},constituency.ilike.${ilike}`)
+      .or(`name.ilike.${ilike},designation.ilike.${ilike},constituency.ilike.${ilike},district.ilike.${ilike},party.ilike.${ilike},state.ilike.${ilike}`)
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
 
@@ -399,6 +399,8 @@ const { data, error } = await query.maybeSingle();
       logs: [{ id: 1, type: 'INFO', message: 'System initialized', created_at: new Date().toISOString() }],
     };
   },
+
+
 
   async addSystemLog(type: string, message: string, details?: string) {
     return { success: true, log: { id: Date.now(), type, message, details, created_at: new Date().toISOString() } };

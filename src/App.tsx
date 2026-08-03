@@ -49,6 +49,7 @@ export default function App() {
         setMainTab('directory');
         setDirectoryView('details');
         setSelectedLeaderSlug(slug);
+        return;
       } else if (window.location.pathname === '/' || window.location.pathname === '') {
         setDirectoryView('home');
       }
@@ -305,6 +306,7 @@ export default function App() {
                 <span>AI Grounding</span>
               </button>
 
+
               <button
                 onClick={() => setMainTab('admin')}
                 className={`px-3 py-1.5 md:px-4 md:py-2 rounded-lg text-xs font-bold transition-all duration-200 flex items-center gap-2 cursor-pointer ${
@@ -416,6 +418,7 @@ export default function App() {
           {mainTab === 'ai-grounding' && (
             <KnowYourMinister />
           )}
+
 
           {mainTab === 'admin' && (
             <DirectoryAdmin onSelectLeader={handleSelectLeader} />

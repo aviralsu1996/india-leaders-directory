@@ -7,6 +7,8 @@
     "dev": "vite",
     "prebuild": "tsx scripts/generate-sitemap.ts",
     "build": "vite build",
+    "import:up": "tsx scripts/import-up-mlas.ts",
+    "validate:up": "tsx scripts/import-up-mlas.ts --validate",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit"
   },
@@ -15,7 +17,6 @@
     "@supabase/supabase-js": "^2.110.7",
     "@tailwindcss/vite": "^4.1.14",
     "@tanstack/react-query": "^5.101.2",
-    "@vercel/edge": "^1.3.1",
     "@vitejs/plugin-react": "^5.0.4",
     "dotenv": "^17.2.3",
     "lucide-react": "^0.546.0",
@@ -26,6 +27,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "@vercel/edge": "^1.3.1",
     "autoprefixer": "^10.4.21",
     "esbuild": "^0.25.0",
     "tailwindcss": "^4.1.14",

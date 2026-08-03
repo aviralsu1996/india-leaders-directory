@@ -14,6 +14,7 @@ CREATE TYPE leader_category AS ENUM (
   'Minister of State',
   'Lok Sabha MP',
   'Rajya Sabha MP',
+  'MLA',
   'Governor'
 );
 
@@ -26,6 +27,7 @@ CREATE TABLE IF NOT EXISTS public.leaders (
   category leader_category NOT NULL,
   state VARCHAR(100) NOT NULL,
   constituency VARCHAR(255) NOT NULL,
+  district VARCHAR(255),
   party VARCHAR(100) NOT NULL,
   gender VARCHAR(50) NOT NULL,
   dob DATE,
@@ -55,6 +57,7 @@ CREATE INDEX IF NOT EXISTS idx_leaders_slug ON public.leaders (slug);
 CREATE INDEX IF NOT EXISTS idx_leaders_category ON public.leaders (category);
 CREATE INDEX IF NOT EXISTS idx_leaders_state ON public.leaders (state);
 CREATE INDEX IF NOT EXISTS idx_leaders_party ON public.leaders (party);
+CREATE INDEX IF NOT EXISTS idx_leaders_district ON public.leaders (district);
 CREATE INDEX IF NOT EXISTS idx_leaders_featured ON public.leaders (featured);
 CREATE INDEX IF NOT EXISTS idx_leaders_status ON public.leaders (status);
 

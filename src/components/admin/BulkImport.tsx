@@ -117,7 +117,7 @@ export default function BulkImport({ onImportComplete }: BulkImportProps) {
         const validCategories: LeaderCategory[] = [
           'Prime Minister', 'Chief Minister', 'Deputy Chief Minister', 
           'Cabinet Minister', 'Minister of State', 'Lok Sabha MP', 
-          'Rajya Sabha MP', 'Governor'
+          'Rajya Sabha MP', 'MLA', 'Governor'
         ];
 
         const parsedRecords: PreviewRecord[] = [];
@@ -145,6 +145,7 @@ export default function BulkImport({ onImportComplete }: BulkImportProps) {
           else if (catNorm.includes('chief minister') || catNorm === 'cm') matchedCategory = 'Chief Minister';
           else if (catNorm.includes('deputy chief') || catNorm.includes('deputy cm')) matchedCategory = 'Deputy Chief Minister';
           else if (catNorm.includes('state')) matchedCategory = 'Minister of State';
+          else if (catNorm.includes('mla') || catNorm.includes('member of legislative assembly') || catNorm.includes('assembly member')) matchedCategory = 'MLA';
           else if (catNorm.includes('lok sabha') || catNorm.includes('mp')) matchedCategory = 'Lok Sabha MP';
           else if (catNorm.includes('rajya sabha')) matchedCategory = 'Rajya Sabha MP';
           else if (catNorm.includes('governor')) matchedCategory = 'Governor';

@@ -349,7 +349,7 @@ export default function DirectoryAdmin({ onSelectLeader }: DirectoryAdminProps) 
   ];
 
   const filterCategories = [
-    'all', 'Prime Minister', 'Chief Minister', 'Deputy Chief Minister', 'Cabinet Minister', 'Minister of State', 'Lok Sabha MP', 'Rajya Sabha MP', 'Governor'
+    'all', 'Prime Minister', 'Chief Minister', 'Deputy Chief Minister', 'Cabinet Minister', 'Minister of State', 'Lok Sabha MP', 'Rajya Sabha MP', 'MLA', 'Governor'
   ];
 
   // LOGIN SCREEN

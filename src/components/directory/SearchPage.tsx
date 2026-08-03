@@ -86,6 +86,8 @@ const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | nu
       parsed.category = 'Deputy Chief Minister';
     } else if (normalized.includes('governor') || normalized.includes('governors')) {
       parsed.category = 'Governor';
+    } else if (normalized.includes('mla') || normalized.includes('member of legislative assembly') || normalized.includes('assembly member')) {
+      parsed.category = 'MLA';
     } else if (normalized.includes('mp') || normalized.includes('mps') || normalized.includes('member of parliament')) {
       if (normalized.includes('rajya sabha')) {
         parsed.category = 'Rajya Sabha MP';
@@ -265,7 +267,7 @@ const [aiSearchInterpretation, setAiSearchInterpretation] = useState<string | nu
   ];
 
   const filterCategories = [
-    'all', 'Prime Minister', 'Chief Minister', 'Deputy Chief Minister', 'Cabinet Minister', 'Minister of State', 'Lok Sabha MP', 'Rajya Sabha MP', 'Governor'
+    'all', 'Prime Minister', 'Chief Minister', 'Deputy Chief Minister', 'Cabinet Minister', 'Minister of State', 'Lok Sabha MP', 'Rajya Sabha MP', 'MLA', 'Governor'
   ];
 
   const handleClearFilters = () => {
