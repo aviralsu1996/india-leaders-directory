@@ -1,0 +1,12 @@
+[
+  {
+    "serial": 1,
+    "name": "Shri Example Kumar",
+    "designation": "Lok Sabha MP",
+    "state": "Uttar Pradesh",
+    "party": "Example Party",
+    "constituency": "Example Constituency",
+    "district": "Example District",
+    "image": "https://your-project-ref.supabase.co/storage/v1/object/public/leaders/images/example-kumar.png"
+  }
+]
